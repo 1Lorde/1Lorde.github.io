@@ -1,0 +1,15 @@
+{
+  "short_name": "ekoop",
+  "name": "Ekoop App",
+  "icons": [
+    {
+      "src": "./assets/images/ekoop_logo.png",
+      "sizes": "200x40",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
