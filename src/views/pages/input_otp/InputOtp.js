@@ -8,7 +8,7 @@ const InputOtp = () => {
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={6}>
+          <CCol xl={4}>
             <CCard className="p-4">
               <CCardBody>
                 <CForm>
@@ -16,7 +16,7 @@ const InputOtp = () => {
                   <br />
                   <CRow>
                     <CCol className="d-flex justify-content-center">
-                      <ReactCodeInput />
+                      <ReactCodeInput fieldWidth="2.5rem" />
                     </CCol>
                   </CRow>
                   <br />
@@ -39,7 +39,7 @@ const InputOtp = () => {
               Request OTP
             </CButton>
           </CCol>
-          <CCol md={4} className="d-flex justify-content-center">
+          <CCol md={4} className="d-flex justify-content-center mt-2">
             <p>or sent !OTP via WhatsApp to +6281xxxxxxxxxx</p>
           </CCol>
         </CRow>
