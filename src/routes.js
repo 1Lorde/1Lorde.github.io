@@ -1,12 +1,16 @@
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const CompanyInfo = React.lazy(() => import('./views/company_info/CompanyInfo'))
+const MyCompany = React.lazy(() => import('./views/my_company/MyCompany'))
 const MyProfile = React.lazy(() => import('./views/my_profile/MyProfile'))
 const Notifications = React.lazy(() => import('./views/notifications/Notifications'))
 const Task = React.lazy(() => import('./views/notifications/task/Task'))
 const ChangePassword = React.lazy(() => import('./views/change_password/ChangePassword'))
-const UserList = React.lazy(() => import('./views/user_list/UserList'))
+const UserList = React.lazy(() => import('./views/user/user_list/UserList'))
+const UserDetails = React.lazy(() => import('./views/user/user_details/UserDetails'))
+const UserCreate = React.lazy(() => import('./views/user/user_create/UserCreate'))
+const ClientList = React.lazy(() => import('./views/client/client_list/ClientList'))
+const ClientDetail = React.lazy(() => import('./views/client/client_detail/ClientDetail'))
 
 const NasabahList = React.lazy(() => import('./views/nasabah/nasabah_list/NasabahList'))
 const NasabahDetail = React.lazy(() => import('./views/nasabah/nasabah_detail/NasabahDetail'))
@@ -16,6 +20,9 @@ const NasabahCashOut = React.lazy(() => import('./views/nasabah/nasabah_cash_out
 
 const ProductsSavings = React.lazy(() =>
   import('./views/products/products_savings/ProductsSavings'),
+)
+const ProductsSavingsCreate = React.lazy(() =>
+  import('./views/products/products_savings_create/ProductsSavingsCreate'),
 )
 const ProductsSavingsDetails = React.lazy(() =>
   import('./views/products/products_savings_details/ProductSavingsDetails'),
@@ -37,12 +44,15 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/profile', name: 'My profile', component: MyProfile },
   { path: '/profile/change_password', name: 'Change password', component: ChangePassword },
-  { path: '/company_info', name: 'Company Info', component: CompanyInfo },
+  { path: '/company_info', name: 'Company Info', component: MyCompany },
   { path: '/notifications', name: 'Notifications', component: Notifications },
   { path: '/notifications/task', name: 'Task', component: Task },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/users', name: 'User List', component: UserList },
-  { path: '/users/details', name: 'Detail User', component: MyProfile },
+  { path: '/users/details', name: 'Detail User', component: UserDetails },
+  { path: '/users/create', name: 'Create User', component: UserCreate },
+  { path: '/clients', name: 'Client List', component: ClientList },
+  { path: '/clients/details', name: 'Detail Client', component: ClientDetail },
   { path: '/nasabah', name: 'Nasabah List', component: NasabahList },
   { path: '/nasabah/details', name: 'Detail Nasabah', component: NasabahDetail },
   { path: '/nasabah/details/transfer', name: 'Transfer', component: NasabahTransfer },
@@ -55,6 +65,7 @@ const routes = [
     name: 'Detail Product',
     component: ProductsSavingsDetails,
   },
+  { path: '/products/savings/create', name: 'Create Savings', component: ProductsSavingsCreate },
   { path: '/products/ppob', name: 'PPOB List', component: ProductsPpob },
   {
     path: '/products/ppob/details',

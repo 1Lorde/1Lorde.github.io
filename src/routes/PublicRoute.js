@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect, Route, RouteProps } from 'react-router-dom'
-import AuthService from '../services/auth.service'
+import { isPermanentTokenExist } from '../helpers/user'
 
 interface PublicRouteProps {
   restricted?: boolean;
@@ -10,7 +10,7 @@ function PublicRoute(props: PublicRouteProps & RouteProps): React.ReactElement {
   const { component: Component, restricted = false, ...rest } = props
 
   const render = (props) => {
-    if (AuthService.isAuthenticated() && restricted) {
+    if (isPermanentTokenExist() && restricted) {
       return <Redirect to="/profile" />
     }
 

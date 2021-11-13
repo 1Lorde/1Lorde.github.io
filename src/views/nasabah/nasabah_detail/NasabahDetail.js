@@ -15,7 +15,7 @@ import {
   CRow,
 } from '@coreui/react'
 
-import avatar from '../../../assets/images/profile.jpg'
+import avatar from '../../../assets/images/avatar_placeholder.png'
 import { useHistory } from 'react-router-dom'
 
 const NasabahDetail = () => {

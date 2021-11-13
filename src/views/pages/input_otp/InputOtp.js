@@ -1,9 +1,70 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ReactCodeInput from 'react-verification-code-input'
 
 import { CButton, CCard, CCardBody, CCol, CContainer, CForm, CRow } from '@coreui/react'
+import {
+  changePasswordOtp,
+  loginOtp,
+  resetPasswordOtp,
+  UserContext,
+  UserStatus,
+} from '../../../helpers/user'
+import { useHistory } from 'react-router-dom'
+import { store } from 'react-notifications-component'
+import { danger, success } from '../../../helpers/notifications'
 
 const InputOtp = () => {
+  const { userState } = useContext(UserContext)
+  const history = useHistory()
+  const [otp, setOtp] = useState('')
+  const [isLoading, setIsLoading] = useState()
+
+  useEffect(
+    () => {
+      console.log(userState)
+      if (
+        userState &&
+        Object.keys(userState).length === 0 &&
+        Object.getPrototypeOf(userState) === Object.prototype
+      ) {
+        history.push('/login')
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
+
+  function handleOtp(otp) {
+    setIsLoading(true)
+    if (userState.status === UserStatus.WAITING_FOR_OTP) {
+      changePasswordOtp(otp).then((data) => {
+        console.log(data)
+        store.addNotification(success(data.message))
+        setIsLoading(false)
+        history.push('/profile')
+      })
+    } else if (userState.status === UserStatus.TRY_TO_LOGIN) {
+      loginOtp(userState.temp_token, otp).then((data) => {
+        console.log(data)
+        store.addNotification(success('Welcome back!'))
+        setIsLoading(false)
+        history.push('/profile')
+      })
+    } else if (userState.status === UserStatus.RESET_PASS) {
+      resetPasswordOtp(userState.temp_token, otp).then((data) => {
+        if (data.ok === true) {
+          console.log(data)
+          store.addNotification(success(data.message))
+          setIsLoading(false)
+          history.push('/profile')
+        } else {
+          store.addNotification(danger(data.message))
+          setIsLoading(false)
+        }
+      })
+    }
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -16,13 +77,18 @@ const InputOtp = () => {
                   <br />
                   <CRow>
                     <CCol className="d-flex justify-content-center">
-                      <ReactCodeInput fieldWidth="2.5rem" />
+                      <ReactCodeInput
+                        loading={isLoading}
+                        autoFocus={true}
+                        fieldWidth={40}
+                        onChange={(e) => setOtp(e)}
+                      />
                     </CCol>
                   </CRow>
                   <br />
                   <CRow>
                     <CCol className="d-flex justify-content-end">
-                      <CButton color="primary" className="px-4">
+                      <CButton color="primary" className="px-4" onClick={(e) => handleOtp(otp)}>
                         Submit
                       </CButton>
                     </CCol>
@@ -30,17 +96,6 @@ const InputOtp = () => {
                 </CForm>
               </CCardBody>
             </CCard>
-          </CCol>
-        </CRow>
-        <br />
-        <CRow className="align-items-baseline">
-          <CCol md={5} className="d-flex justify-content-end">
-            <CButton color="primary" variant="outline">
-              Request OTP
-            </CButton>
-          </CCol>
-          <CCol md={4} className="d-flex justify-content-center mt-2">
-            <p>or sent !OTP via WhatsApp to +6281xxxxxxxxxx</p>
           </CCol>
         </CRow>
       </CContainer>

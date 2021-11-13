@@ -9,26 +9,30 @@ import {
   CImage,
   CRow,
 } from '@coreui/react'
-import { useParams } from 'react-router-dom'
-import { getClient } from '../../helpers/api_requests'
+import { UserContext } from '../../helpers/user'
+import { updateClient } from '../../helpers/api_requests'
+import { store } from 'react-notifications-component'
+import { success } from '../../helpers/notifications'
 import Loader from '../../components/Loader'
 
-const CompanyInfo = () => {
-  let { id } = useParams()
-  const [user, setUser] = useState()
-  const [hasLoaded, setHasLoaded] = useState()
+const MyCompany = () => {
+  const { userState } = useContext(UserContext)
+  const [company, setCompany] = useState({})
+  const [hasLoaded, setHasLoaded] = useState({})
 
-  useEffect(
-    () => {
-      getClient(id).then((profile_data) => {
-        setUser(profile_data)
-        console.log(profile_data)
-        setHasLoaded(true)
-      })
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  )
+  useEffect(() => {
+    setHasLoaded(true)
+  }, [])
+
+  const handleEdit = () => {
+    updateClient(userState.company.id, company).then((data) => {
+      if (data.ok) {
+        store.addNotification(success('Company details updated'))
+      } else {
+        console.log(data)
+      }
+    })
+  }
 
   return hasLoaded ? (
     <CForm>
@@ -39,8 +43,11 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="company_name"
-              defaultValue={user.company.company}
               placeholder="No data provided"
+              defaultValue={userState.company.company}
+              onChange={(e) => {
+                setCompany((company) => ({ ...company, company: e.target.value }))
+              }}
             />
           </div>
           <div className="mb-3">
@@ -48,8 +55,11 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="address"
-              defaultValue={user.company.address}
               placeholder="No data provided"
+              defaultValue={userState.company.address}
+              onChange={(e) => {
+                setCompany((company) => ({ ...company, address: e.target.value }))
+              }}
             />
           </div>
           <div className="mb-3">
@@ -57,8 +67,20 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="npwp"
-              defaultValue={user.company.documents.NPWP?.no}
               placeholder="No data provided"
+              defaultValue={userState.company.documents?.NPWP?.no}
+              onChange={(e) => {
+                setCompany((company) => ({
+                  ...company,
+                  documents: {
+                    ...company.documents,
+                    NPWP: {
+                      ...company.documents.NPWP,
+                      no: e.target.value,
+                    },
+                  },
+                }))
+              }}
             />
           </div>
           <div className="mb-3">
@@ -66,8 +88,20 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="siup"
-              defaultValue={user.company.documents.SIUP?.no}
               placeholder="No data provided"
+              defaultValue={userState.company.documents?.SIUP?.no}
+              onChange={(e) => {
+                setCompany((company) => ({
+                  ...company,
+                  documents: {
+                    ...company.documents,
+                    SIUP: {
+                      ...company.documents.SIUP,
+                      no: e.target.value,
+                    },
+                  },
+                }))
+              }}
             />
           </div>
           <div className="mb-3">
@@ -75,8 +109,20 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="tdp"
-              defaultValue={user.company.documents.TDP?.no}
               placeholder="No data provided"
+              defaultValue={userState.company.documents?.TDP?.no}
+              onChange={(e) => {
+                setCompany((company) => ({
+                  ...company,
+                  documents: {
+                    ...company.documents,
+                    TDP: {
+                      ...company.documents.TDP,
+                      no: e.target.value,
+                    },
+                  },
+                }))
+              }}
             />
           </div>
         </CCol>
@@ -84,7 +130,7 @@ const CompanyInfo = () => {
           <CContainer fluid className="d-flex justify-content-center">
             <CImage
               rounded
-              src={'https://via.placeholder.com/550x390.png?text=' + user.company.company}
+              src={'https://via.placeholder.com/550x390.png?text=' + userState.company.company}
               width={550}
               height={390}
               className="mt-4"
@@ -103,8 +149,9 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="subscription"
-              defaultValue={user.company.package?.name}
               placeholder="No data provided"
+              defaultValue={userState.company.package?.name}
+              disabled
             />
           </div>
           <div className="mb-3">
@@ -112,8 +159,9 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="status"
-              defaultValue={user.company.status}
               placeholder="No data provided"
+              defaultValue={userState.company.status}
+              disabled
             />
           </div>
         </CCol>
@@ -123,7 +171,8 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="director"
-              defaultValue={user.company.contact?.dir_name}
+              defaultValue={userState.company.contact?.dir_name}
+              disabled
               placeholder="No data provided"
             />
           </div>
@@ -132,8 +181,9 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="ktp"
-              defaultValue={user.company.contact?.ktp_id}
               placeholder="No data provided"
+              defaultValue={userState.company.contact?.ktp_id}
+              disabled
             />
           </div>
           <div className="mb-3">
@@ -141,15 +191,18 @@ const CompanyInfo = () => {
             <CFormInput
               type="text"
               id="wa"
-              defaultValue={user.company.contact?.wa_number}
               placeholder="No data provided"
+              defaultValue={userState.company.contact?.wa_number}
+              disabled
             />
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-3">
         <div className="d-flex justify-content-end">
-          <CButton color="primary">Edit</CButton>
+          <CButton color="primary" onClick={handleEdit}>
+            Edit
+          </CButton>
         </div>
       </CRow>
     </CForm>
@@ -158,4 +211,4 @@ const CompanyInfo = () => {
   )
 }
 
-export default CompanyInfo
+export default MyCompany

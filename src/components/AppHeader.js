@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  CBadge,
   CContainer,
   CHeader,
   CHeaderBrand,
@@ -15,31 +16,52 @@ import { cilAccountLogout, cilBell, cilCog, cilMenu } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
-import AuthService from '../services/auth.service'
+import { clearLocalToken, UserContext } from '../helpers/user'
+import { Roles } from '../helpers/role'
+import { store } from 'react-notifications-component'
+import { success } from '../helpers/notifications'
 
 const AppHeader = () => {
-  const dispatch = useDispatch()
+  const sidebarDispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const { userState, userDispatch } = useContext(UserContext)
 
   function handleLogOut() {
-    AuthService.logout()
-    window.location.reload()
+    userDispatch({ type: 'logout' })
+    clearLocalToken()
+    store.addNotification(success('Logged out'))
+  }
+
+  function getHeaderBrand() {
+    if (userState.company) {
+      return userState.company.company.toUpperCase()
+    }
+
+    if (Roles[userState.user.role] === Roles['app-owner']) {
+      return 'EKOOP.ID - KOPERASI DIGITAL INDONESIA'
+    }
   }
 
   return (
     <CHeader position="sticky" className="mb-4">
       <CHeaderToggler
         className="ps-1"
-        onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+        onClick={() => sidebarDispatch({ type: 'set', sidebarShow: !sidebarShow })}
       >
         <CIcon icon={cilMenu} size="lg" />
-        <CHeaderBrand className="ms-4">COMPANY NAME</CHeaderBrand>
+        <CHeaderBrand className="ms-4">{getHeaderBrand()}</CHeaderBrand>
       </CHeaderToggler>
-      <CHeaderNav className="m-2 align-items-baseline">
-        <h6 className="d-none d-lg-block">Full Name of User</h6>
+      <CHeaderNav className="m-2 align-items-center">
+        <CNavItem>
+          <h6 className="d-none d-lg-block">{userState.user.name}</h6>
+          <CBadge className="d-none d-lg-block" color="dark" shape="rounded-pill">
+            {Roles[userState.user.role]}
+          </CBadge>
+        </CNavItem>
         <CHeaderNav className="ms-2">
           <AppHeaderDropdown />
         </CHeaderNav>
+
         <CNavItem>
           <CNavLink href="#">
             <CIcon icon={cilBell} size="lg" />

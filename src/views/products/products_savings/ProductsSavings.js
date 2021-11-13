@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CBadge,
+  CButton,
   CCard,
   CCardBody,
   CCardImage,
@@ -11,163 +12,103 @@ import {
   CFormInput,
   CFormLabel,
   CFormSelect,
-  CPagination,
-  CPaginationItem,
   CRow,
 } from '@coreui/react'
 
-import product from '../../../assets/images/product.jpg'
 import { useHistory } from 'react-router-dom'
+import { getProducts } from '../../../helpers/api_requests'
+import Loader from '../../../components/Loader'
 
 const ProductsSavings = () => {
   const history = useHistory()
+  const [products, setProducts] = useState([])
+  const [hasLoaded, setHasLoaded] = useState()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [typeFilter, setTypeFilter] = useState('')
 
-  function handleClick() {
-    history.push('/products/savings/details')
-  }
+  useEffect(() => {
+    getProducts('', typeFilter).then((data) => {
+      if (data.ok === true) {
+        setProducts(data.products)
+        setHasLoaded(true)
+      }
+    })
+  }, [searchQuery, typeFilter])
 
-  return (
+  return hasLoaded ? (
     <CContainer>
-      <CRow className="d-flex align-items-center">
+      <CRow className="align-items-end">
         <CCol xs={6}>
           <CFormLabel htmlFor="search">Search</CFormLabel>
-          <CFormInput type="text" id="search" />
+          <CFormInput
+            type="text"
+            id="searchInput"
+            placeholder="Enter search query.."
+            onChange={(e) => {
+              setSearchQuery(e.target.value)
+            }}
+          />
         </CCol>
         <CCol>
           <CFormLabel htmlFor="category">Category</CFormLabel>
-          <CFormSelect id="category">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <CFormSelect
+            id="category"
+            onChange={(e) => {
+              setTypeFilter(e.target.value)
+            }}
+          >
+            <option value="">All</option>
+            <option value="savings">Savings</option>
+            <option value="credits">Credits</option>
           </CFormSelect>
         </CCol>
         <CCol>
           <CFormLabel htmlFor="sort">Sort By</CFormLabel>
-          <CFormSelect id="sort">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </CFormSelect>
+          <CFormSelect id="sort"></CFormSelect>
+        </CCol>
+        <CCol>
+          <CButton color="primary" onClick={() => history.push('/products/savings/create')}>
+            Add New
+          </CButton>
         </CCol>
       </CRow>
       <br />
-      <CRow>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="dark" shape="rounded-pill">
-                Not active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-      <br />
-      <CRow>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="dark" shape="rounded-pill">
-                Not active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '18rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={product} />
-            <CCardBody className="text-center">
-              <CCardTitle>Products Name</CCardTitle>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CPagination align="center" aria-label="Page navigation">
-          <CPaginationItem aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </CPaginationItem>
-          <CPaginationItem active>1</CPaginationItem>
-          <CPaginationItem>2</CPaginationItem>
-          <CPaginationItem>3</CPaginationItem>
-          <CPaginationItem>4</CPaginationItem>
-          <CPaginationItem>5</CPaginationItem>
-          <CPaginationItem aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </CPaginationItem>
-        </CPagination>
+
+      <CRow className="justify-content-start">
+        {products?.map((product, index) => {
+          return (
+            <CCol key={index} xxl={3} md={5} className="mb-4">
+              <CCard
+                style={{ width: '18rem', height: '100%', cursor: 'pointer' }}
+                onClick={() => {
+                  history.push({ pathname: '/products/savings/details', state: product })
+                }}
+              >
+                <CCardImage
+                  orientation="top"
+                  src={'https://via.placeholder.com/550x390.png?text=' + product.name}
+                />
+                <CCardBody className="text-center">
+                  <CCardTitle>{product.name}</CCardTitle>
+                  <CCardText>{product.description}</CCardText>
+                  {product.active ? (
+                    <CBadge color="success" shape="rounded-pill">
+                      Active
+                    </CBadge>
+                  ) : (
+                    <CBadge color="dark" shape="rounded-pill">
+                      Inactive
+                    </CBadge>
+                  )}
+                </CCardBody>
+              </CCard>
+            </CCol>
+          )
+        })}
       </CRow>
     </CContainer>
+  ) : (
+    Loader()
   )
 }
 

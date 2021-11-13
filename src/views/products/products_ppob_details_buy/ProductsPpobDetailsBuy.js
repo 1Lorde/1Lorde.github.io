@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -13,13 +13,33 @@ import {
   CFormSelect,
   CRow,
 } from '@coreui/react'
+import { useHistory } from 'react-router-dom'
+import Loader from '../../../components/Loader'
 
-const ProductsPpobDetailsBuy = () => {
-  return (
+const ProductsPpobDetailsBuy = (props) => {
+  const history = useHistory()
+  const [service, setService] = useState()
+  const [hasLoaded, setHasLoaded] = useState()
+
+  useEffect(
+    () => {
+      // eslint-disable-next-line react/prop-types
+      if (!props.location.state) {
+        history.push('/products/ppob')
+      }
+      // eslint-disable-next-line react/prop-types
+      setService(props.location.state)
+      setHasLoaded(true)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
+
+  return hasLoaded ? (
     <CContainer className="d-flex justify-content-center">
       <CCard style={{ width: '35rem' }}>
         <CCardHeader component="h4" className="p-3">
-          Buy [PPOB Name]
+          Buy {service.name}
         </CCardHeader>
         <CCardBody>
           <CForm>
@@ -119,6 +139,8 @@ const ProductsPpobDetailsBuy = () => {
         </CCardBody>
       </CCard>
     </CContainer>
+  ) : (
+    Loader()
   )
 }
 

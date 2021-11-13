@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCol,
@@ -12,41 +12,88 @@ import {
   CImage,
   CRow,
 } from '@coreui/react'
-import image from '../../../assets/images/ppob.png'
 import { useHistory } from 'react-router-dom'
+import Loader from '../../../components/Loader'
 
-const ProductPpobDetails = () => {
+const ProductPpobDetails = (props) => {
   const history = useHistory()
+  const [service, setService] = useState()
+  const [hasLoaded, setHasLoaded] = useState()
 
-  return (
+  useEffect(
+    () => {
+      // eslint-disable-next-line react/prop-types
+      if (!props.location.state) {
+        history.push('/products/ppob')
+      }
+      // eslint-disable-next-line react/prop-types
+      setService(props.location.state)
+      setHasLoaded(true)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
+
+  function tryParseInt(text) {
+    const parsed = parseInt(text)
+    if (isNaN(parsed)) {
+      return ''
+    }
+    return parsed
+  }
+
+  return hasLoaded ? (
     <CForm>
       <CRow xs={{ cols: 1 }} md={{ cols: 2 }} className="mb-4">
         <CCol>
           <CFormLabel htmlFor="category">Category</CFormLabel>
-          <CFormSelect id="category">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <CFormSelect
+            id="category"
+            defaultValue={service.category}
+            onChange={(e) => {
+              setService((service) => ({ ...service, category: e.target.value }))
+            }}
+          >
+            <option value="postpaid">Postpaid</option>
           </CFormSelect>
-          <CContainer fluid class="d-flex justify-content-center mt-4 mb-3">
-            <CImage thumbnail rounded src={image} width={500} height={500} />
+          <CContainer fluid className="d-flex justify-content-center mt-4 mb-3">
+            <CImage
+              thumbnail
+              rounded
+              src={'https://via.placeholder.com/550x390.png?text=' + service.name}
+              width={500}
+              height={500}
+            />
           </CContainer>
         </CCol>
         <CCol>
           <div className="mb-2">
             <CFormLabel htmlFor="name">PPOB Name</CFormLabel>
-            <CFormInput type="text" id="name" />
+            <CFormInput
+              type="text"
+              id="name"
+              defaultValue={service.name}
+              onChange={(e) => {
+                setService((service) => ({ ...service, name: e.target.value }))
+              }}
+            />
           </div>
           <div className="mb-2">
             <CFormLabel htmlFor="description">Description</CFormLabel>
-            <CFormTextarea type="text" id="description" rows="3" />
+            <CFormTextarea
+              type="text"
+              id="description"
+              rows="3"
+              defaultValue={service.desc}
+              onChange={(e) => {
+                setService((service) => ({ ...service, desc: e.target.value }))
+              }}
+            />
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="vendor">Vendor</CFormLabel>
-            <CFormSelect id="vendor">
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <CFormSelect id="vendor" defaultValue={service.vendor_slug_selected}>
+              <option defaultValue="rajabiller">Rajabiller</option>
             </CFormSelect>
           </div>
           <h5>Margin by</h5>
@@ -59,7 +106,7 @@ const ProductPpobDetails = () => {
                 id="inlineCheckbox1"
                 value="all"
                 label="All (Default)"
-                defaultChecked
+                defaultChecked={service.margin_by === 'all'}
               />
               <CFormCheck
                 inline
@@ -67,7 +114,9 @@ const ProductPpobDetails = () => {
                 name="inlineRadioOptions"
                 id="inlineCheckbox2"
                 value="percent"
+                readOnly
                 label="Percent"
+                defaultChecked={service.margin_by === 'percent'}
               />
               <CFormCheck
                 inline
@@ -75,11 +124,20 @@ const ProductPpobDetails = () => {
                 name="inlineRadioOptions"
                 id="inlineCheckbox3"
                 value="fix"
+                readOnly
                 label="Fix"
+                defaultChecked={service.margin_by === 'fix_cost'}
               />
             </CCol>
             <CCol>
-              <CFormInput type="text" id="fix_value" />
+              <CFormInput
+                type="text"
+                id="nominal"
+                defaultValue={service.nominal}
+                onChange={(e) => {
+                  setService((service) => ({ ...service, nominal: tryParseInt(e.target.value) }))
+                }}
+              />
             </CCol>
           </CRow>
           <CRow className="mb-3 align-items-center">
@@ -89,10 +147,18 @@ const ProductPpobDetails = () => {
             </CCol>
           </CRow>
           <CFormLabel htmlFor="status">Status</CFormLabel>
-          <CFormSelect id="status">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <CFormSelect
+            id="status"
+            defaultValue={service.active}
+            onChange={(e) => {
+              setService((service) => ({
+                ...service,
+                active: e.target.value === 'true',
+              }))
+            }}
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
           </CFormSelect>
         </CCol>
       </CRow>
@@ -102,17 +168,21 @@ const ProductPpobDetails = () => {
             color="primary"
             variant="outline"
             onClick={() => {
-              history.push('/products/ppob/details/buy')
+              history.push({ pathname: '/products/ppob/details/buy', state: service })
             }}
           >
             Buy
           </CButton>
         </CCol>
         <CCol className="d-grid d-md-flex justify-content-md-end mb-3">
-          <CButton color="primary">Edit</CButton>
+          <CButton color="primary" disabled>
+            Edit
+          </CButton>
         </CCol>
       </CRow>
     </CForm>
+  ) : (
+    Loader()
   )
 }
 

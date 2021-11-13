@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CBadge,
   CCard,
@@ -11,22 +11,28 @@ import {
   CFormInput,
   CFormLabel,
   CFormSelect,
-  CPagination,
-  CPaginationItem,
   CRow,
 } from '@coreui/react'
 
-import ppob from '../../../assets/images/ppob.png'
 import { useHistory } from 'react-router-dom'
+import Loader from '../../../components/Loader'
+import { getServices } from '../../../helpers/api_requests'
 
 const ProductsPpob = () => {
   const history = useHistory()
+  const [services, setServices] = useState([])
+  const [hasLoaded, setHasLoaded] = useState()
 
-  function handleClick() {
-    history.push('/products/ppob/details')
-  }
+  useEffect(() => {
+    getServices().then((data) => {
+      if (data.ok === true) {
+        setServices(data.services)
+        setHasLoaded(true)
+      }
+    })
+  }, [])
 
-  return (
+  return hasLoaded ? (
     <CContainer>
       <CRow className="align-items-center mb-4">
         <CCol xs={6}>
@@ -65,156 +71,42 @@ const ProductsPpob = () => {
           <CFormInput type="text" />
         </CCol>
       </CRow>
-      <CRow className="mb-4">
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="dark" shape="rounded-pill">
-                Not active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="dark" shape="rounded-pill">
-                Not active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="dark" shape="rounded-pill">
-                Not active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol className="d-flex justify-content-center mb-3">
-          <CCard style={{ width: '14rem', cursor: 'pointer' }} onClick={handleClick}>
-            <CCardImage orientation="top" src={ppob} />
-            <CCardBody className="text-center">
-              <CCardTitle>PPOB Name</CCardTitle>
-              <CCardText>Category: Lorem</CCardText>
-              <CCardText>Lorem ipsum dolor sit amet, consectetur.</CCardText>
-              <CBadge color="success" shape="rounded-pill">
-                Active
-              </CBadge>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CPagination align="center" aria-label="Page navigation">
-          <CPaginationItem aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </CPaginationItem>
-          <CPaginationItem active>1</CPaginationItem>
-          <CPaginationItem>2</CPaginationItem>
-          <CPaginationItem>3</CPaginationItem>
-          <CPaginationItem>4</CPaginationItem>
-          <CPaginationItem>5</CPaginationItem>
-          <CPaginationItem aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </CPaginationItem>
-        </CPagination>
+
+      <CRow className="justify-content-start">
+        {services?.map((service, index) => {
+          return (
+            <CCol key={index} xxl={3} md={5} className="mb-4">
+              <CCard
+                style={{ width: '18rem', height: '100%', cursor: 'pointer' }}
+                onClick={() => {
+                  history.push({ pathname: '/products/ppob/details', state: service })
+                }}
+              >
+                <CCardImage
+                  orientation="top"
+                  src={'https://via.placeholder.com/550x390.png?text=' + service.name}
+                />
+                <CCardBody className="text-center">
+                  <CCardTitle>{service.name}</CCardTitle>
+                  <CCardText>{service.desc}</CCardText>
+                  {service.active ? (
+                    <CBadge color="success" shape="rounded-pill">
+                      Active
+                    </CBadge>
+                  ) : (
+                    <CBadge color="dark" shape="rounded-pill">
+                      Inactive
+                    </CBadge>
+                  )}
+                </CCardBody>
+              </CCard>
+            </CCol>
+          )
+        })}
       </CRow>
     </CContainer>
+  ) : (
+    Loader()
   )
 }
 

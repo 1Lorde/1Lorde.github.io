@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -6,6 +6,7 @@ import {
   CCol,
   CContainer,
   CForm,
+  CFormFeedback,
   CFormInput,
   CInputGroup,
   CInputGroupText,
@@ -14,20 +15,37 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilPhone } from '@coreui/icons'
 import { Link, useHistory } from 'react-router-dom'
-import AuthService from '../../../services/auth.service'
+import { login, UserContext } from '../../../helpers/user'
+import { danger, info } from '../../../helpers/notifications'
+import { store } from 'react-notifications-component'
 
 const Login = () => {
   const [wa_number, setNumber] = useState('')
   const [password, setPassword] = useState('')
+  const { userDispatch } = useContext(UserContext)
   const history = useHistory()
+  const [validated, setValidated] = useState(false)
 
-  function handleLogin() {
-    if (!AuthService.isAuthenticated()) {
-      // AuthService.login(wa_number, password).then(() => {
-      //   history.push('/profile')
-      // })
-      AuthService.login(wa_number, password)
-      history.push('/profile')
+  function handleLogin(event) {
+    event.preventDefault()
+
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.stopPropagation()
+    }
+    setValidated(true)
+
+    if (form.checkValidity()) {
+      login(wa_number, password).then((data) => {
+        if (data.ok) {
+          userDispatch({ type: 'request_login', temp_token: data.auth_id })
+          console.log(data)
+          store.addNotification(info(data.message))
+          history.push('/input_otp')
+        } else {
+          store.addNotification(danger(data.message))
+        }
+      })
     }
   }
 
@@ -35,10 +53,10 @@ const Login = () => {
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={4}>
+          <CCol md={5}>
             <CCard className="p-4">
               <CCardBody>
-                <CForm>
+                <CForm noValidate validated={validated} onSubmit={handleLogin}>
                   <h1>Login</h1>
                   <p className="text-medium-emphasis">Sign In to your account</p>
                   <CInputGroup className="mb-3">
@@ -46,10 +64,14 @@ const Login = () => {
                       <CIcon icon={cilPhone} />
                     </CInputGroupText>
                     <CFormInput
+                      type="tel"
+                      pattern="^\+62[0-9]{9,15}$"
                       placeholder="WhatsApp number"
+                      required
                       value={wa_number}
                       onChange={(e) => setNumber(e.target.value)}
                     />
+                    <CFormFeedback invalid>Please provide a valid phone number.</CFormFeedback>
                   </CInputGroup>
                   <CInputGroup className="mb-4">
                     <CInputGroupText>
@@ -58,13 +80,15 @@ const Login = () => {
                     <CFormInput
                       type="password"
                       placeholder="Password"
+                      required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
+                    <CFormFeedback invalid>Please provide a password.</CFormFeedback>
                   </CInputGroup>
                   <CRow>
                     <CCol className="d-flex justify-content-start">
-                      <CButton color="primary" className="px-4" onClick={handleLogin}>
+                      <CButton color="primary" className="px-4" type="submit">
                         Login
                       </CButton>
                     </CCol>

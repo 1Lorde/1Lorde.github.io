@@ -12,7 +12,7 @@ import {
 
 const NewTicket = () => {
   return (
-    <CContainer class="d-flex justify-content-center">
+    <CContainer className="d-flex justify-content-center">
       <CCard style={{ width: '35rem' }}>
         <CCardBody>
           <CForm>
