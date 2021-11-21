@@ -136,7 +136,7 @@ const UserList = () => {
             name: item.name,
             number: item.wa_number,
             role: Roles[item.role],
-            status: item.status.toUpperCase(),
+            status: item.status,
             action: (
               <CButton color="dark" size={'sm'} onClick={() => history.push('/users/' + item.id)}>
                 Edit
