@@ -3,9 +3,22 @@ import { authHeader } from './requestHeaders'
 
 const API_URL = 'https://api.ekoop.id/v01'
 
-export function getUsers(searchQuery) {
+export function getUsers(searchQuery, status, role, sort) {
   return axios
-    .get(API_URL + '/auth/user?search=' + searchQuery, { headers: authHeader() })
+    .get(
+      API_URL +
+        '/auth/user?search=' +
+        searchQuery +
+        '&status=' +
+        status +
+        '&role=' +
+        role +
+        '&sort=' +
+        sort,
+      {
+        headers: authHeader(),
+      },
+    )
     .then((response) => {
       return response.data.data
     })
@@ -96,9 +109,12 @@ export function updateClient(clientId, client) {
     })
 }
 
-export function getClients() {
+export function getClients(searchQuery, status, sort) {
   return axios
-    .get(API_URL + '/users/admin/client', { headers: authHeader() })
+    .get(
+      API_URL + '/users/admin/client?search=' + searchQuery + '&status=' + status + '&sort=' + sort,
+      { headers: authHeader() },
+    )
     .then((response) => {
       return response.data.data
     })
@@ -171,9 +187,12 @@ export function getServices() {
     })
 }
 
-export function getNasabah() {
+export function getNasabah(searchQuery, status, sort) {
   return axios
-    .get(API_URL + '/nasabah/nasabah', { headers: authHeader() })
+    .get(
+      API_URL + '/nasabah/nasabah?search=' + searchQuery + '&status=' + status + '&sort=' + sort,
+      { headers: authHeader() },
+    )
     .then((response) => {
       return response.data.nasabah_list
     })

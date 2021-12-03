@@ -20,7 +20,7 @@ import { Roles } from '../../helpers/role'
 
 const MyProfile = () => {
   const history = useHistory()
-  const { userState } = useContext(UserContext)
+  const { userState, userDispatch } = useContext(UserContext)
   const [fullName, setFullname] = useState('')
   const [address, setAddress] = useState('')
 
@@ -39,6 +39,11 @@ const MyProfile = () => {
     updateProfile(changes).then((data) => {
       if (data.ok) {
         store.addNotification(success(data.message))
+        userDispatch({
+          type: 'login',
+          user: { ...userState.user, name: changes.name, address: changes.address },
+          company: userState.company,
+        })
       } else {
         store.addNotification(danger(data.message))
       }

@@ -6,6 +6,7 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
+  CFormSelect,
   CImage,
   CRow,
 } from '@coreui/react'
@@ -180,15 +181,22 @@ const ClientDetail = () => {
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="status">Status</CFormLabel>
-            <CFormInput
-              type="text"
+            <CFormSelect
               id="status"
               placeholder="No data provided"
               value={client.status}
               onChange={(e) => {
                 setClient((client) => ({ ...client, status: e.target.value }))
               }}
-            />
+            >
+              <option value="">All</option>
+              <option value="REQUEST">Request</option>
+              <option value="VERIFIED">Verified</option>
+              <option value="ACTIVE">Active</option>
+              <option value="REJECT">Reject</option>
+              <option value="NON_ACTIVE">Non active</option>
+              <option value="FAILED">Failed</option>
+            </CFormSelect>
           </div>
         </CCol>
         <CCol>

@@ -12,7 +12,7 @@ import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
-import { admin_nav, koperasi_nav } from '../navigation/_nav'
+import { account_officer_nav, admin_nav, koperasi_nav } from '../navigation/_nav'
 import { UserContext } from '../helpers/user'
 import { Roles } from '../helpers/role'
 
@@ -35,8 +35,10 @@ const AppSidebar = () => {
   function getAppSideBarNav() {
     if (Roles[userState.user.role] === Roles['app-owner']) {
       return <AppSidebarNav items={admin_nav} />
+    } else if (Roles[userState.user.role] === Roles['koperasi-owner']) {
+      return <AppSidebarNav items={koperasi_nav} />
     }
-    return <AppSidebarNav items={koperasi_nav} />
+    return <AppSidebarNav items={account_officer_nav} />
   }
 
   return (

@@ -54,7 +54,7 @@ const AppContent = () => {
         <Switch>
           <PrivateRoute
             exact
-            allowedRoles={[Roles['koperasi-owner']]}
+            allowedRoles={[Roles['account-officer'], Roles['koperasi-owner']]}
             path="/company_info"
             name="Company Info"
             component={MyCompany}
@@ -73,9 +73,27 @@ const AppContent = () => {
             name="Change password"
             component={ChangePassword}
           />
-          <Route exact path="/notifications" name="Notifications" component={Notifications} />
-          <Route exact path="/notifications/task" name="Task" component={Task} />
-          <Route exact path="/dashboard" name="Dashboard" component={Dashboard} />
+          <PrivateRoute
+            exact
+            allowedRoles={allRoles()}
+            path="/notifications"
+            name="Notifications"
+            component={Notifications}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['account-officer']]}
+            path="/notifications/task"
+            name="Task"
+            component={Task}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={allRoles()}
+            path="/dashboard"
+            name="Dashboard"
+            component={Dashboard}
+          />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner'], Roles['koperasi-owner']]}
@@ -185,6 +203,7 @@ const AppContent = () => {
           <PrivateRoute
             exact
             allowedRoles={[
+              Roles['app-owner'],
               Roles['koperasi-owner'],
               Roles['credit-analyst'],
               Roles['account-officer'],

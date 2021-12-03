@@ -6,128 +6,26 @@ import {
   CCol,
   CContainer,
   CFormInput,
+  CFormLabel,
   CFormSelect,
   CHeaderText,
-  CPagination,
-  CPaginationItem,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
-import { usePagination, useTable } from 'react-table'
 import { getNasabah } from '../../../helpers/api_requests'
 import Loader from '../../../components/Loader'
+import { Table } from '../../../components/Table'
 
 const NasabahList = () => {
   const history = useHistory()
   const [hasLoaded, setHasLoaded] = useState()
-  const [nasabah, setNasabah] = useState([])
-
-  // eslint-disable-next-line react/prop-types
-  function Table({ columns, data }) {
-    const {
-      getTableProps,
-      getTableBodyProps,
-      headerGroups,
-      prepareRow,
-      page,
-      canPreviousPage,
-      canNextPage,
-      pageOptions,
-      pageCount,
-      gotoPage,
-      nextPage,
-      previousPage,
-      state: { pageIndex },
-    } = useTable({ columns, data, autoResetPageIndex: true }, usePagination)
-
-    return (
-      <>
-        <CTable hover responsive style={{ minWidth: '45rem' }} {...getTableProps()}>
-          <CTableHead>
-            {headerGroups.map((headerGroup, index) => (
-              <CTableRow key={index} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, index) => (
-                  <CTableHeaderCell key={index} {...column.getHeaderProps()}>
-                    {column.render('Header')}
-                  </CTableHeaderCell>
-                ))}
-              </CTableRow>
-            ))}
-          </CTableHead>
-          <CTableBody {...getTableBodyProps()}>
-            {page.map((row, index) => {
-              prepareRow(row)
-              return (
-                <CTableRow key={index} {...row.getRowProps()}>
-                  {row.cells.map((cell, index) => {
-                    return (
-                      <CTableDataCell key={index} {...cell.getCellProps()}>
-                        {cell.render('Cell')}
-                      </CTableDataCell>
-                    )
-                  })}
-                </CTableRow>
-              )
-            })}
-          </CTableBody>
-        </CTable>
-
-        <CContainer className={'d-flex justify-content-end align-items-center'}>
-          <CHeaderText className={'pe-2'}>Go to page:</CHeaderText>
-          <CFormInput
-            min={1}
-            max={pageCount}
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
-            }}
-            style={{ width: '100px' }}
-          />
-        </CContainer>
-
-        <CPagination align="center" aria-label="Page navigation">
-          <CPaginationItem
-            aria-label="First"
-            onClick={() => gotoPage(0)}
-            disabled={!canPreviousPage}
-          >
-            {'<<'}
-          </CPaginationItem>
-          <CPaginationItem
-            aria-label="Previous"
-            onClick={() => previousPage()}
-            disabled={!canNextPage}
-          >
-            {'<'}
-          </CPaginationItem>
-          <CPaginationItem aria-label="Current" style={{ pointerEvents: 'none' }}>
-            Page <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
-          </CPaginationItem>
-          <CPaginationItem aria-label="Next" onClick={() => nextPage()} disabled={!canPreviousPage}>
-            {'>'}
-          </CPaginationItem>
-          <CPaginationItem
-            aria-label="Last"
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            {'>>'}
-          </CPaginationItem>
-        </CPagination>
-      </>
-    )
-  }
+  const [nasabahList, setNasabah] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [status, setStatus] = useState('')
+  const [sort, setSort] = useState('')
 
   useEffect(() => {
-    getNasabah().then((data) => {
+    getNasabah(searchQuery, status, sort).then((data) => {
       console.log(data)
       setNasabah(
         data?.map((item) => {
@@ -135,7 +33,7 @@ const NasabahList = () => {
             name: item.name,
             number: item.wa_number,
             location: item.address,
-            status: item.active ? 'Active' : 'Inactive',
+            status: item.active ? 'active' : 'inactive',
             action: (
               <CButton color="dark" size={'sm'} onClick={() => history.push('/nasabah/' + item.id)}>
                 Edit
@@ -146,7 +44,7 @@ const NasabahList = () => {
       )
       setHasLoaded(true)
     })
-  }, [])
+  }, [history, searchQuery, status, sort])
 
   const columns = React.useMemo(
     () => [
@@ -177,24 +75,56 @@ const NasabahList = () => {
   return hasLoaded ? (
     <CContainer>
       <CRow className="align-items-center">
-        <CCol xl={1}>Search</CCol>
         <CCol>
-          <CFormInput></CFormInput>
+          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormInput
+            type="text"
+            id="searchInput"
+            placeholder="Enter search query.."
+            onChange={(e) => {
+              setSearchQuery(e.target.value)
+            }}
+          />
         </CCol>
         <CCol>
-          <CFormSelect>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+          <CFormSelect
+            id="statusInput"
+            onChange={(e) => {
+              setStatus(e.target.value)
+            }}
+          >
+            <option value="">All</option>
+            <option value="false">Inactive</option>
+            <option value="true">Active</option>
           </CFormSelect>
+        </CCol>
+        <CCol>
+          <CFormLabel htmlFor="sortInput">Sort By</CFormLabel>
+          <CFormSelect
+            id="sortInput"
+            onChange={(e) => {
+              setSort(e.target.value)
+            }}
+          >
+            <option value="name:asc">Name (ascending)</option>
+            <option value="name:desc">Name (descending)</option>
+            <option value="created_at:desc">Creation date (new first)</option>
+            <option value="created_at:asc">Creation date (old first)</option>
+          </CFormSelect>
+        </CCol>
+        <CCol className={'d-flex justify-content-end'}>
+          <CButton color="primary" onClick={() => history.push('/users/create')}>
+            Add New
+          </CButton>
         </CCol>
       </CRow>
       <br />
       <CRow>
         <CCard>
           <CCardBody>
-            {nasabah.length > 0 ? (
-              <Table columns={columns} data={nasabah} />
+            {nasabahList.length > 0 ? (
+              <Table columns={columns} data={nasabahList} />
             ) : (
               <>
                 <div className="d-flex justify-content-center">
