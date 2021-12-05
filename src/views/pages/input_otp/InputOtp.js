@@ -2,16 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import ReactCodeInput from 'react-verification-code-input'
 
 import { CButton, CCard, CCardBody, CCol, CContainer, CForm, CRow } from '@coreui/react'
-import {
-  changePasswordOtp,
-  loginOtp,
-  resetPasswordOtp,
-  UserContext,
-  UserStatus,
-} from '../../../helpers/user'
+import { UserContext, UserStatus } from '../../../helpers/user'
 import { useHistory } from 'react-router-dom'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
+import { changePasswordOtp, loginOtp, resetPasswordOtp } from '../../../api/api_auth'
 
 const InputOtp = () => {
   const { userState } = useContext(UserContext)

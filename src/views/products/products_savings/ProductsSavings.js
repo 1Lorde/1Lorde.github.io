@@ -16,8 +16,8 @@ import {
 } from '@coreui/react'
 
 import { useHistory } from 'react-router-dom'
-import { getProducts } from '../../../helpers/api_requests'
 import Loader from '../../../components/Loader'
+import { getProducts } from '../../../api/api_product'
 
 const ProductsSavings = () => {
   const history = useHistory()

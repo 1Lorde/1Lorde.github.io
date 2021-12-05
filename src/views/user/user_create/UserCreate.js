@@ -14,9 +14,9 @@ import {
 import { useHistory } from 'react-router-dom'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
-import { createUser } from '../../../helpers/api_requests'
 import { Roles } from '../../../helpers/role'
 import { UserContext } from '../../../helpers/user'
+import { createUser } from '../../../api/api_user'
 
 const UserCreate = () => {
   const history = useHistory()
@@ -92,6 +92,7 @@ const UserCreate = () => {
                 type="text"
                 id="ktpnumberInput"
                 minLength={16}
+                maxLength={16}
                 required
                 defaultValue={user.ktp_id}
                 onChange={(e) => {
@@ -99,12 +100,13 @@ const UserCreate = () => {
                 }}
               />
               <CFormFeedback invalid>
-                Please provide a valid phone number (min length 16).
+                Please provide a valid KTP number (min length 16).
               </CFormFeedback>
             </div>
             <div className="mb-3">
               <CFormLabel htmlFor="wanumberInput">WhatsApp Number</CFormLabel>
               <CFormInput
+                id="wanumberInput"
                 type="tel"
                 pattern="^\+62[0-9]{9,15}$"
                 required
@@ -127,9 +129,7 @@ const UserCreate = () => {
                   setUser((user) => ({ ...user, address: e.target.value }))
                 }}
               />
-              <CFormFeedback invalid>
-                Please provide a valid phone number (min length 5).
-              </CFormFeedback>
+              <CFormFeedback invalid>Please provide a valid address (min length 5).</CFormFeedback>
             </div>
             <div className="mb-3">
               <CFormLabel htmlFor="positionInput">Position</CFormLabel>

@@ -15,9 +15,9 @@ import avatar_placeholder from '../../../assets/images/avatar_placeholder.png'
 import { useHistory, useParams } from 'react-router-dom'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
-import { getUser, updateUser } from '../../../helpers/api_requests'
 import Loader from '../../../components/Loader'
 import { AdminRoles, KoperasiRoles } from '../../../helpers/role'
+import { getUser, updateUser } from '../../../api/api_user'
 
 const UserDetails = () => {
   const history = useHistory()

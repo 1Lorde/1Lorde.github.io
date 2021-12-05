@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContent, AppFooter, AppHeader, AppSidebar } from '../components/index'
-import { clearLocalToken, getClientProfile, getProfile, UserContext } from '../helpers/user'
+import { clearLocalToken, UserContext } from '../helpers/user'
 import Loader from '../components/Loader'
 import { Roles } from '../helpers/role'
+import { getClientProfile, getProfile } from '../api/api_profile'
 
 const DefaultLayout = () => {
   const [hasLoaded, setHasLoaded] = useState()

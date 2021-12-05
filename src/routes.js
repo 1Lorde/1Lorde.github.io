@@ -14,9 +14,13 @@ const ClientDetail = React.lazy(() => import('./views/client/client_detail/Clien
 
 const NasabahList = React.lazy(() => import('./views/nasabah/nasabah_list/NasabahList'))
 const NasabahDetail = React.lazy(() => import('./views/nasabah/nasabah_detail/NasabahDetail'))
+const NasabahCreate = React.lazy(() => import('./views/nasabah/nasabah_create/NasabahCreate'))
 const NasabahTransfer = React.lazy(() => import('./views/nasabah/nasabah_transfer/NasabahTransfer'))
 const NasabahCashIn = React.lazy(() => import('./views/nasabah/nasabah_cash_in/NasabahCashIn'))
 const NasabahCashOut = React.lazy(() => import('./views/nasabah/nasabah_cash_out/NasabahCashOut'))
+
+const PackageList = React.lazy(() => import('./views/packages/package_list/PackageList'))
+const PackageCreate = React.lazy(() => import('./views/packages/package_create/PackageCreate'))
 
 const ProductsSavings = React.lazy(() =>
   import('./views/products/products_savings/ProductsSavings'),
@@ -49,15 +53,18 @@ const routes = [
   { path: '/notifications/task', name: 'Task', component: Task },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/users', name: 'User List', component: UserList },
-  { path: '/users/details', name: 'Detail User', component: UserDetails },
+  { path: '/users/details', name: 'User Detail', component: UserDetails },
   { path: '/users/create', name: 'Create User', component: UserCreate },
   { path: '/clients', name: 'Client List', component: ClientList },
-  { path: '/clients/details', name: 'Detail Client', component: ClientDetail },
+  { path: '/clients/details', name: 'Client Detail', component: ClientDetail },
   { path: '/nasabah', name: 'Nasabah List', component: NasabahList },
-  { path: '/nasabah/details', name: 'Detail Nasabah', component: NasabahDetail },
+  { path: '/nasabah/details', name: 'Nasabah Detail', component: NasabahDetail },
+  { path: '/nasabah/create', name: 'Create Nasabah', component: NasabahCreate },
   { path: '/nasabah/details/transfer', name: 'Transfer', component: NasabahTransfer },
   { path: '/nasabah/details/cashIn', name: 'Cash-In', component: NasabahCashIn },
   { path: '/nasabah/details/cashOut', name: 'Cash-Out', component: NasabahCashOut },
+  { path: '/packages', name: 'Packages', component: PackageList },
+  { path: '/packages/create', name: 'Create Package', component: PackageCreate },
   { path: '/products', exact: true, name: 'Products List' },
   { path: '/products/savings', name: 'Savings', component: ProductsSavings },
   {

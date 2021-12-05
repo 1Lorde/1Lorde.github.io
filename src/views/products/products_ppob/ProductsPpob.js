@@ -16,7 +16,7 @@ import {
 
 import { useHistory } from 'react-router-dom'
 import Loader from '../../../components/Loader'
-import { getServices } from '../../../helpers/api_requests'
+import { getServices } from '../../../api/api_service'
 
 const ProductsPpob = () => {
   const history = useHistory()

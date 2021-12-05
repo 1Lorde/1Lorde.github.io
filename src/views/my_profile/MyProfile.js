@@ -13,10 +13,11 @@ import {
 
 import avatar_placeholder from '../../assets/images/avatar_placeholder.png'
 import { useHistory } from 'react-router-dom'
-import { updateProfile, UserContext } from '../../helpers/user'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../helpers/notifications'
 import { Roles } from '../../helpers/role'
+import { UserContext } from '../../helpers/user'
+import { updateProfile } from '../../api/api_profile'
 
 const MyProfile = () => {
   const history = useHistory()

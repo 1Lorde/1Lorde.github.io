@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -8,6 +8,7 @@ import {
   CCol,
   CContainer,
   CForm,
+  CFormFeedback,
   CFormInput,
   CFormLabel,
   CFormSelect,
@@ -16,48 +17,181 @@ import {
 } from '@coreui/react'
 
 import avatar from '../../../assets/images/avatar_placeholder.png'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
+import { getPackage } from '../../../api/api_package'
+import { store } from 'react-notifications-component'
+import { danger, success } from '../../../helpers/notifications'
+import { createNasabah, getNasabah, updateNasabah } from '../../../api/api_nasabah'
+import Loader from '../../../components/Loader'
 
 const NasabahDetail = () => {
   const history = useHistory()
-  return (
+  let { id } = useParams()
+  const [nasabah, setNasabah] = useState({})
+  const [hasLoaded, setHasLoaded] = useState()
+  const [validated, setValidated] = useState(false)
+
+  function handleUpdate(event) {
+    event.preventDefault()
+
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.stopPropagation()
+    }
+    setValidated(true)
+
+    if (form.checkValidity()) {
+      console.log(nasabah)
+      updateNasabah(nasabah.id, nasabah).then((data) => {
+        if (data.ok) {
+          store.addNotification(success('Nasabah ' + nasabah.name + ' updated successfully.'))
+          history.push('/nasabah')
+        } else {
+          if (data.message) {
+            console.log(data)
+            store.addNotification(danger(data.message))
+          } else {
+            console.log(data)
+            store.addNotification(danger(data.error))
+          }
+        }
+      })
+    }
+  }
+
+  useEffect(
+    () => {
+      getNasabah(id).then((data) => {
+        if (data.ok) {
+          setNasabah(data.nasabah)
+          setHasLoaded(true)
+        } else {
+          if (data.message) {
+            console.log(data)
+            store.addNotification(danger(data.message))
+          } else {
+            console.log(data)
+            store.addNotification(danger(data.error))
+          }
+        }
+      })
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
+
+  return hasLoaded ? (
     <CContainer>
       <CRow xs={{ cols: 1 }} md={{ cols: 2 }}>
         <CCol className="mb-5">
           <CCard>
             <CCardImage orientation="top" src={avatar} />
             <CCardBody>
-              <CForm>
+              <CForm noValidate validated={validated} onSubmit={handleUpdate}>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="fullnameInput">Full Name</CFormLabel>
-                  <CFormInput type="text" id="fullnameInput" />
+                  <CFormLabel htmlFor="name">Name</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="name"
+                    required
+                    placeholder="No data provided"
+                    value={nasabah.name}
+                    onChange={(e) => {
+                      setNasabah((nasabah) => ({ ...nasabah, name: e.target.value }))
+                    }}
+                  />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="ktpnumberInput">KTP Number</CFormLabel>
-                  <CFormInput type="text" id="ktpnumberInput" />
+                  <CFormLabel htmlFor="ktp">KTP Number</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="ktp"
+                    placeholder="No data provided"
+                    value={nasabah.ktp_id}
+                    onChange={(e) => {
+                      setNasabah((nasabah) => ({
+                        ...nasabah,
+                        ktp_id: e.target.value,
+                      }))
+                    }}
+                  />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="wanumberInput">WhatsApp Number</CFormLabel>
-                  <CFormInput type="text" id="wanumberInput" />
+                  <CFormLabel htmlFor="wa">WhatsApp Number</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="wa"
+                    placeholder="No data provided"
+                    defaultValue={nasabah.wa_number}
+                    onChange={(e) => {
+                      setNasabah((nasabah) => ({
+                        ...nasabah,
+                        wa_number: e.target.value,
+                      }))
+                    }}
+                  />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="addressInput">Address</CFormLabel>
-                  <CFormInput type="text" id="addressInput" />
+                  <CFormLabel htmlFor="address">Address</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="address"
+                    placeholder="No data provided"
+                    defaultValue={nasabah.address}
+                    onChange={(e) => {
+                      setNasabah((nasabah) => ({
+                        ...nasabah,
+                        address: e.target.value,
+                      }))
+                    }}
+                  />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="groupInput">Group</CFormLabel>
-                  <CFormInput type="text" id="groupInput" />
+                  <CFormLabel htmlFor="group">Group</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="group"
+                    placeholder="No data provided"
+                    defaultValue={nasabah.group}
+                    onChange={(e) => {
+                      setNasabah((nasabah) => ({
+                        ...nasabah,
+                        group: e.target.value,
+                      }))
+                    }}
+                  />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="statusInput">Status</CFormLabel>
-                  <CFormSelect id="statusInput">
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <CFormLabel htmlFor="status">Status</CFormLabel>
+                  <CFormSelect
+                    id="status"
+                    value={nasabah.active}
+                    onChange={(e) => {
+                      setNasabah((nasabah) => ({ ...nasabah, active: e.target.value }))
+                    }}
+                  >
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
                   </CFormSelect>
                 </div>
+                <hr />
+                <div className="mb-3">
+                  <CFormLabel htmlFor="reason">Reason</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="reason"
+                    required
+                    onChange={(e) => {
+                      setNasabah((nasabah) => ({
+                        ...nasabah,
+                        reason: e.target.value,
+                      }))
+                    }}
+                  />
+                  <CFormFeedback invalid>Please provide a reason.</CFormFeedback>
+                </div>
                 <div className="d-flex justify-content-end">
-                  <CButton color="primary" variant="outline">
+                  <CButton color="primary" type="submit">
                     Edit
                   </CButton>
                 </div>
@@ -151,6 +285,8 @@ const NasabahDetail = () => {
         </CCol>
       </CRow>
     </CContainer>
+  ) : (
+    Loader()
   )
 }
 

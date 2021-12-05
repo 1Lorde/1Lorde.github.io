@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+  CBadge,
   CButton,
   CCard,
   CCardBody,
@@ -12,9 +13,11 @@ import {
   CRow,
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
-import { getNasabah } from '../../../helpers/api_requests'
 import Loader from '../../../components/Loader'
 import { Table } from '../../../components/Table'
+import { getNasabahList } from '../../../api/api_nasabah'
+import { cilPen } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 
 const NasabahList = () => {
   const history = useHistory()
@@ -22,10 +25,9 @@ const NasabahList = () => {
   const [nasabahList, setNasabah] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [status, setStatus] = useState('')
-  const [sort, setSort] = useState('')
 
   useEffect(() => {
-    getNasabah(searchQuery, status, sort).then((data) => {
+    getNasabahList(searchQuery, status).then((data) => {
       console.log(data)
       setNasabah(
         data?.map((item) => {
@@ -33,9 +35,18 @@ const NasabahList = () => {
             name: item.name,
             number: item.wa_number,
             location: item.address,
-            status: item.active ? 'active' : 'inactive',
+            status: item.active ? (
+              <CBadge className="mt-1" color="success" shape="rounded-pill">
+                ACTIVE
+              </CBadge>
+            ) : (
+              <CBadge className="mt-1" color="secondary" shape="rounded-pill">
+                INACTIVE
+              </CBadge>
+            ),
             action: (
               <CButton color="dark" size={'sm'} onClick={() => history.push('/nasabah/' + item.id)}>
+                <CIcon icon={cilPen} className="me-1" />
                 Edit
               </CButton>
             ),
@@ -44,7 +55,7 @@ const NasabahList = () => {
       )
       setHasLoaded(true)
     })
-  }, [history, searchQuery, status, sort])
+  }, [history, searchQuery, status])
 
   const columns = React.useMemo(
     () => [
@@ -99,22 +110,8 @@ const NasabahList = () => {
             <option value="true">Active</option>
           </CFormSelect>
         </CCol>
-        <CCol>
-          <CFormLabel htmlFor="sortInput">Sort By</CFormLabel>
-          <CFormSelect
-            id="sortInput"
-            onChange={(e) => {
-              setSort(e.target.value)
-            }}
-          >
-            <option value="name:asc">Name (ascending)</option>
-            <option value="name:desc">Name (descending)</option>
-            <option value="created_at:desc">Creation date (new first)</option>
-            <option value="created_at:asc">Creation date (old first)</option>
-          </CFormSelect>
-        </CCol>
         <CCol className={'d-flex justify-content-end'}>
-          <CButton color="primary" onClick={() => history.push('/users/create')}>
+          <CButton color="primary" onClick={() => history.push('/nasabah/create')}>
             Add New
           </CButton>
         </CCol>

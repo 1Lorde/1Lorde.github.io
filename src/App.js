@@ -19,6 +19,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const ResetPassword = React.lazy(() => import('./views/pages/reset_password/ResetPassword'))
 const InputOtp = React.lazy(() => import('./views/pages/input_otp/InputOtp'))
+const ClientRegister = React.lazy(() => import('./views/pages/client_register/ClientRegister'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page401 = React.lazy(() => import('./views/pages/page401/Page401'))
 
@@ -34,6 +35,7 @@ export default function App() {
             <PublicRoute exact restricted component={Login} path="/login" />
             <PublicRoute exact restricted component={ResetPassword} path="/reset_password" />
             <PublicRoute exact component={InputOtp} path="/input_otp" />
+            <PublicRoute exact component={ClientRegister} path="/register" />
             <PublicRoute exact component={Page404} path="/404" />
             <PublicRoute exact component={Page401} path="/401" />
             <PrivateRoute allowedRoles={allRoles()} component={DefaultLayout} path="/" />

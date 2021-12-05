@@ -9,10 +9,11 @@ import {
   CFormInput,
   CFormLabel,
 } from '@coreui/react'
-import { changePassword, UserContext } from '../../helpers/user'
+import { UserContext } from '../../helpers/user'
 import { store } from 'react-notifications-component'
 import { danger, info } from '../../helpers/notifications'
 import { useHistory } from 'react-router-dom'
+import { changePassword } from '../../api/api_auth'
 
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState('')

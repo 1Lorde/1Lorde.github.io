@@ -19,11 +19,16 @@ const ClientDetail = React.lazy(() => import('../views/client/client_detail/Clie
 
 const NasabahList = React.lazy(() => import('../views/nasabah/nasabah_list/NasabahList'))
 const NasabahDetail = React.lazy(() => import('../views/nasabah/nasabah_detail/NasabahDetail'))
+const NasabahCreate = React.lazy(() => import('../views/nasabah/nasabah_create/NasabahCreate'))
 const NasabahTransfer = React.lazy(() =>
   import('../views/nasabah/nasabah_transfer/NasabahTransfer'),
 )
 const NasabahCashIn = React.lazy(() => import('../views/nasabah/nasabah_cash_in/NasabahCashIn'))
 const NasabahCashOut = React.lazy(() => import('../views/nasabah/nasabah_cash_out/NasabahCashOut'))
+
+const PackageList = React.lazy(() => import('../views/packages/package_list/PackageList'))
+const PackageDetail = React.lazy(() => import('../views/packages/package_detail/PackageDetail'))
+const PackageCreate = React.lazy(() => import('../views/packages/package_create/PackageCreate'))
 
 const ProductsSavings = React.lazy(() =>
   import('../views/products/products_savings/ProductsSavings'),
@@ -139,8 +144,15 @@ const AppContent = () => {
           <PrivateRoute
             exact
             allowedRoles={[Roles['koperasi-owner'], Roles['account-officer']]}
-            path="/nasabah/details"
-            name="Detail Nasabah"
+            path="/nasabah/create"
+            name="Create Nasabah"
+            component={NasabahCreate}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['koperasi-owner'], Roles['account-officer']]}
+            path="/nasabah/:id"
+            name="Nasabah Detail"
             component={NasabahDetail}
           />
           <PrivateRoute
@@ -167,6 +179,27 @@ const AppContent = () => {
             path="/nasabah/details/cashOut"
             name="Cash-Out"
             component={NasabahCashOut}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['app-owner']]}
+            path="/packages"
+            name="Package List"
+            component={PackageList}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['app-owner']]}
+            path="/packages/create"
+            name="Create Package"
+            component={PackageCreate}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['app-owner']]}
+            path="/packages/:id"
+            name="Package Detail"
+            component={PackageDetail}
           />
           <PrivateRoute
             exact

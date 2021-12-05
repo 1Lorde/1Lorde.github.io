@@ -14,10 +14,10 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilAsterisk, cilPhone } from '@coreui/icons'
-import { forgotPassword } from '../../../helpers/user'
 import { store } from 'react-notifications-component'
 import { danger, info } from '../../../helpers/notifications'
 import NewPassword from '../../../components/NewPassword'
+import { forgotPassword } from '../../../api/api_auth'
 
 const ResetPassword = () => {
   const [wa_number, setNumber] = useState('')

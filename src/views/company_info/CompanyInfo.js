@@ -10,8 +10,8 @@ import {
   CRow,
 } from '@coreui/react'
 import { useParams } from 'react-router-dom'
-import { getClient } from '../../helpers/api_requests'
 import Loader from '../../components/Loader'
+import { getClient } from '../../api/api_client'
 
 const CompanyInfo = () => {
   let { id } = useParams()

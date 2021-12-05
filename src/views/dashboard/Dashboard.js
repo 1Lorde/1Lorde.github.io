@@ -5,13 +5,8 @@ import { CButton, CButtonGroup, CCol, CContainer, CFormInput, CRow } from '@core
 import Widget1 from './widgets/Widget1'
 import Widget2 from './widgets/Widget2'
 import Widget3 from './widgets/Widget3'
-import {
-  getAccountOfficerCount,
-  getClientCount,
-  getNasabah,
-  getNasabahCount,
-} from '../../helpers/api_requests'
 import Loader from '../../components/Loader'
+import { getAccountOfficerCount, getClientCount, getNasabahCount } from '../../api/api_stat'
 
 const Dashboard = () => {
   const [hasLoaded, setHasLoaded] = useState()

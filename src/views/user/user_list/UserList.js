@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+  CBadge,
   CButton,
   CCard,
   CCardBody,
@@ -12,10 +13,12 @@ import {
   CRow,
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
-import { getUsers } from '../../../helpers/api_requests'
 import Loader from '../../../components/Loader'
 import { Roles } from '../../../helpers/role'
 import { Table } from '../../../components/Table'
+import { getUsers } from '../../../api/api_user'
+import { cilPen } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 
 const UserList = () => {
   const history = useHistory()
@@ -26,6 +29,29 @@ const UserList = () => {
   const [role, setRole] = useState('')
   const [sort, setSort] = useState('')
 
+  function getStatusBadge(status) {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return (
+          <CBadge className="mt-1" color="success" shape="rounded-pill">
+            {status}
+          </CBadge>
+        )
+      case 'inactive':
+        return (
+          <CBadge className="mt-1" color="secondary" shape="rounded-pill">
+            {status}
+          </CBadge>
+        )
+      default:
+        return (
+          <CBadge className="mt-1" color="dark" shape="rounded-pill">
+            unknown
+          </CBadge>
+        )
+    }
+  }
+
   useEffect(() => {
     getUsers(searchQuery, status, role, sort).then((data) => {
       setUsers(
@@ -34,9 +60,10 @@ const UserList = () => {
             name: item.name,
             number: item.wa_number,
             role: Roles[item.role],
-            status: item.status,
+            status: getStatusBadge(item.status.toUpperCase()),
             action: (
               <CButton color="dark" size={'sm'} onClick={() => history.push('/users/' + item.id)}>
+                <CIcon icon={cilPen} className="me-1" />
                 Edit
               </CButton>
             ),

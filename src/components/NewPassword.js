@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react'
 import { CButton, CForm, CFormFeedback, CFormInput, CFormLabel } from '@coreui/react'
 import { store } from 'react-notifications-component'
 import { useHistory } from 'react-router-dom'
-import { resetPassword, UserContext } from '../helpers/user'
+import { UserContext } from '../helpers/user'
 import { danger, info } from '../helpers/notifications'
+import { resetPassword } from '../api/api_auth'
 
 const NewPassword = (params) => {
   const [newPassword, setNewPassword] = useState('')

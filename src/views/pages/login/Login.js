@@ -15,9 +15,10 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilPhone } from '@coreui/icons'
 import { Link, useHistory } from 'react-router-dom'
-import { login, UserContext } from '../../../helpers/user'
+import { UserContext } from '../../../helpers/user'
 import { danger, info } from '../../../helpers/notifications'
 import { store } from 'react-notifications-component'
+import { login } from '../../../api/api_auth'
 
 const Login = () => {
   const [wa_number, setNumber] = useState('')
@@ -86,18 +87,16 @@ const Login = () => {
                     />
                     <CFormFeedback invalid>Please provide a password.</CFormFeedback>
                   </CInputGroup>
-                  <CRow>
-                    <CCol className="d-flex justify-content-start">
-                      <CButton color="primary" className="px-4" type="submit">
-                        Login
-                      </CButton>
-                    </CCol>
-                  </CRow>
-                  <CRow>
-                    <CCol className="d-flex justify-content-end">
-                      <Link to="/reset_password">Forgot password?</Link>
-                    </CCol>
-                  </CRow>
+                  <div className="d-flex justify-content-start">
+                    <CButton color="primary" className="px-4" type="submit">
+                      Login
+                    </CButton>
+                  </div>
+                  <div className="d-flex justify-content-end">
+                    <Link to="/register">Client registration</Link>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <Link to="/reset_password">Forgot password</Link>
+                  </div>
                 </CForm>
               </CCardBody>
             </CCard>

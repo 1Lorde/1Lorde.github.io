@@ -10,10 +10,10 @@ import {
   CFormTextarea,
   CRow,
 } from '@coreui/react'
-import { createProduct } from '../../../helpers/api_requests'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { useHistory } from 'react-router-dom'
+import { createProduct } from '../../../api/api_product'
 
 const ProductSavingsCreate = () => {
   const history = useHistory()

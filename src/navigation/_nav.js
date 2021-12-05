@@ -46,7 +46,7 @@ export const admin_nav = [
       {
         component: CNavItem,
         name: 'Package',
-        to: '/404',
+        to: '/packages',
         icon: <CIcon icon={cilCaretRight} customClassName="nav-icon" />,
       },
       {

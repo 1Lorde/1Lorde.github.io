@@ -10,10 +10,10 @@ import {
   CRow,
 } from '@coreui/react'
 import { UserContext } from '../../helpers/user'
-import { updateClient } from '../../helpers/api_requests'
 import { store } from 'react-notifications-component'
 import { success } from '../../helpers/notifications'
 import Loader from '../../components/Loader'
+import { updateClient } from '../../api/api_client'
 
 const MyCompany = () => {
   const { userState } = useContext(UserContext)
