@@ -19,16 +19,18 @@ import { useHistory } from 'react-router-dom'
 import Loader from '../../../components/Loader'
 import { getProducts } from '../../../api/api_product'
 
-const ProductsSavings = () => {
+// eslint-disable-next-line react/prop-types
+const Products = ({ typeFilter }) => {
   const history = useHistory()
   const [products, setProducts] = useState([])
   const [hasLoaded, setHasLoaded] = useState()
   const [searchQuery, setSearchQuery] = useState('')
-  const [typeFilter, setTypeFilter] = useState('')
 
   useEffect(() => {
+    setHasLoaded(false)
     getProducts('', typeFilter).then((data) => {
       if (data.ok === true) {
+        console.log(data)
         setProducts(data.products)
         setHasLoaded(true)
       }
@@ -50,24 +52,11 @@ const ProductsSavings = () => {
           />
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="category">Category</CFormLabel>
-          <CFormSelect
-            id="category"
-            onChange={(e) => {
-              setTypeFilter(e.target.value)
-            }}
-          >
-            <option value="">All</option>
-            <option value="savings">Savings</option>
-            <option value="credits">Credits</option>
-          </CFormSelect>
-        </CCol>
-        <CCol>
           <CFormLabel htmlFor="sort">Sort By</CFormLabel>
           <CFormSelect id="sort"></CFormSelect>
         </CCol>
         <CCol>
-          <CButton color="primary" onClick={() => history.push('/products/savings/create')}>
+          <CButton color="primary" onClick={() => history.push('/products/create')}>
             Add New
           </CButton>
         </CCol>
@@ -81,7 +70,7 @@ const ProductsSavings = () => {
               <CCard
                 style={{ width: '18rem', height: '100%', cursor: 'pointer' }}
                 onClick={() => {
-                  history.push({ pathname: '/products/savings/details', state: product })
+                  history.push('/products/' + product.credit_simulation_id)
                 }}
               >
                 <CCardImage
@@ -112,4 +101,4 @@ const ProductsSavings = () => {
   )
 }
 
-export default ProductsSavings
+export default Products

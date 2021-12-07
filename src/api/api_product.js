@@ -16,6 +16,19 @@ export function getProducts(searchQuery, type) {
     })
 }
 
+export function getProduct(id) {
+  return axios
+    .get(API_URL + '/transaction/products/' + id, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      return response.data
+    })
+    .catch((reason) => {
+      console.log(reason)
+    })
+}
+
 export function createProduct(product) {
   return axios
     .post(API_URL + '/transaction/products', product, {

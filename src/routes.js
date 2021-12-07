@@ -3,7 +3,9 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const MyCompany = React.lazy(() => import('./views/my_company/MyCompany'))
 const MyProfile = React.lazy(() => import('./views/my_profile/MyProfile'))
-const Notifications = React.lazy(() => import('./views/notifications/Notifications'))
+const Notifications = React.lazy(() =>
+  import('./views/notifications/notification_list/Notifications'),
+)
 const Task = React.lazy(() => import('./views/notifications/task/Task'))
 const ChangePassword = React.lazy(() => import('./views/change_password/ChangePassword'))
 const UserList = React.lazy(() => import('./views/user/user_list/UserList'))
@@ -22,15 +24,9 @@ const NasabahCashOut = React.lazy(() => import('./views/nasabah/nasabah_cash_out
 const PackageList = React.lazy(() => import('./views/packages/package_list/PackageList'))
 const PackageCreate = React.lazy(() => import('./views/packages/package_create/PackageCreate'))
 
-const ProductsSavings = React.lazy(() =>
-  import('./views/products/products_savings/ProductsSavings'),
-)
-const ProductsSavingsCreate = React.lazy(() =>
-  import('./views/products/products_savings_create/ProductsSavingsCreate'),
-)
-const ProductsSavingsDetails = React.lazy(() =>
-  import('./views/products/products_savings_details/ProductSavingsDetails'),
-)
+const Products = React.lazy(() => import('./views/products/products/Products'))
+const ProductCreate = React.lazy(() => import('./views/products/product_create/ProductCreate'))
+const ProductDetails = React.lazy(() => import('./views/products/product_details/ProductDetails'))
 
 const ProductsPpob = React.lazy(() => import('./views/products/products_ppob/ProductsPpob'))
 const ProductPpobDetails = React.lazy(() =>
@@ -65,25 +61,17 @@ const routes = [
   { path: '/nasabah/details/cashOut', name: 'Cash-Out', component: NasabahCashOut },
   { path: '/packages', name: 'Packages', component: PackageList },
   { path: '/packages/create', name: 'Create Package', component: PackageCreate },
-  { path: '/products', exact: true, name: 'Products List' },
-  { path: '/products/savings', name: 'Savings', component: ProductsSavings },
+  { path: '/products/savings', name: 'Savings', component: Products },
+  { path: '/products/credits', name: 'Credits', component: Products },
+  { path: '/products', exact: true, name: 'Products' },
   {
-    path: '/products/savings/details',
+    path: '/products/details',
     name: 'Detail Product',
-    component: ProductsSavingsDetails,
+    component: ProductDetails,
   },
-  { path: '/products/savings/create', name: 'Create Savings', component: ProductsSavingsCreate },
-  { path: '/products/ppob', name: 'PPOB List', component: ProductsPpob },
-  {
-    path: '/products/ppob/details',
-    name: 'Detail PPOB',
-    component: ProductPpobDetails,
-  },
-  {
-    path: '/products/ppob/details/buy',
-    name: 'Buy',
-    component: ProductPpobDetailsBuy,
-  },
+  { path: '/products/create', name: 'Create Product', component: ProductCreate },
+
+  { path: '/products/ppob', name: 'PPOB', component: ProductsPpob },
   { path: '/support', exact: true, name: 'Support' },
   { path: '/support/tickets', name: 'Tickets List', component: TicketsList },
   { path: '/support/tickets/new', name: 'New Ticket', component: NewTicket },

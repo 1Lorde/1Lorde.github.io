@@ -7,13 +7,13 @@ function PrivateRoute(props: RouteProps): React.ReactElement {
   const userRole = getUserRole()
   const { component: Component, allowedRoles, ...rest } = props
 
-  const render = (props) => {
+  const render = () => {
     if (isTempTokenExist() || !localStorage.getItem('token')) {
       return <Redirect to="/login" />
     }
 
     if (allowedRoles.includes(Roles[userRole])) {
-      return <Component {...props} />
+      return <Component {...rest} />
     }
 
     return <Redirect to="/401" />

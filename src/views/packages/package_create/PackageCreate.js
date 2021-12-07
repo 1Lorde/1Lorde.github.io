@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { createPackage } from '../../../api/api_package'
+import { tryParseInt } from '../../../helpers/utils'
 
 const PackageCreate = () => {
   const history = useHistory()
@@ -112,7 +113,7 @@ const PackageCreate = () => {
                               ...pack,
                               price: {
                                 ...pack.price,
-                                monthly: parseInt(e.target.value),
+                                monthly: tryParseInt(e.target.value),
                               },
                             }))
                           }}
@@ -131,7 +132,7 @@ const PackageCreate = () => {
                               ...pack,
                               price: {
                                 ...pack.price,
-                                yearly: parseInt(e.target.value),
+                                yearly: tryParseInt(e.target.value),
                               },
                             }))
                           }}
@@ -157,7 +158,7 @@ const PackageCreate = () => {
                               ...pack,
                               quota: {
                                 ...pack.quota,
-                                account_officer: parseInt(e.target.value),
+                                account_officer: tryParseInt(e.target.value),
                               },
                             }))
                           }}
@@ -176,7 +177,7 @@ const PackageCreate = () => {
                               ...pack,
                               quota: {
                                 ...pack.quota,
-                                nasabah: parseInt(e.target.value),
+                                nasabah: tryParseInt(e.target.value),
                               },
                             }))
                           }}

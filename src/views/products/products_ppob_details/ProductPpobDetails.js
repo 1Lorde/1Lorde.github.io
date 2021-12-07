@@ -12,38 +12,83 @@ import {
   CImage,
   CRow,
 } from '@coreui/react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Loader from '../../../components/Loader'
+import { store } from 'react-notifications-component'
+import { danger, success } from '../../../helpers/notifications'
+import { getService, getServicesMargin, updateService } from '../../../api/api_service'
+import { tryParseInt } from '../../../helpers/utils'
 
-const ProductPpobDetails = (props) => {
+const ProductPpobDetails = () => {
   const history = useHistory()
-  const [service, setService] = useState()
-  const [hasLoaded, setHasLoaded] = useState()
+  const { id } = useParams()
+  const [service, setService] = useState({})
+  const [hasLoaded, setHasLoaded] = useState(false)
+  const [validated, setValidated] = useState(false)
+  const [servicesMargin, setServicesMargin] = useState({})
+
+  const handleEdit = (event) => {
+    event.preventDefault()
+
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    setValidated(true)
+
+    if (form.checkValidity()) {
+      console.log(service)
+      if (service.margin_by === 'all') {
+        service.nominal = servicesMargin.nominal
+      }
+      updateService(id, service).then((data) => {
+        if (data.ok) {
+          console.log(data)
+          store.addNotification(success('PPOB updated successfully.'))
+          history.push('/products/ppob')
+        } else {
+          console.log(data)
+          store.addNotification(danger(data.error))
+        }
+      })
+    }
+  }
 
   useEffect(
     () => {
-      // eslint-disable-next-line react/prop-types
-      if (!props.location.state) {
-        history.push('/products/ppob')
-      }
-      // eslint-disable-next-line react/prop-types
-      setService(props.location.state)
-      setHasLoaded(true)
+      getService(id).then((data) => {
+        if (data.ok) {
+          let service = data.data
+          service['vendor_slug'] = service['vendor_slug_selected']
+          delete service['vendor_slug_selected']
+          setService(service)
+          if (!hasLoaded) {
+            getServicesMargin().then((data) => {
+              if (data.ok === true) {
+                console.log(data)
+                setServicesMargin(data.service_margin)
+                setHasLoaded(true)
+              }
+            })
+          }
+        } else {
+          if (data.message) {
+            console.log(data)
+            store.addNotification(danger(data.message))
+          } else {
+            console.log(data)
+            store.addNotification(danger(data.error))
+          }
+        }
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
 
-  function tryParseInt(text) {
-    const parsed = parseInt(text)
-    if (isNaN(parsed)) {
-      return ''
-    }
-    return parsed
-  }
-
   return hasLoaded ? (
-    <CForm>
+    <CForm noValidate validated={validated} onSubmit={handleEdit}>
       <CRow xs={{ cols: 1 }} md={{ cols: 2 }} className="mb-4">
         <CCol>
           <CFormLabel htmlFor="category">Category</CFormLabel>
@@ -55,6 +100,7 @@ const ProductPpobDetails = (props) => {
             }}
           >
             <option value="postpaid">Postpaid</option>
+            <option value="prepaid">Prepaid</option>
           </CFormSelect>
           <CContainer fluid className="d-flex justify-content-center mt-4 mb-3">
             <CImage
@@ -72,9 +118,22 @@ const ProductPpobDetails = (props) => {
             <CFormInput
               type="text"
               id="name"
+              required
               defaultValue={service.name}
               onChange={(e) => {
                 setService((service) => ({ ...service, name: e.target.value }))
+              }}
+            />
+          </div>
+          <div className="mb-2">
+            <CFormLabel htmlFor="slug">Slug</CFormLabel>
+            <CFormInput
+              type="text"
+              id="slug"
+              required
+              defaultValue={service.slug}
+              onChange={(e) => {
+                setService((service) => ({ ...service, slug: e.target.value }))
               }}
             />
           </div>
@@ -84,6 +143,7 @@ const ProductPpobDetails = (props) => {
               type="text"
               id="description"
               rows="3"
+              required
               defaultValue={service.desc}
               onChange={(e) => {
                 setService((service) => ({ ...service, desc: e.target.value }))
@@ -92,8 +152,20 @@ const ProductPpobDetails = (props) => {
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="vendor">Vendor</CFormLabel>
-            <CFormSelect id="vendor" defaultValue={service.vendor_slug_selected}>
-              <option defaultValue="rajabiller">Rajabiller</option>
+            <CFormSelect
+              id="vendor"
+              defaultValue={service.vendor_slug}
+              onChange={(e) => {
+                setService((service) => ({ ...service, vendor_slug: e.target.value }))
+              }}
+            >
+              {service.vendors.map((vendor, key) => {
+                return (
+                  <option key={key} value={vendor}>
+                    {vendor.toUpperCase()}
+                  </option>
+                )
+              })}
             </CFormSelect>
           </div>
           <h5>Margin by</h5>
@@ -107,6 +179,9 @@ const ProductPpobDetails = (props) => {
                 value="all"
                 label="All (Default)"
                 defaultChecked={service.margin_by === 'all'}
+                onChange={() => {
+                  setService((service) => ({ ...service, margin_by: 'all' }))
+                }}
               />
               <CFormCheck
                 inline
@@ -114,9 +189,11 @@ const ProductPpobDetails = (props) => {
                 name="inlineRadioOptions"
                 id="inlineCheckbox2"
                 value="percent"
-                readOnly
                 label="Percent"
                 defaultChecked={service.margin_by === 'percent'}
+                onChange={() => {
+                  setService((service) => ({ ...service, margin_by: 'percent' }))
+                }}
               />
               <CFormCheck
                 inline
@@ -124,16 +201,21 @@ const ProductPpobDetails = (props) => {
                 name="inlineRadioOptions"
                 id="inlineCheckbox3"
                 value="fix"
-                readOnly
                 label="Fix"
                 defaultChecked={service.margin_by === 'fix_cost'}
+                onChange={() => {
+                  setService((service) => ({ ...service, margin_by: 'fix_cost' }))
+                }}
               />
             </CCol>
             <CCol>
               <CFormInput
-                type="text"
+                type="number"
                 id="nominal"
-                defaultValue={service.nominal}
+                required
+                max={service.margin_by === 'percent' ? 100 : 100000}
+                value={service.margin_by === 'all' ? '' : service.nominal}
+                disabled={service.margin_by === 'all'}
                 onChange={(e) => {
                   setService((service) => ({ ...service, nominal: tryParseInt(e.target.value) }))
                 }}
@@ -168,14 +250,14 @@ const ProductPpobDetails = (props) => {
             color="primary"
             variant="outline"
             onClick={() => {
-              history.push({ pathname: '/products/ppob/details/buy', state: service })
+              history.push('/products/ppob/' + id + '/buy')
             }}
           >
             Buy
           </CButton>
         </CCol>
         <CCol className="d-grid d-md-flex justify-content-md-end mb-3">
-          <CButton color="primary" disabled>
+          <CButton color="primary" type="submit">
             Edit
           </CButton>
         </CCol>

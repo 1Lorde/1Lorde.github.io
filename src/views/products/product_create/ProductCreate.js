@@ -14,6 +14,7 @@ import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { useHistory } from 'react-router-dom'
 import { createProduct } from '../../../api/api_product'
+import { tryParseInt } from '../../../helpers/utils'
 
 const ProductSavingsCreate = () => {
   const history = useHistory()
@@ -38,14 +39,6 @@ const ProductSavingsCreate = () => {
         store.addNotification(danger(data.message))
       }
     })
-  }
-
-  function tryParseInt(text) {
-    const parsed = parseInt(text)
-    if (isNaN(parsed)) {
-      return ''
-    }
-    return parsed
   }
 
   return (

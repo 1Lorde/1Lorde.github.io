@@ -14,36 +14,34 @@ import {
 import Loader from '../../../components/Loader'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
-import { useHistory } from 'react-router-dom'
-import { updateProduct } from '../../../api/api_product'
+import { useParams } from 'react-router-dom'
+import { getProduct, updateProduct } from '../../../api/api_product'
+import { tryParseInt } from '../../../helpers/utils'
 
-const ProductSavingsDetails = (props) => {
-  const history = useHistory()
+const ProductDetails = () => {
+  const { id } = useParams()
   const [product, setProduct] = useState()
   const [hasLoaded, setHasLoaded] = useState()
 
   useEffect(
     () => {
-      // eslint-disable-next-line react/prop-types
-      if (!props.location.state) {
-        history.push('/products/savings')
-      }
-      // eslint-disable-next-line react/prop-types
-      setProduct(props.location.state)
-      setHasLoaded(true)
-      // eslint-disable-next-line react/prop-types
-      console.log(props.location.state)
+      getProduct(id).then((data) => {
+        if (data.ok) {
+          setProduct(data.data)
+          setHasLoaded(true)
+        } else {
+          if (data.message) {
+            console.log(data)
+            store.addNotification(danger(data.message))
+          } else {
+            console.log(data)
+            store.addNotification(danger(data.error))
+          }
+        }
+      })
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
-
-  function tryParseInt(text) {
-    const parsed = parseInt(text)
-    if (isNaN(parsed)) {
-      return ''
-    }
-    return parsed
-  }
 
   function handleEdit() {
     console.log(product)
@@ -221,4 +219,4 @@ const ProductSavingsDetails = (props) => {
   )
 }
 
-export default ProductSavingsDetails
+export default ProductDetails
