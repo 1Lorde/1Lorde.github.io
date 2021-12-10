@@ -27,8 +27,7 @@ const Products = ({ typeFilter }) => {
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
-    setHasLoaded(false)
-    getProducts('', typeFilter).then((data) => {
+    getProducts(searchQuery, typeFilter).then((data) => {
       if (data.ok === true) {
         console.log(data)
         setProducts(data.products)
@@ -50,10 +49,6 @@ const Products = ({ typeFilter }) => {
               setSearchQuery(e.target.value)
             }}
           />
-        </CCol>
-        <CCol>
-          <CFormLabel htmlFor="sort">Sort By</CFormLabel>
-          <CFormSelect id="sort"></CFormSelect>
         </CCol>
         <CCol>
           <CButton color="primary" onClick={() => history.push('/products/create')}>
