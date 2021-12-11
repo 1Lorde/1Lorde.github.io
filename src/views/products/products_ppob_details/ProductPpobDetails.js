@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   CButton,
   CCol,
@@ -18,8 +18,12 @@ import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { getService, getServicesMargin, updateService } from '../../../api/api_service'
 import { tryParseInt } from '../../../helpers/utils'
+import { createNotification } from '../../../api/api_notification'
+import { Services } from '../../../helpers/notification_types'
+import { UserContext } from '../../../helpers/user'
 
 const ProductPpobDetails = () => {
+  const { userState } = useContext(UserContext)
   const history = useHistory()
   const { id } = useParams()
   const [service, setService] = useState({})
@@ -45,6 +49,11 @@ const ProductPpobDetails = () => {
       updateService(id, service).then((data) => {
         if (data.ok) {
           console.log(data)
+          createNotification(userState.user.wa_number, Services.ppobEdit, service.name).then(
+            (resp) => {
+              console.log('Notification created: ' + resp.id)
+            },
+          )
           store.addNotification(success('PPOB updated successfully.'))
           history.push('/products/ppob')
         } else {

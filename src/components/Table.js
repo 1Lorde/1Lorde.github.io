@@ -12,10 +12,11 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
+import Loader from './Loader'
 
 // eslint-disable-next-line react/prop-types
-export function Table({ columns, data }) {
+export function Table({ columns, data, controlledPageCount, fetchData, hasLoaded }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -25,14 +26,29 @@ export function Table({ columns, data }) {
     canPreviousPage,
     canNextPage,
     pageOptions,
-    pageCount,
     gotoPage,
     nextPage,
     previousPage,
     state: { pageIndex },
-  } = useTable({ columns, data, autoResetPageIndex: true }, usePagination)
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+      manualPagination: true,
+      pageCount: controlledPageCount,
+    },
+    usePagination,
+  )
 
-  return (
+  useEffect(() => {
+    const skip = pageIndex * 10
+    fetchData && fetchData({ skip })
+  }, [fetchData, pageIndex])
+  return hasLoaded ? (
     <>
       <CTable hover responsive style={{ minWidth: '45rem' }} {...getTableProps()}>
         <CTableHead>
@@ -68,7 +84,7 @@ export function Table({ columns, data }) {
         <CHeaderText className={'pe-2'}>Go to page:</CHeaderText>
         <CFormInput
           min={1}
-          max={pageCount}
+          max={controlledPageCount}
           type="number"
           defaultValue={pageIndex + 1}
           onChange={(e) => {
@@ -86,24 +102,26 @@ export function Table({ columns, data }) {
         <CPaginationItem
           aria-label="Previous"
           onClick={() => previousPage()}
-          disabled={!canNextPage}
+          disabled={!canPreviousPage}
         >
           {'<'}
         </CPaginationItem>
         <CPaginationItem aria-label="Current" style={{ pointerEvents: 'none' }}>
           Page <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
         </CPaginationItem>
-        <CPaginationItem aria-label="Next" onClick={() => nextPage()} disabled={!canPreviousPage}>
+        <CPaginationItem aria-label="Next" onClick={() => nextPage()} disabled={!canNextPage}>
           {'>'}
         </CPaginationItem>
         <CPaginationItem
           aria-label="Last"
-          onClick={() => gotoPage(pageCount - 1)}
+          onClick={() => gotoPage(controlledPageCount - 1)}
           disabled={!canNextPage}
         >
           {'>>'}
         </CPaginationItem>
       </CPagination>
     </>
+  ) : (
+    Loader()
   )
 }

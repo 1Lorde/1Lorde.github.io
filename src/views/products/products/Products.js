@@ -11,7 +11,6 @@ import {
   CContainer,
   CFormInput,
   CFormLabel,
-  CFormSelect,
   CRow,
 } from '@coreui/react'
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -18,8 +18,13 @@ import { danger, success } from '../../../helpers/notifications'
 import Loader from '../../../components/Loader'
 import { AdminRoles, KoperasiRoles } from '../../../helpers/role'
 import { getUser, updateUser } from '../../../api/api_user'
+import { createNotification } from '../../../api/api_notification'
+import { Services } from '../../../helpers/notification_types'
+import { UserContext } from '../../../helpers/user'
 
 const UserDetails = () => {
+  const { userState } = useContext(UserContext)
+
   const history = useHistory()
   let { id } = useParams()
   const [user, setUser] = useState()
@@ -63,6 +68,9 @@ const UserDetails = () => {
     updateUser(user).then((data) => {
       if (data.ok) {
         store.addNotification(success(data.message))
+        createNotification(userState.user.wa_number, Services.userEdit, user.name).then((resp) => {
+          console.log('Notification created: ' + resp.id)
+        })
         history.push('/users')
       } else {
         store.addNotification(danger(data.message))

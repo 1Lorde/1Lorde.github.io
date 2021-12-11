@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -23,8 +23,12 @@ import { getServices, getServicesMargin, updateServicesMargin } from '../../../a
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { tryParseInt } from '../../../helpers/utils'
+import { createNotification } from '../../../api/api_notification'
+import { Services } from '../../../helpers/notification_types'
+import { UserContext } from '../../../helpers/user'
 
 const ProductsPpob = () => {
+  const { userState } = useContext(UserContext)
   const history = useHistory()
   const [services, setServices] = useState([])
   const [hasLoaded, setHasLoaded] = useState()
@@ -50,6 +54,11 @@ const ProductsPpob = () => {
       updateServicesMargin(servicesMargin).then((data) => {
         if (data.ok) {
           console.log(data)
+          createNotification(userState.user.wa_number, Services.ppobAllMarginEdit, '').then(
+            (resp) => {
+              console.log('Notification created: ' + resp.id)
+            },
+          )
           store.addNotification(success('Service margin updated successfully.'))
         } else {
           console.log(data)

@@ -23,6 +23,8 @@ import { store } from 'react-notifications-component'
 import { registerClient } from '../../../api/api_client'
 import { getPackages } from '../../../api/api_package'
 import Loader from '../../../components/Loader'
+import { createNotification } from '../../../api/api_notification'
+import { Contents, Notification_types, Services, Titles } from '../../../helpers/notification_types'
 
 const ClientRegister = () => {
   const history = useHistory()
@@ -71,6 +73,9 @@ const ClientRegister = () => {
           console.log(data)
           setCode(data.verify_code)
           setVisible(true)
+          createNotification(client.contact_wa_number, Services.clientRegister, '').then((resp) => {
+            console.log('Notification created: ' + resp.id)
+          })
           store.addNotification(success('Client registration request created successfully.'))
         } else {
           console.log(data)

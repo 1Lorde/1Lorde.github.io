@@ -17,6 +17,8 @@ import { danger, success } from '../../../helpers/notifications'
 import { Roles } from '../../../helpers/role'
 import { UserContext } from '../../../helpers/user'
 import { createUser } from '../../../api/api_user'
+import { createNotification } from '../../../api/api_notification'
+import { Contents, Services, Titles } from '../../../helpers/notification_types'
 
 const UserCreate = () => {
   const history = useHistory()
@@ -60,6 +62,11 @@ const UserCreate = () => {
       console.log(user)
       createUser(user).then((data) => {
         if (data.ok) {
+          createNotification(userState.user.wa_number, Services.userCreate, user.name).then(
+            (resp) => {
+              console.log('Notification created: ' + resp.id)
+            },
+          )
           store.addNotification(success('User (' + data.wa_number + ') created'))
           history.push('/users')
         } else {

@@ -18,6 +18,8 @@ import { danger, success } from '../../helpers/notifications'
 import { Roles } from '../../helpers/role'
 import { UserContext } from '../../helpers/user'
 import { updateProfile } from '../../api/api_profile'
+import { Services } from '../../helpers/notification_types'
+import { createNotification } from '../../api/api_notification'
 
 const MyProfile = () => {
   const history = useHistory()
@@ -39,6 +41,9 @@ const MyProfile = () => {
     }
     updateProfile(changes).then((data) => {
       if (data.ok) {
+        createNotification(userState.user.wa_number, Services.profileEdit, '').then((resp) => {
+          console.log('Notification created: ' + resp.id)
+        })
         store.addNotification(success(data.message))
         userDispatch({
           type: 'login',

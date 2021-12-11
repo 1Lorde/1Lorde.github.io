@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   CButton,
   CCol,
@@ -17,8 +17,12 @@ import { danger, success } from '../../../helpers/notifications'
 import { useParams } from 'react-router-dom'
 import { getProduct, updateProduct } from '../../../api/api_product'
 import { tryParseInt } from '../../../helpers/utils'
+import { createNotification } from '../../../api/api_notification'
+import { Services } from '../../../helpers/notification_types'
+import { UserContext } from '../../../helpers/user'
 
 const ProductDetails = () => {
+  const { userState } = useContext(UserContext)
   const { id } = useParams()
   const [product, setProduct] = useState()
   const [hasLoaded, setHasLoaded] = useState()
@@ -48,6 +52,13 @@ const ProductDetails = () => {
     updateProduct(product).then((data) => {
       console.log(data)
       if (data.ok) {
+        createNotification(
+          userState.user.wa_number,
+          Services.productCreate,
+          product.name + ' (' + product.tipe + ')',
+        ).then((resp) => {
+          console.log('Notification created: ' + resp.id)
+        })
         store.addNotification(success('Product updated'))
       } else {
         store.addNotification(danger(data.message))

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -17,8 +17,12 @@ import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { createPackage } from '../../../api/api_package'
 import { tryParseInt } from '../../../helpers/utils'
+import { createNotification } from '../../../api/api_notification'
+import { Services } from '../../../helpers/notification_types'
+import { UserContext } from '../../../helpers/user'
 
 const PackageCreate = () => {
+  const { userState } = useContext(UserContext)
   const history = useHistory()
   const [pack, setPack] = useState({})
   const [validated, setValidated] = useState(false)
@@ -36,6 +40,11 @@ const PackageCreate = () => {
       console.log(pack)
       createPackage(pack).then((data) => {
         if (data.ok) {
+          createNotification(userState.user.wa_number, Services.packageCreate, pack.name).then(
+            (resp) => {
+              console.log('Notification created: ' + resp.id)
+            },
+          )
           store.addNotification(success('Package ' + pack.name + ' created successfully.'))
           history.push('/packages')
         } else {

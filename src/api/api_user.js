@@ -3,7 +3,7 @@ import { authHeader } from './requestHeaders'
 
 const API_URL = 'https://api.ekoop.id/v01'
 
-export function getUsers(searchQuery, status, role, sort) {
+export function getUsers(skip, searchQuery, status, role, sort) {
   return axios
     .get(
       API_URL +
@@ -14,15 +14,18 @@ export function getUsers(searchQuery, status, role, sort) {
         '&role=' +
         role +
         '&sort=' +
-        sort,
+        sort +
+        '&skip=' +
+        skip,
       {
         headers: authHeader(),
       },
     )
     .then((response) => {
-      return response.data.data
+      return response.data
     })
     .catch((reason) => {
+      console.log(reason.message)
       if (reason.response.status === 403) {
         console.log(reason.message)
         return null

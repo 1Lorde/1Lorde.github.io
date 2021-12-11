@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -9,11 +9,9 @@ import {
   CFormInput,
   CFormLabel,
   CFormSelect,
-  CHeaderText,
   CRow,
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
-import Loader from '../../../components/Loader'
 import { Table } from '../../../components/Table'
 import { getNasabahList } from '../../../api/api_nasabah'
 import { cilPen } from '@coreui/icons'
@@ -25,37 +23,55 @@ const NasabahList = () => {
   const [nasabahList, setNasabah] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [status, setStatus] = useState('')
+  const [pageCount, setPageCount] = useState(0)
+  const fetchIdRef = useRef(0)
 
-  useEffect(() => {
-    getNasabahList(searchQuery, status).then((data) => {
-      console.log(data)
-      setNasabah(
-        data?.map((item) => {
-          return {
-            name: item.name,
-            number: item.wa_number,
-            location: item.address,
-            status: item.active ? (
-              <CBadge className="mt-1" color="success" shape="rounded-pill">
-                ACTIVE
-              </CBadge>
-            ) : (
-              <CBadge className="mt-1" color="secondary" shape="rounded-pill">
-                INACTIVE
-              </CBadge>
-            ),
-            action: (
-              <CButton color="dark" size={'sm'} onClick={() => history.push('/nasabah/' + item.id)}>
-                <CIcon icon={cilPen} className="me-1" />
-                Edit
-              </CButton>
-            ),
+  const fetchData = useCallback(
+    ({ skip }) => {
+      const fetchId = ++fetchIdRef.current
+      if (fetchId === fetchIdRef.current) {
+        setHasLoaded(false)
+        getNasabahList(skip, searchQuery, status).then((data) => {
+          console.log(data)
+          let pages = Math.floor(data.pagination.total / data.pagination.limit)
+          if (data.pagination.total / data.pagination.limit > pageCount) {
+            pages += 1
           }
-        }),
-      )
-      setHasLoaded(true)
-    })
-  }, [history, searchQuery, status])
+          setPageCount(pages)
+          setNasabah(
+            data.data?.map((item) => {
+              return {
+                name: item.name,
+                number: item.wa_number,
+                location: item.address,
+                status: item.active ? (
+                  <CBadge className="mt-1" color="success" shape="rounded-pill">
+                    ACTIVE
+                  </CBadge>
+                ) : (
+                  <CBadge className="mt-1" color="secondary" shape="rounded-pill">
+                    INACTIVE
+                  </CBadge>
+                ),
+                action: (
+                  <CButton
+                    color="dark"
+                    size={'sm'}
+                    onClick={() => history.push('/nasabah/' + item.id)}
+                  >
+                    <CIcon icon={cilPen} className="me-1" />
+                    Edit
+                  </CButton>
+                ),
+              }
+            }),
+          )
+          setHasLoaded(true)
+        })
+      }
+    },
+    [history, searchQuery, status],
+  )
 
   const columns = React.useMemo(
     () => [
@@ -83,7 +99,7 @@ const NasabahList = () => {
     [],
   )
 
-  return hasLoaded ? (
+  return (
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
@@ -120,21 +136,17 @@ const NasabahList = () => {
       <CRow>
         <CCard>
           <CCardBody>
-            {nasabahList.length > 0 ? (
-              <Table columns={columns} data={nasabahList} />
-            ) : (
-              <>
-                <div className="d-flex justify-content-center">
-                  <CHeaderText>No nasabah found</CHeaderText>
-                </div>
-              </>
-            )}
+            <Table
+              columns={columns}
+              data={nasabahList}
+              controlledPageCount={pageCount}
+              fetchData={fetchData}
+              hasLoaded={hasLoaded}
+            />
           </CCardBody>
         </CCard>
       </CRow>
     </CContainer>
-  ) : (
-    Loader()
   )
 }
 

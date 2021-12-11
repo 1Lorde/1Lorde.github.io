@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -23,8 +23,12 @@ import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { createNasabah, getNasabah, updateNasabah } from '../../../api/api_nasabah'
 import Loader from '../../../components/Loader'
+import { createNotification } from '../../../api/api_notification'
+import { Services } from '../../../helpers/notification_types'
+import { UserContext } from '../../../helpers/user'
 
 const NasabahDetail = () => {
+  const { userState } = useContext(UserContext)
   const history = useHistory()
   let { id } = useParams()
   const [nasabah, setNasabah] = useState({})
@@ -44,6 +48,11 @@ const NasabahDetail = () => {
       console.log(nasabah)
       updateNasabah(nasabah.id, nasabah).then((data) => {
         if (data.ok) {
+          createNotification(userState.user.wa_number, Services.nasabahEdit, nasabah.name).then(
+            (resp) => {
+              console.log('Notification created: ' + resp.id)
+            },
+          )
           store.addNotification(success('Nasabah ' + nasabah.name + ' updated successfully.'))
           history.push('/nasabah')
         } else {

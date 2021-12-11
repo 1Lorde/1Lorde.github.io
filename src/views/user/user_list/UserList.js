@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -22,12 +22,14 @@ import CIcon from '@coreui/icons-react'
 
 const UserList = () => {
   const history = useHistory()
-  const [hasLoaded, setHasLoaded] = useState()
+  const [hasLoaded, setHasLoaded] = useState(false)
   const [users, setUsers] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [status, setStatus] = useState('')
   const [role, setRole] = useState('')
   const [sort, setSort] = useState('')
+  const [pageCount, setPageCount] = useState(0)
+  const fetchIdRef = useRef(0)
 
   function getStatusBadge(status) {
     switch (status.toLowerCase()) {
@@ -52,27 +54,44 @@ const UserList = () => {
     }
   }
 
-  useEffect(() => {
-    getUsers(searchQuery, status, role, sort).then((data) => {
-      setUsers(
-        data?.map((item) => {
-          return {
-            name: item.name,
-            number: item.wa_number,
-            role: Roles[item.role],
-            status: getStatusBadge(item.status.toUpperCase()),
-            action: (
-              <CButton color="dark" size={'sm'} onClick={() => history.push('/users/' + item.id)}>
-                <CIcon icon={cilPen} className="me-1" />
-                Edit
-              </CButton>
-            ),
+  const fetchData = useCallback(
+    ({ skip }) => {
+      const fetchId = ++fetchIdRef.current
+      if (fetchId === fetchIdRef.current) {
+        setHasLoaded(false)
+        getUsers(skip, searchQuery, status, role, sort).then((data) => {
+          console.log(data)
+          let pages = Math.floor(data.pagination.total / data.pagination.limit)
+          if (data.pagination.total / data.pagination.limit > pageCount) {
+            pages += 1
           }
-        }),
-      )
-      setHasLoaded(true)
-    })
-  }, [history, searchQuery, status, role, sort])
+          setPageCount(pages)
+          setUsers(
+            data.data?.map((item) => {
+              return {
+                name: item.name,
+                number: item.wa_number,
+                role: Roles[item.role],
+                status: getStatusBadge(item.status.toUpperCase()),
+                action: (
+                  <CButton
+                    color="dark"
+                    size={'sm'}
+                    onClick={() => history.push('/users/' + item.id)}
+                  >
+                    <CIcon icon={cilPen} className="me-1" />
+                    Edit
+                  </CButton>
+                ),
+              }
+            }),
+          )
+          setHasLoaded(true)
+        })
+      }
+    },
+    [history, searchQuery, status, role, sort],
+  )
 
   const columns = React.useMemo(
     () => [
@@ -100,7 +119,7 @@ const UserList = () => {
     [],
   )
 
-  return hasLoaded ? (
+  return (
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
@@ -168,21 +187,17 @@ const UserList = () => {
       <CRow>
         <CCard>
           <CCardBody>
-            {users.length > 0 ? (
-              <Table columns={columns} data={users} />
-            ) : (
-              <>
-                <div className="d-flex justify-content-center">
-                  <CHeaderText>No users found</CHeaderText>
-                </div>
-              </>
-            )}
+            <Table
+              columns={columns}
+              data={users}
+              controlledPageCount={pageCount}
+              fetchData={fetchData}
+              hasLoaded={hasLoaded}
+            />
           </CCardBody>
         </CCard>
       </CRow>
     </CContainer>
-  ) : (
-    Loader()
   )
 }
 

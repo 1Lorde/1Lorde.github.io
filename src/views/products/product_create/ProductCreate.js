@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   CButton,
   CCol,
@@ -15,8 +15,13 @@ import { danger, success } from '../../../helpers/notifications'
 import { useHistory } from 'react-router-dom'
 import { createProduct } from '../../../api/api_product'
 import { tryParseInt } from '../../../helpers/utils'
+import { UserContext } from '../../../helpers/user'
+import { createNotification } from '../../../api/api_notification'
+import { Services } from '../../../helpers/notification_types'
 
 const ProductSavingsCreate = () => {
+  const { userState } = useContext(UserContext)
+
   const history = useHistory()
   const [product, setProduct] = useState({
     tipe: 'savings',
@@ -33,6 +38,13 @@ const ProductSavingsCreate = () => {
     console.log(product)
     createProduct(product).then((data) => {
       if (data.ok) {
+        createNotification(
+          userState.user.wa_number,
+          Services.productCreate,
+          product.name + ' (' + product.tipe + ')',
+        ).then((resp) => {
+          console.log('Notification created: ' + resp.id)
+        })
         store.addNotification(success('Product created'))
         history.push('/products/savings')
       } else {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -21,9 +21,13 @@ import CIcon from '@coreui/icons-react'
 import { cilCheck, cilPen, cilXCircle } from '@coreui/icons'
 import { store } from 'react-notifications-component'
 import { danger, info } from '../../../helpers/notifications'
+import { createNotification } from '../../../api/api_notification'
+import { Contents, Notification_types, Services, Titles } from '../../../helpers/notification_types'
+import { UserContext } from '../../../helpers/user'
 
 const ClientList = () => {
   const history = useHistory()
+  const { userState, userDispatch } = useContext(UserContext)
   const [hasLoaded, setHasLoaded] = useState()
   const [clients, setClients] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -33,6 +37,9 @@ const ClientList = () => {
   function handleApprove(id, name) {
     approveClient(id).then((data) => {
       if (data.ok) {
+        createNotification(userState.user.wa_number, Services.clientReject, '').then((resp) => {
+          console.log('Notification created: ' + resp.id)
+        })
         store.addNotification(info('Client ' + name + ' has been approved.'))
       } else {
         console.log(data)
@@ -44,6 +51,9 @@ const ClientList = () => {
   function handleReject(id, name) {
     rejectClient(id).then((data) => {
       if (data.ok) {
+        createNotification(userState.user.wa_number, Services.clientApprove, '').then((resp) => {
+          console.log('Notification created: ' + resp)
+        })
         store.addNotification(info('Client ' + name + ' has been rejected.'))
       } else {
         console.log(data)

@@ -3,13 +3,16 @@ import { authHeader } from './requestHeaders'
 
 const API_URL = 'https://api.ekoop.id/v01'
 
-export function getNasabahList(searchQuery, status) {
+export function getNasabahList(skip, searchQuery, status) {
   return axios
-    .get(API_URL + '/nasabah/nasabah?search=' + searchQuery + '&status=' + status, {
-      headers: authHeader(),
-    })
+    .get(
+      API_URL + '/nasabah/nasabah?search=' + searchQuery + '&status=' + status + '&skip=' + skip,
+      {
+        headers: authHeader(),
+      },
+    )
     .then((response) => {
-      return response.data.nasabah_list
+      return response.data
     })
     .catch((reason) => {
       if (reason.response.status === 403) {
