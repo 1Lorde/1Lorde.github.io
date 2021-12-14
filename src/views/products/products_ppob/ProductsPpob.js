@@ -85,6 +85,7 @@ const ProductsPpob = () => {
         }
       }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, category, active, marginBy])
 
   return hasLoaded ? (

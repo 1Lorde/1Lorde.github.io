@@ -24,7 +24,7 @@ import { registerClient } from '../../../api/api_client'
 import { getPackages } from '../../../api/api_package'
 import Loader from '../../../components/Loader'
 import { createNotification } from '../../../api/api_notification'
-import { Contents, Notification_types, Services, Titles } from '../../../helpers/notification_types'
+import { Services } from '../../../helpers/notification_types'
 
 const ClientRegister = () => {
   const history = useHistory()

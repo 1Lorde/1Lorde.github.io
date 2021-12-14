@@ -9,9 +9,6 @@ import {
   CCardTitle,
   CCol,
   CContainer,
-  CFormInput,
-  CFormLabel,
-  CFormSelect,
   CRow,
 } from '@coreui/react'
 
@@ -22,10 +19,6 @@ import { getAdminPackages } from '../../../api/api_package'
 const PackageList = () => {
   const history = useHistory()
   const [packages, setPackages] = useState([])
-  const [searchQuery, setSearchQuery] = useState('')
-  const [status, setStatus] = useState('')
-  const [role, setRole] = useState('')
-  const [sort, setSort] = useState('')
   const [hasLoaded, setHasLoaded] = useState()
 
   useEffect(() => {

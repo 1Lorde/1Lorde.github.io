@@ -33,7 +33,7 @@ export function getAccountOfficerCount() {
 
 export function getClientCount() {
   return axios
-    .get(API_URL + '/auth/stat/clients/all', { headers: authHeader() })
+    .get(API_URL + '/users/stat/clients/all', { headers: authHeader() })
     .then((response) => {
       return response.data
     })

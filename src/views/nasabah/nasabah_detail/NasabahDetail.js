@@ -18,10 +18,9 @@ import {
 
 import avatar from '../../../assets/images/avatar_placeholder.png'
 import { useHistory, useParams } from 'react-router-dom'
-import { getPackage } from '../../../api/api_package'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
-import { createNasabah, getNasabah, updateNasabah } from '../../../api/api_nasabah'
+import { getNasabah, updateNasabah } from '../../../api/api_nasabah'
 import Loader from '../../../components/Loader'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'

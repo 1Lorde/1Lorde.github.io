@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -70,6 +70,7 @@ const NasabahList = () => {
         })
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [history, searchQuery, status],
   )
 

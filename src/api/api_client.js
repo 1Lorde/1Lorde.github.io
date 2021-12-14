@@ -83,16 +83,24 @@ export function rejectClient(clientId) {
     })
 }
 
-export function getClients(searchQuery, status, sort) {
+export function getClients(skip, searchQuery, status, sort) {
   if (sort === '') sort = 'created_at:desc'
 
   return axios
     .get(
-      API_URL + '/users/admin/client?search=' + searchQuery + '&status=' + status + '&sort=' + sort,
+      API_URL +
+        '/users/admin/client?search=' +
+        searchQuery +
+        '&status=' +
+        status +
+        '&sort=' +
+        sort +
+        '&skip=' +
+        skip,
       { headers: authHeader() },
     )
     .then((response) => {
-      return response.data.data
+      return response.data
     })
     .catch((reason) => {
       if (reason.response.status === 403) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { CButton, CButtonGroup, CCol, CContainer, CFormInput, CRow } from '@coreui/react'
 
@@ -7,8 +7,12 @@ import Widget2 from './widgets/Widget2'
 import Widget3 from './widgets/Widget3'
 import Loader from '../../components/Loader'
 import { getAccountOfficerCount, getClientCount, getNasabahCount } from '../../api/api_stat'
+import { UserContext } from '../../helpers/user'
+import { adminRoles, Roles } from '../../helpers/role'
+import RestrictedComponent from '../../routes/RestrictedComponent'
 
 const Dashboard = () => {
+  const { userState } = useContext(UserContext)
   const [hasLoaded, setHasLoaded] = useState()
   const [nasabahCount, setNasabahCount] = useState(0)
   const [accountOfficerCount, setAccountOfficerCount] = useState(0)
@@ -22,9 +26,12 @@ const Dashboard = () => {
       setAccountOfficerCount(data.data.all.count)
       setHasLoaded(true)
     })
-    // getClientCount().then((data) => {
-    //   setClientsCount(data.data.all.count)
-    // })
+    if (adminRoles().includes(Roles[userState.user.role])) {
+      getClientCount().then((data) => {
+        setClientsCount(data.data.all.count)
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return hasLoaded ? (
@@ -51,19 +58,14 @@ const Dashboard = () => {
       <CRow>
         <CCol lg={4}>
           <Widget1 title="Total Number of Account Officer" value={accountOfficerCount} />
-          <div className="d-flex justify-content-end pb-3">
-            <CButton color="dark" size="sm">
-              View Details
-            </CButton>
-          </div>
         </CCol>
         <CCol lg={4}>
           <Widget2 title="Total Number of Nasabah" value={nasabahCount} />
-          <div className="d-flex justify-content-end pb-3">
-            <CButton color="dark" size="sm">
-              View Details
-            </CButton>
-          </div>
+        </CCol>
+        <CCol lg={4}>
+          <RestrictedComponent allowedRoles={['app-owner', 'marketing-finance', 'credit-analyst']}>
+            <Widget3 title="Total Number of Clients" value={clientsCount} />
+          </RestrictedComponent>
         </CCol>
       </CRow>
     </CContainer>

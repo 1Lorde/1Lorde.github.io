@@ -1,28 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   CButton,
   CCard,
   CCardBody,
-  CCardHeader,
   CCardImage,
-  CCol,
   CContainer,
   CForm,
   CFormFeedback,
   CFormInput,
   CFormLabel,
-  CFormSelect,
-  CFormTextarea,
-  CRow,
 } from '@coreui/react'
 
 import avatar from '../../../assets/images/avatar_placeholder.png'
-import { useHistory, useParams } from 'react-router-dom'
-import { createPackage, getPackage } from '../../../api/api_package'
+import { useHistory } from 'react-router-dom'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
-import { createNasabah, getNasabah } from '../../../api/api_nasabah'
-import Loader from '../../../components/Loader'
+import { createNasabah } from '../../../api/api_nasabah'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'

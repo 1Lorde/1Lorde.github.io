@@ -18,7 +18,7 @@ import { Roles } from '../../../helpers/role'
 import { UserContext } from '../../../helpers/user'
 import { createUser } from '../../../api/api_user'
 import { createNotification } from '../../../api/api_notification'
-import { Contents, Services, Titles } from '../../../helpers/notification_types'
+import { Services } from '../../../helpers/notification_types'
 
 const UserCreate = () => {
   const history = useHistory()

@@ -29,12 +29,6 @@ const ProductCreate = React.lazy(() => import('./views/products/product_create/P
 const ProductDetails = React.lazy(() => import('./views/products/product_details/ProductDetails'))
 
 const ProductsPpob = React.lazy(() => import('./views/products/products_ppob/ProductsPpob'))
-const ProductPpobDetails = React.lazy(() =>
-  import('./views/products/products_ppob_details/ProductPpobDetails'),
-)
-const ProductPpobDetailsBuy = React.lazy(() =>
-  import('./views/products/products_ppob_details_buy/ProductsPpobDetailsBuy'),
-)
 
 const TicketsList = React.lazy(() => import('./views/support/tickets_list/TicketsList'))
 const NewTicket = React.lazy(() => import('./views/support/new_ticket/NewTicket'))

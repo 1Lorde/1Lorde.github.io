@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useRef, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -10,11 +10,9 @@ import {
   CFormInput,
   CFormLabel,
   CFormSelect,
-  CHeaderText,
   CRow,
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
-import Loader from '../../../components/Loader'
 import { Table } from '../../../components/Table'
 import { approveClient, getClients, rejectClient } from '../../../api/api_client'
 import CIcon from '@coreui/icons-react'
@@ -22,17 +20,19 @@ import { cilCheck, cilPen, cilXCircle } from '@coreui/icons'
 import { store } from 'react-notifications-component'
 import { danger, info } from '../../../helpers/notifications'
 import { createNotification } from '../../../api/api_notification'
-import { Contents, Notification_types, Services, Titles } from '../../../helpers/notification_types'
+import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
 
 const ClientList = () => {
   const history = useHistory()
-  const { userState, userDispatch } = useContext(UserContext)
+  const { userState } = useContext(UserContext)
   const [hasLoaded, setHasLoaded] = useState()
   const [clients, setClients] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [status, setStatus] = useState('')
   const [sort, setSort] = useState('')
+  const [pageCount, setPageCount] = useState(0)
+  const fetchIdRef = useRef(0)
 
   function handleApprove(id, name) {
     approveClient(id).then((data) => {
@@ -147,34 +147,48 @@ const ClientList = () => {
     }
   }
 
-  useEffect(() => {
-    getClients(searchQuery, status, sort).then((data) => {
-      setClients(
-        data?.map((item) => {
-          return {
-            name: item.company,
-            contact_wa_number: item.contact.wa_number,
-            contact_name: item.contact.dir_name,
-            status: getStatusBadge(item.status),
-            actions: (
-              <CCol>
-                <CButton
-                  color="dark"
-                  size={'sm'}
-                  onClick={() => history.push('/clients/' + item.id)}
-                >
-                  <CIcon icon={cilPen} className="me-1" />
-                  <span>Edit</span>
-                </CButton>
-              </CCol>
-            ),
-            approval: getApprovalBar(item.status.toLowerCase(), item.id, item.company),
+  const fetchData = useCallback(
+    ({ skip }) => {
+      const fetchId = ++fetchIdRef.current
+      if (fetchId === fetchIdRef.current) {
+        setHasLoaded(false)
+        getClients(skip, searchQuery, status, sort).then((data) => {
+          console.log(data)
+          let pages = Math.floor(data.pagination.total / data.pagination.limit)
+          if (data.pagination.total / data.pagination.limit > pageCount) {
+            pages += 1
           }
-        }),
-      )
-      setHasLoaded(true)
-    })
-  }, [history, searchQuery, status, sort])
+          setPageCount(pages)
+          setClients(
+            data.data?.map((item) => {
+              return {
+                name: item.company,
+                contact_wa_number: item.contact.wa_number,
+                contact_name: item.contact.dir_name,
+                status: getStatusBadge(item.status),
+                actions: (
+                  <CCol>
+                    <CButton
+                      color="dark"
+                      size={'sm'}
+                      onClick={() => history.push('/clients/' + item.id)}
+                    >
+                      <CIcon icon={cilPen} className="me-1" />
+                      <span>Edit</span>
+                    </CButton>
+                  </CCol>
+                ),
+                approval: getApprovalBar(item.status.toLowerCase(), item.id, item.company),
+              }
+            }),
+          )
+          setHasLoaded(true)
+        })
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [history, searchQuery, status, sort],
+  )
 
   const columns = React.useMemo(
     () => [
@@ -206,7 +220,7 @@ const ClientList = () => {
     [],
   )
 
-  return hasLoaded ? (
+  return (
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
@@ -267,21 +281,17 @@ const ClientList = () => {
       <CRow>
         <CCard>
           <CCardBody>
-            {clients.length > 0 ? (
-              <Table columns={columns} data={clients} />
-            ) : (
-              <>
-                <div className="d-flex justify-content-center">
-                  <CHeaderText>No clients found</CHeaderText>
-                </div>
-              </>
-            )}
+            <Table
+              columns={columns}
+              data={clients}
+              controlledPageCount={pageCount}
+              fetchData={fetchData}
+              hasLoaded={hasLoaded}
+            />
           </CCardBody>
         </CCard>
       </CRow>
     </CContainer>
-  ) : (
-    Loader()
   )
 }
 

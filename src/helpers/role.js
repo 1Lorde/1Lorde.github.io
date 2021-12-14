@@ -24,3 +24,15 @@ export function allRoles() {
     return Roles[key]
   })
 }
+
+export function adminRoles() {
+  return Object.keys(AdminRoles).map(function (key) {
+    return Roles[key]
+  })
+}
+
+export function koperasiRoles() {
+  return Object.keys(KoperasiRoles).map(function (key) {
+    return Roles[key]
+  })
+}

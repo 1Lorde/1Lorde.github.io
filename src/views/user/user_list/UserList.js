@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -9,11 +9,9 @@ import {
   CFormInput,
   CFormLabel,
   CFormSelect,
-  CHeaderText,
   CRow,
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
-import Loader from '../../../components/Loader'
 import { Roles } from '../../../helpers/role'
 import { Table } from '../../../components/Table'
 import { getUsers } from '../../../api/api_user'
@@ -90,6 +88,7 @@ const UserList = () => {
         })
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [history, searchQuery, status, role, sort],
   )
 
