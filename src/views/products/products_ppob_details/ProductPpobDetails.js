@@ -21,6 +21,8 @@ import { tryParseInt } from '../../../helpers/utils'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import RestrictedComponent from '../../../routes/RestrictedComponent'
+import { Roles } from '../../../helpers/role'
 
 const ProductPpobDetails = () => {
   const { userState } = useContext(UserContext)
@@ -84,7 +86,7 @@ const ProductPpobDetails = () => {
         } else {
           if (data.message) {
             console.log(data)
-            store.addNotification(danger(data.message))
+            store.addNotification(success(data.message))
           } else {
             console.log(data)
             store.addNotification(danger(data.error))
@@ -255,15 +257,23 @@ const ProductPpobDetails = () => {
       </CRow>
       <CRow xs={{ cols: 1 }} md={{ cols: 2 }}>
         <CCol className="d-grid d-md-flex justify-content-md-start mb-2">
-          <CButton
-            color="primary"
-            variant="outline"
-            onClick={() => {
-              history.push('/products/ppob/' + id + '/buy')
-            }}
+          <RestrictedComponent
+            allowedRoles={[
+              Roles['koperasi-owner'],
+              Roles['credit-analyst'],
+              Roles['account-officer'],
+            ]}
           >
-            Buy
-          </CButton>
+            <CButton
+              color="primary"
+              variant="outline"
+              onClick={() => {
+                history.push('/products/ppob/' + id + '/buy')
+              }}
+            >
+              Buy
+            </CButton>
+          </RestrictedComponent>
         </CCol>
         <CCol className="d-grid d-md-flex justify-content-md-end mb-3">
           <CButton color="primary" type="submit">

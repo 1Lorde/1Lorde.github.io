@@ -58,7 +58,7 @@ export const admin_nav = [
       {
         component: CNavItem,
         name: 'PPOB Vendor',
-        to: 'PPOB',
+        to: '/ppob/vendors',
         icon: <CIcon icon={cilCaretRight} customClassName="nav-icon" />,
       },
     ],

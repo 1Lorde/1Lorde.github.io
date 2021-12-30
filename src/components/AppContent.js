@@ -43,6 +43,9 @@ const ProductsPpob = React.lazy(() => import('../views/products/products_ppob/Pr
 const ProductPpobDetails = React.lazy(() =>
   import('../views/products/products_ppob_details/ProductPpobDetails'),
 )
+const VendorList = React.lazy(() => import('../views/vendor/vendor_list/VendorList'))
+const VendorDetails = React.lazy(() => import('../views/vendor/vendor_details/VendorDetails'))
+
 const ProductPpobDetailsBuy = React.lazy(() =>
   import('../views/products/products_ppob_details_buy/ProductsPpobDetailsBuy'),
 )
@@ -227,7 +230,7 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/credits"
-            name="Loadn"
+            name="Loan"
             component={Products}
             typeFilter="credits"
           />
@@ -257,6 +260,7 @@ const AppContent = () => {
           <PrivateRoute
             exact
             allowedRoles={[
+              Roles['app-owner'],
               Roles['koperasi-owner'],
               Roles['credit-analyst'],
               Roles['account-officer'],
@@ -264,6 +268,20 @@ const AppContent = () => {
             path="/products/ppob/:id"
             name="PPOB Details"
             component={ProductPpobDetails}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['app-owner']]}
+            path="/ppob/vendors"
+            name="PPOB Vendors"
+            component={VendorList}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['app-owner']]}
+            path="/ppob/vendors/:id"
+            name="PPOB Vendor Details"
+            component={VendorDetails}
           />
           <PrivateRoute
             exact

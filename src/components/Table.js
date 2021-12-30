@@ -15,7 +15,6 @@ import {
   CTableRow,
 } from '@coreui/react'
 import React, { useEffect } from 'react'
-import Loader from './Loader'
 
 // eslint-disable-next-line react/prop-types
 export function Table({ columns, data, controlledPageCount, fetchData, hasLoaded }) {
