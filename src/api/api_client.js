@@ -17,6 +17,26 @@ export function getClient(id) {
     })
 }
 
+export function updateProfileCompany(clientId, client) {
+  return axios
+    .put(
+      API_URL + '/users/admin/client/' + clientId,
+      {
+        company: client.company,
+        address: client.address,
+      },
+      {
+        headers: authHeader(),
+      },
+    )
+    .then((response) => {
+      return response.data
+    })
+    .catch((reason) => {
+      return reason.response.data
+    })
+}
+
 export function updateClient(clientId, client) {
   return axios
     .put(

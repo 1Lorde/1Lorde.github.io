@@ -1,10 +1,12 @@
 import { usePagination, useTable } from 'react-table'
 import {
+  CCol,
   CContainer,
   CFormInput,
   CHeaderText,
   CPagination,
   CPaginationItem,
+  CSpinner,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -122,6 +124,8 @@ export function Table({ columns, data, controlledPageCount, fetchData, hasLoaded
       </CPagination>
     </>
   ) : (
-    Loader()
+    <CCol className="d-flex justify-content-center">
+      <CSpinner color="primary" />
+    </CCol>
   )
 }

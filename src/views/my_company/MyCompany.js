@@ -13,7 +13,7 @@ import { UserContext } from '../../helpers/user'
 import { store } from 'react-notifications-component'
 import { success } from '../../helpers/notifications'
 import Loader from '../../components/Loader'
-import { updateClient } from '../../api/api_client'
+import { updateProfileCompany } from '../../api/api_client'
 
 const MyCompany = () => {
   const { userState } = useContext(UserContext)
@@ -25,7 +25,7 @@ const MyCompany = () => {
   }, [])
 
   const handleEdit = () => {
-    updateClient(userState.company.id, company).then((data) => {
+    updateProfileCompany(userState.company.id, company).then((data) => {
       if (data.ok) {
         store.addNotification(success('Company details updated'))
       } else {
