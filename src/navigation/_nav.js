@@ -211,6 +211,12 @@ export const account_officer_nav = [
       },
       {
         component: CNavItem,
+        name: 'Loan',
+        to: '/products/credits',
+        icon: <CIcon icon={cilCaretRight} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
         name: 'PPOB',
         to: '/products/ppob',
         icon: <CIcon icon={cilCaretRight} customClassName="nav-icon" />,

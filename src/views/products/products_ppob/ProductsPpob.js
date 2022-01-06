@@ -26,6 +26,7 @@ import { tryParseInt } from '../../../helpers/utils'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import RestrictedComponent from '../../../routes/RestrictedComponent'
 
 const ProductsPpob = () => {
   const { userState } = useContext(UserContext)
@@ -73,8 +74,9 @@ const ProductsPpob = () => {
     getServices(searchQuery, category, active, marginBy).then((data) => {
       if (data.ok === true) {
         console.log(data)
+        console.log(userState)
         setServices(data.services)
-        if (!hasLoaded) {
+        if (!hasLoaded && userState.user.role !== 'account-officer') {
           getServicesMargin().then((data) => {
             if (data.ok === true) {
               console.log(data)
@@ -82,6 +84,8 @@ const ProductsPpob = () => {
               setHasLoaded(true)
             }
           })
+        } else {
+          setHasLoaded(true)
         }
       }
     })
@@ -128,62 +132,65 @@ const ProductsPpob = () => {
             <option value={0}>Inactive</option>
           </CFormSelect>
         </CCol>
-        <CCol>
-          <CFormLabel htmlFor="marginByInput">Margin By</CFormLabel>
-          <CFormSelect
-            id="marginByInput"
-            onChange={(e) => {
-              setMarginBy(e.target.value)
-            }}
-          >
-            <option value="">All</option>
-            <option value="fix_cost">Fix Cost</option>
-            <option value="percent">Percent</option>
-          </CFormSelect>
-        </CCol>
-      </CRow>
-      <CForm noValidate validated={validated} onSubmit={handleServicesMarginUpdate}>
-        <CRow className="align-items-center mb-5">
-          <CCol xl={3}>
-            <CFormLabel htmlFor="margin_by">Margin By (for all)</CFormLabel>
+        <RestrictedComponent allowedRoles={('koperasi-owner', 'credit-analyst')}>
+          <CCol>
+            <CFormLabel htmlFor="marginByInput">Margin By</CFormLabel>
             <CFormSelect
-              id="margin_by"
-              defaultValue={servicesMargin.margin_by}
+              id="marginByInput"
               onChange={(e) => {
-                setServicesMargin((servicesMargin) => ({
-                  ...servicesMargin,
-                  margin_by: e.target.value,
-                }))
+                setMarginBy(e.target.value)
               }}
             >
+              <option value="">All</option>
               <option value="fix_cost">Fix Cost</option>
               <option value="percent">Percent</option>
             </CFormSelect>
           </CCol>
+        </RestrictedComponent>
+      </CRow>
+      <RestrictedComponent allowedRoles={('koperasi-owner', 'credit-analyst')}>
+        <CForm noValidate validated={validated} onSubmit={handleServicesMarginUpdate}>
+          <CRow className="align-items-center mb-5">
+            <CCol xl={3}>
+              <CFormLabel htmlFor="margin_by">Margin By (for all)</CFormLabel>
+              <CFormSelect
+                id="margin_by"
+                defaultValue={servicesMargin.margin_by}
+                onChange={(e) => {
+                  setServicesMargin((servicesMargin) => ({
+                    ...servicesMargin,
+                    margin_by: e.target.value,
+                  }))
+                }}
+              >
+                <option value="fix_cost">Fix Cost</option>
+                <option value="percent">Percent</option>
+              </CFormSelect>
+            </CCol>
 
-          <CCol xl={3}>
-            <CFormLabel htmlFor="nominal">Nominal</CFormLabel>
-            <CFormInput
-              id="nominal"
-              type="number"
-              defaultValue={servicesMargin.nominal}
-              max={servicesMargin.margin_by === 'percent' ? 100 : 100000}
-              onChange={(e) => {
-                setServicesMargin((servicesMargin) => ({
-                  ...servicesMargin,
-                  nominal: tryParseInt(e.target.value),
-                }))
-              }}
-            />
-          </CCol>
-          <CCol xl={3}>
-            <CButton className="mt-4" size="sm" type="submit">
-              Update margin
-            </CButton>
-          </CCol>
-        </CRow>
-      </CForm>
-
+            <CCol xl={3}>
+              <CFormLabel htmlFor="nominal">Nominal</CFormLabel>
+              <CFormInput
+                id="nominal"
+                type="number"
+                defaultValue={servicesMargin.nominal}
+                max={servicesMargin.margin_by === 'percent' ? 100 : 100000}
+                onChange={(e) => {
+                  setServicesMargin((servicesMargin) => ({
+                    ...servicesMargin,
+                    nominal: tryParseInt(e.target.value),
+                  }))
+                }}
+              />
+            </CCol>
+            <CCol xl={3}>
+              <CButton className="mt-4" size="sm" type="submit">
+                Update margin
+              </CButton>
+            </CCol>
+          </CRow>
+        </CForm>
+      </RestrictedComponent>
       <CRow className="justify-content-start">
         {services.length > 0 ? (
           services?.map((service, index) => {

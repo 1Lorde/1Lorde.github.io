@@ -74,7 +74,7 @@ const ProductPpobDetails = () => {
           service['vendor_slug'] = service['vendor_slug_selected']
           delete service['vendor_slug_selected']
           setService(service)
-          if (!hasLoaded) {
+          if (!hasLoaded && userState.user.role !== 'account-officer') {
             getServicesMargin().then((data) => {
               if (data.ok === true) {
                 console.log(data)
@@ -82,6 +82,8 @@ const ProductPpobDetails = () => {
                 setHasLoaded(true)
               }
             })
+          } else {
+            setHasLoaded(true)
           }
         } else {
           if (data.message) {
@@ -276,9 +278,17 @@ const ProductPpobDetails = () => {
           </RestrictedComponent>
         </CCol>
         <CCol className="d-grid d-md-flex justify-content-md-end mb-3">
-          <CButton color="primary" type="submit">
-            Edit
-          </CButton>
+          <RestrictedComponent
+            allowedRoles={[
+              Roles['koperasi-owner'],
+              Roles['credit-analyst'],
+              Roles['account-officer'],
+            ]}
+          >
+            <CButton color="primary" type="submit">
+              Edit
+            </CButton>
+          </RestrictedComponent>
         </CCol>
       </CRow>
     </CForm>
