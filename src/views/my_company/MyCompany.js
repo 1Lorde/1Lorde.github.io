@@ -12,16 +12,17 @@ import {
 import { UserContext } from '../../helpers/user'
 import { store } from 'react-notifications-component'
 import { success } from '../../helpers/notifications'
-import Loader from '../../components/Loader'
 import { updateProfileCompany } from '../../api/api_client'
+import Page404 from '../pages/page404/Page404'
 
 const MyCompany = () => {
   const { userState } = useContext(UserContext)
   const [company, setCompany] = useState({})
-  const [hasLoaded, setHasLoaded] = useState({})
+  const [hasCompany, setHasCompany] = useState({})
 
   useEffect(() => {
-    setHasLoaded(true)
+    setHasCompany(userState.company)
+    console.log(hasCompany)
   }, [])
 
   const handleEdit = () => {
@@ -34,7 +35,7 @@ const MyCompany = () => {
     })
   }
 
-  return hasLoaded ? (
+  return hasCompany ? (
     <CForm>
       <CRow>
         <CCol>
@@ -44,7 +45,7 @@ const MyCompany = () => {
               type="text"
               id="company_name"
               placeholder="No data provided"
-              defaultValue={userState.company.company}
+              defaultValue={userState.company?.company}
               onChange={(e) => {
                 setCompany((company) => ({ ...company, company: e.target.value }))
               }}
@@ -56,7 +57,7 @@ const MyCompany = () => {
               type="text"
               id="address"
               placeholder="No data provided"
-              defaultValue={userState.company.address}
+              defaultValue={userState.company?.address}
               onChange={(e) => {
                 setCompany((company) => ({ ...company, address: e.target.value }))
               }}
@@ -68,7 +69,7 @@ const MyCompany = () => {
               type="text"
               id="npwp"
               placeholder="No data provided"
-              defaultValue={userState.company.documents?.NPWP?.no}
+              defaultValue={userState.company?.documents?.NPWP?.no}
               onChange={(e) => {
                 setCompany((company) => ({
                   ...company,
@@ -89,7 +90,7 @@ const MyCompany = () => {
               type="text"
               id="siup"
               placeholder="No data provided"
-              defaultValue={userState.company.documents?.SIUP?.no}
+              defaultValue={userState.company?.documents?.SIUP?.no}
               onChange={(e) => {
                 setCompany((company) => ({
                   ...company,
@@ -110,7 +111,7 @@ const MyCompany = () => {
               type="text"
               id="tdp"
               placeholder="No data provided"
-              defaultValue={userState.company.documents?.TDP?.no}
+              defaultValue={userState.company?.documents?.TDP?.no}
               onChange={(e) => {
                 setCompany((company) => ({
                   ...company,
@@ -130,7 +131,7 @@ const MyCompany = () => {
           <CContainer fluid className="d-flex justify-content-center">
             <CImage
               rounded
-              src={'https://via.placeholder.com/550x390.png?text=' + userState.company.company}
+              src={'https://via.placeholder.com/550x390.png?text=' + userState.company?.company}
               width={550}
               height={390}
               className="mt-4"
@@ -150,7 +151,7 @@ const MyCompany = () => {
               type="text"
               id="subscription"
               placeholder="No data provided"
-              defaultValue={userState.company.package?.name}
+              defaultValue={userState.company?.package?.name}
               disabled
             />
           </div>
@@ -160,7 +161,7 @@ const MyCompany = () => {
               type="text"
               id="status"
               placeholder="No data provided"
-              defaultValue={userState.company.status}
+              defaultValue={userState.company?.status}
               disabled
             />
           </div>
@@ -171,7 +172,7 @@ const MyCompany = () => {
             <CFormInput
               type="text"
               id="director"
-              defaultValue={userState.company.contact?.dir_name}
+              defaultValue={userState.company?.contact?.dir_name}
               disabled
               placeholder="No data provided"
             />
@@ -182,7 +183,7 @@ const MyCompany = () => {
               type="text"
               id="ktp"
               placeholder="No data provided"
-              defaultValue={userState.company.contact?.ktp_id}
+              defaultValue={userState.company?.contact?.ktp_id}
               disabled
             />
           </div>
@@ -192,7 +193,7 @@ const MyCompany = () => {
               type="text"
               id="wa"
               placeholder="No data provided"
-              defaultValue={userState.company.contact?.wa_number}
+              defaultValue={userState.company?.contact?.wa_number}
               disabled
             />
           </div>
@@ -207,7 +208,7 @@ const MyCompany = () => {
       </CRow>
     </CForm>
   ) : (
-    Loader()
+    Page404()
   )
 }
 
