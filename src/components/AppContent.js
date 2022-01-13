@@ -51,7 +51,7 @@ const ProductPpobDetailsBuy = React.lazy(() =>
 )
 
 const TicketsList = React.lazy(() => import('../views/support/tickets_list/TicketsList'))
-const NewTicket = React.lazy(() => import('../views/support/new_ticket/NewTicket'))
+const TicketCreate = React.lazy(() => import('../views/support/ticket_create/TicketCreate'))
 const TicketDetails = React.lazy(() => import('../views/support/ticket_details/TicketDetails'))
 
 const AppContent = () => {
@@ -305,10 +305,10 @@ const AppContent = () => {
             component={ProductDetails}
           />
           <Route exact path="/support/tickets" name="Tickets List" component={TicketsList} />
-          <Route exact path="/support/tickets/new" name="New Ticket" component={NewTicket} />
+          <Route exact path="/support/tickets/new" name="New Ticket" component={TicketCreate} />
           <Route
             exact
-            path="/support/tickets/details"
+            path="/support/tickets/:uid"
             name="Ticket Details"
             component={TicketDetails}
           />

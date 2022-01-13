@@ -85,3 +85,12 @@ export function getUserRole() {
     return null
   }
 }
+
+export function getKoperasiOwnerIdFromToken() {
+  try {
+    const token = jwt_decode(localStorage.getItem('token'))
+    return token.koperasi_owner_id
+  } catch (e) {
+    return null
+  }
+}

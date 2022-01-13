@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -7,199 +7,188 @@ import {
   CCol,
   CContainer,
   CFormInput,
-  CFormSelect,
-  CPagination,
-  CPaginationItem,
+  CFormLabel,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
+import { createUser, getTickets } from '../../../api/api_ticket'
+import { Table } from '../../../components/Table'
+import {
+  getKoperasiOwnerIdFromToken,
+  getKoperasiOwnerWAFromToken,
+  UserContext,
+} from '../../../helpers/user'
+import { Roles } from '../../../helpers/role'
+import { store } from 'react-notifications-component'
+import { info, success, warning } from '../../../helpers/notifications'
 
 const TicketsList = () => {
   const history = useHistory()
+  const { userState, userDispatch } = useContext(UserContext)
+  const [hasLoaded, setHasLoaded] = useState(false)
+  const [tickets, setTickets] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [pageCount, setPageCount] = useState(1)
+  const fetchIdRef = useRef(0)
+
+  function getStatusBadge(status) {
+    switch (status) {
+      case 0:
+        return (
+          <CBadge className="mt-1" color="success" shape="rounded-pill">
+            New
+          </CBadge>
+        )
+      case 1:
+        return (
+          <CBadge className="mt-1" color="danger" shape="rounded-pill">
+            Open
+          </CBadge>
+        )
+      case 2:
+        return (
+          <CBadge className="mt-1" color="info" shape="rounded-pill">
+            Pending
+          </CBadge>
+        )
+      case 3:
+        return (
+          <CBadge className="mt-1" color="secondary" shape="rounded-pill">
+            Closed
+          </CBadge>
+        )
+      default:
+        return (
+          <CBadge className="mt-1" color="dark" shape="rounded-pill">
+            unknown
+          </CBadge>
+        )
+    }
+  }
+
+  const fetchData = useCallback(
+    ({ skip }) => {
+      const fetchId = ++fetchIdRef.current
+      if (fetchId === fetchIdRef.current) {
+        setHasLoaded(false)
+        getTickets(skip, searchQuery).then((data) => {
+          console.log(data)
+          if (data) {
+            let pages = Math.floor(data.pagination.total / data.pagination.limit)
+            if (data.pagination.total / data.pagination.limit > pageCount) {
+              pages += 1
+            }
+            setPageCount(pages)
+            setTickets(
+              data.data?.map((item) => {
+                return {
+                  id: item.uid,
+                  title: item.subject,
+                  status: getStatusBadge(item.status),
+                  action: (
+                    <CButton
+                      color="dark"
+                      size={'sm'}
+                      onClick={() => history.push('/support/tickets/' + item.uid)}
+                    >
+                      View
+                    </CButton>
+                  ),
+                }
+              }),
+            )
+          } else {
+            if (
+              ![Roles['credit-analyst'], Roles['account-officer']].includes(
+                Roles[userState.user.role],
+              )
+            ) {
+              createUser(userState.user.id, userState.user.wa_number, userState.user.name).then(
+                (data) => {
+                  console.log(data)
+                  store.addNotification(
+                    info('Your support account not approved yet. Please try again later'),
+                  )
+                },
+              )
+            } else {
+              createUser(
+                getKoperasiOwnerIdFromToken(),
+                userState.company.contact.wa_number,
+                userState.company.contact.dir_name,
+              ).then((data) => {
+                console.log(data)
+                store.addNotification(
+                  info('Your support account not approved yet. Please try again later'),
+                )
+              })
+            }
+          }
+          setHasLoaded(true)
+        })
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [history, searchQuery],
+  )
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Ticket ID',
+        accessor: 'id',
+      },
+      {
+        Header: 'Title',
+        accessor: 'title',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+      },
+      {
+        Header: 'Action',
+        accessor: 'action',
+      },
+    ],
+    [],
+  )
 
   const handleDetailsClick = () => {
     history.push('/support/tickets/details')
   }
 
-  const handleAddClick = () => {
-    history.push('/support/tickets/new')
-  }
-
   return (
     <CContainer>
       <CRow className="align-items-center">
-        <CCol xl={1}>Search</CCol>
         <CCol>
-          <CFormInput></CFormInput>
+          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormInput
+            type="text"
+            id="searchInput"
+            placeholder="Enter search query.."
+            onChange={(e) => {
+              setSearchQuery(e.target.value)
+            }}
+          />
         </CCol>
-        <CCol>
-          <CFormSelect>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </CFormSelect>
+        <CCol className={'d-flex justify-content-end'}>
+          <CButton color="primary" onClick={() => history.push('/support/tickets/new')}>
+            Create New
+          </CButton>
         </CCol>
       </CRow>
       <br />
       <CRow>
         <CCard>
           <CCardBody>
-            <CTable hover responsive style={{ minWidth: '50rem' }}>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell scope="col">Date</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Ticket ID</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Title</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">
-                    <CButton color="primary" onClick={handleAddClick}>
-                      Add New
-                    </CButton>
-                  </CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="info" className="mt-1">
-                      New
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="success" className="mt-1">
-                      On process
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="success" className="mt-1">
-                      On process
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="success" className="mt-1">
-                      On process
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="danger" className="mt-1">
-                      Closed
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="danger" className="mt-1">
-                      Closed
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="danger" className="mt-1">
-                      Closed
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableDataCell>24 Dec 2020 - 12.45 PM</CTableDataCell>
-                  <CTableDataCell>00123456789</CTableDataCell>
-                  <CTableDataCell>Lorem ipsum dolor sit amet, consectetur…</CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="danger" className="mt-1">
-                      Closed
-                    </CBadge>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color={'dark'} size="sm" onClick={handleDetailsClick}>
-                      View Details
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-              </CTableBody>
-            </CTable>
-            <CPagination align="center" aria-label="Page navigation">
-              <CPaginationItem aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </CPaginationItem>
-              <CPaginationItem active>1</CPaginationItem>
-              <CPaginationItem>2</CPaginationItem>
-              <CPaginationItem>3</CPaginationItem>
-              <CPaginationItem>4</CPaginationItem>
-              <CPaginationItem>5</CPaginationItem>
-              <CPaginationItem aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </CPaginationItem>
-            </CPagination>
+            <Table
+              columns={columns}
+              data={tickets}
+              controlledPageCount={pageCount}
+              fetchData={fetchData}
+              hasLoaded={hasLoaded}
+            />
           </CCardBody>
         </CCard>
       </CRow>
