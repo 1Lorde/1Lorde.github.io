@@ -11,19 +11,31 @@ const AppBreadcrumb = () => {
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find((route) => route.path === pathname)
     if (!currentRoute) {
-      return
+      const parts = pathname.split('/')
+      return parts[parts.length - 1]
     }
     return currentRoute.name
+  }
+
+  const getRouteStatus = (pathname, routes) => {
+    const currentRoute = routes.find((route) => route.path === pathname)
+    if (!currentRoute) {
+      return
+    }
+    if (currentRoute.hasOwnProperty('disabled')) {
+      return currentRoute.disabled
+    }
   }
 
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
     location.split('/').reduce((prev, curr, index, array) => {
+      console.log(array[index] + ' ' + array[index].hasOwnProperty('disabled'))
       const currentPathname = `${prev}/${curr}`
       breadcrumbs.push({
         pathname: currentPathname,
         name: getRouteName(currentPathname, routes),
-        active: index + 1 === array.length,
+        active: getRouteStatus(currentPathname, routes) || index + 1 === array.length,
       })
       return currentPathname
     })

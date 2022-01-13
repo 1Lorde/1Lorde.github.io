@@ -32,7 +32,7 @@ const ProductsPpob = React.lazy(() => import('./views/products/products_ppob/Pro
 const VendorList = React.lazy(() => import('./views/vendor/vendor_list/VendorList'))
 
 const TicketsList = React.lazy(() => import('./views/support/tickets_list/TicketsList'))
-const NewTicket = React.lazy(() => import('./views/support/new_ticket/NewTicket'))
+const TicketCreate = React.lazy(() => import('./views/support/ticket_create/TicketCreate'))
 const TicketDetails = React.lazy(() => import('./views/support/ticket_details/TicketDetails'))
 
 const routes = [
@@ -69,9 +69,9 @@ const routes = [
   { path: '/products/ppob', name: 'PPOB', component: ProductsPpob },
   { path: '/ppob', name: 'PPOB', component: {} },
   { path: '/ppob/vendors', name: 'PPOB Vendors', component: VendorList },
-  { path: '/support', exact: true, name: 'Support' },
+  { path: '/support', name: 'Support', disabled: true },
   { path: '/support/tickets', name: 'Tickets List', component: TicketsList },
-  { path: '/support/tickets/new', name: 'New Ticket', component: NewTicket },
+  { path: '/support/tickets/new', name: 'New Ticket', component: TicketCreate },
   { path: '/support/tickets/details', name: 'Ticket Details', component: TicketDetails },
 ]
 
