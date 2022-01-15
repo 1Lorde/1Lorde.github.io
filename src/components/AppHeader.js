@@ -24,7 +24,7 @@ import { AppHeaderDropdown } from './header/index'
 import { clearLocalToken, UserContext } from '../helpers/user'
 import { Roles } from '../helpers/role'
 import { store } from 'react-notifications-component'
-import { info, success } from '../helpers/notifications'
+import { success } from '../helpers/notifications'
 import { useTranslation } from 'react-i18next'
 import i18next from 'i18next'
 
@@ -87,9 +87,7 @@ const AppHeader = () => {
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 i18next.changeLanguage('en').then((t) => {
-                  store.addNotification(
-                    info(t('notifications.language_changed', { lang: 'English' })),
-                  )
+                  window.location.reload()
                 })
               }}
             >
@@ -100,9 +98,7 @@ const AppHeader = () => {
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 i18next.changeLanguage('id').then((t) => {
-                  store.addNotification(
-                    info(t('notifications.language_changed', { lang: 'Indonesian' })),
-                  )
+                  window.location.reload()
                 })
               }}
             >
