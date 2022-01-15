@@ -145,7 +145,7 @@ const TicketsList = () => {
         accessor: 'action',
       },
     ],
-    [],
+    [t],
   )
 
   return (

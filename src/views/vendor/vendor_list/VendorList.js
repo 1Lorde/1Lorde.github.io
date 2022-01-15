@@ -90,7 +90,7 @@ const VendorList = () => {
         accessor: 'action',
       },
     ],
-    [],
+    [t],
   )
 
   return (

@@ -25,6 +25,7 @@ const MyCompany = () => {
   useEffect(() => {
     setHasCompany(userState.company)
     console.log(hasCompany)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleEdit = () => {

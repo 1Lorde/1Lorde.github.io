@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  CAvatar,
   CBadge,
   CContainer,
   CDropdown,
@@ -88,7 +87,9 @@ const AppHeader = () => {
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 i18next.changeLanguage('en').then((t) => {
-                  window.location.reload()
+                  store.addNotification(
+                    info(t('notifications.language_changed', { lang: 'English' })),
+                  )
                 })
               }}
             >
@@ -99,7 +100,9 @@ const AppHeader = () => {
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 i18next.changeLanguage('id').then((t) => {
-                  window.location.reload()
+                  store.addNotification(
+                    info(t('notifications.language_changed', { lang: 'Indonesian' })),
+                  )
                 })
               }}
             >

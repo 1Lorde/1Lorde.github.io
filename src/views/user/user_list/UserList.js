@@ -117,7 +117,7 @@ const UserList = () => {
         accessor: 'action',
       },
     ],
-    [],
+    [t],
   )
 
   return (

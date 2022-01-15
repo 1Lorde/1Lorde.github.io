@@ -99,7 +99,7 @@ const NasabahList = () => {
         accessor: 'action',
       },
     ],
-    [],
+    [t],
   )
 
   return (

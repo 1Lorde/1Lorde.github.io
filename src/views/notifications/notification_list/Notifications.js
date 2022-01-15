@@ -1,14 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCol,
-  CContainer,
-  CFormInput,
-  CFormSelect,
-  CRow,
-} from '@coreui/react'
+import { CButton, CCard, CCardBody, CContainer, CRow } from '@coreui/react'
 import { getNotifications } from '../../../api/api_notification'
 import { Table } from '../../../components/Table'
 import { useHistory } from 'react-router-dom'
@@ -83,7 +74,7 @@ const Notifications = () => {
         accessor: 'action',
       },
     ],
-    [],
+    [t],
   )
 
   return (

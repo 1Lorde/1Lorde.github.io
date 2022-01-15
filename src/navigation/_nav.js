@@ -7,7 +7,6 @@ import {
   cilCaretRight,
   cilCash,
   cilHome,
-  cilPen,
   cilSend,
   cilUser,
 } from '@coreui/icons'

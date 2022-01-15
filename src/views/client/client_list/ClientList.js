@@ -219,7 +219,7 @@ const ClientList = () => {
         accessor: 'actions',
       },
     ],
-    [],
+    [t],
   )
 
   return (
