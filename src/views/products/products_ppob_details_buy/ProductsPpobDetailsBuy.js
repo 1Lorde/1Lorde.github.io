@@ -15,8 +15,10 @@ import {
 } from '@coreui/react'
 import { useHistory } from 'react-router-dom'
 import Loader from '../../../components/Loader'
+import { useTranslation } from 'react-i18next'
 
 const ProductsPpobDetailsBuy = (props) => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [service, setService] = useState()
   const [hasLoaded, setHasLoaded] = useState()
@@ -44,7 +46,7 @@ const ProductsPpobDetailsBuy = (props) => {
         <CCardBody>
           <CForm>
             <div className="mb-3">
-              <CFormLabel htmlFor="type">Type</CFormLabel>
+              <CFormLabel htmlFor="type">{t('type')}</CFormLabel>
               <CFormSelect id="type">
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -52,11 +54,11 @@ const ProductsPpobDetailsBuy = (props) => {
               </CFormSelect>
             </div>
             <div className="mb-4">
-              <CFormLabel htmlFor="accountNumber">Account Number</CFormLabel>
+              <CFormLabel htmlFor="accountNumber">{t('account_number')}</CFormLabel>
               <CFormInput type="text" id="accountNumber" />
             </div>
             <div className="mb-3">
-              <p>Available nominal</p>
+              <p>{t('available_nominal')}</p>
               <hr />
               <CRow className="text-center">
                 <CCol>
@@ -127,12 +129,12 @@ const ProductsPpobDetailsBuy = (props) => {
               </CRow>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="price">Price to Pay</CFormLabel>
+              <CFormLabel htmlFor="price">{t('price_to_pay')}</CFormLabel>
               <CFormInput type="text" id="price" />
             </div>
             <CRow>
               <div className="d-flex justify-content-end">
-                <CButton color="primary">Buy</CButton>
+                <CButton color="primary">{t('buy')}</CButton>
               </div>
             </CRow>
           </CForm>

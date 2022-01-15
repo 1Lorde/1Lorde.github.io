@@ -20,8 +20,10 @@ import { tryParseInt } from '../../../helpers/utils'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const ProductDetails = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const { id } = useParams()
   const [product, setProduct] = useState()
@@ -59,7 +61,7 @@ const ProductDetails = () => {
         ).then((resp) => {
           console.log('Notification created: ' + resp.id)
         })
-        store.addNotification(success('Product updated'))
+        store.addNotification(success(t('notifications.product_update')))
       } else {
         store.addNotification(danger(data.message))
       }
@@ -70,10 +72,10 @@ const ProductDetails = () => {
     <CForm>
       <CRow xs={{ cols: 1 }} md={{ cols: 2 }} className="mb-4">
         <CCol>
-          <CFormLabel htmlFor="type">Type of Product</CFormLabel>
+          <CFormLabel htmlFor="type">{t('product_type')}</CFormLabel>
           <CFormSelect id="type" value={product.tipe} disabled>
-            <option value="savings">Savings</option>
-            <option value="credits">Credits</option>
+            <option value="savings">{t('savings')}</option>
+            <option value="credits">{t('credits')}</option>
           </CFormSelect>
           <CContainer fluid className="d-flex justify-content-center mb-5">
             <CImage
@@ -88,7 +90,7 @@ const ProductDetails = () => {
         </CCol>
         <CCol>
           <div className="mb-2">
-            <CFormLabel htmlFor="name">Products Name</CFormLabel>
+            <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
             <CFormInput
               type="text"
               id="name"
@@ -99,7 +101,7 @@ const ProductDetails = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="description">Description</CFormLabel>
+            <CFormLabel htmlFor="description">{t('description')}</CFormLabel>
             <CFormTextarea
               type="text"
               id="description"
@@ -111,9 +113,9 @@ const ProductDetails = () => {
             />
           </div>
 
-          <h5>Balance</h5>
+          <h5>{t('balance')}</h5>
           <div className="ms-4 mb-2">
-            <CFormLabel htmlFor="start">Start</CFormLabel>
+            <CFormLabel htmlFor="start">{t('start')}</CFormLabel>
             <CFormInput
               type="number"
               id="start"
@@ -127,14 +129,14 @@ const ProductDetails = () => {
             />
           </div>
           <div className="ms-4 mb-2">
-            <CFormLabel htmlFor="min">Minimal</CFormLabel>
+            <CFormLabel htmlFor="min">{t('min')}</CFormLabel>
             <CFormInput type="number" id="min" />
           </div>
 
-          <h5>Rate</h5>
+          <h5>{t('rate')}</h5>
           <CRow className="ms-3 mb-3">
             <CCol xs={4}>
-              <CFormLabel htmlFor="percent_rate">Percentage</CFormLabel>
+              <CFormLabel htmlFor="percent_rate">{t('percentage')}</CFormLabel>
               <CFormInput
                 type="number"
                 id="percent_rate"
@@ -148,7 +150,7 @@ const ProductDetails = () => {
               />
             </CCol>
             <CCol>
-              <CFormLabel htmlFor="rate_type">Type</CFormLabel>
+              <CFormLabel htmlFor="rate_type">{t('type')}</CFormLabel>
               <CFormSelect
                 id="rate_type"
                 defaultValue={product.rate_type}
@@ -159,17 +161,17 @@ const ProductDetails = () => {
                   }))
                 }}
               >
-                <option value="fix">Fix</option>
-                <option value="efektif">Efektif</option>
-                <option value="syaria">Syaria</option>
+                <option value="fix">{t('fix')}</option>
+                <option value="efektif">{t('effective')}</option>
+                <option value="syaria">{t('syaria')}</option>
               </CFormSelect>
             </CCol>
           </CRow>
 
-          <h5>Requirements</h5>
+          <h5>{t('requirements')}</h5>
           <CRow className="mb-3 ms-3">
             <CCol>
-              <CFormLabel htmlFor="limit_min">Limit Min</CFormLabel>
+              <CFormLabel htmlFor="limit_min">{t('limit_min')}</CFormLabel>
               <CFormInput
                 type="number"
                 id="limit_min"
@@ -183,7 +185,7 @@ const ProductDetails = () => {
               />
             </CCol>
             <CCol>
-              <CFormLabel htmlFor="limit_max">Limit Max</CFormLabel>
+              <CFormLabel htmlFor="limit_max">{t('limit_max')}</CFormLabel>
               <CFormInput
                 type="number"
                 id="limit_max"
@@ -198,7 +200,7 @@ const ProductDetails = () => {
             </CCol>
           </CRow>
 
-          <CFormLabel htmlFor="status">Status</CFormLabel>
+          <CFormLabel htmlFor="status">{t('status')}</CFormLabel>
           <CFormSelect
             id="status"
             value={product.active}
@@ -209,19 +211,19 @@ const ProductDetails = () => {
               }))
             }}
           >
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
+            <option value="true">{t('active')}</option>
+            <option value="false">{t('inactive')}</option>
           </CFormSelect>
         </CCol>
       </CRow>
       <CRow xs={{ cols: 1 }} md={{ cols: 2 }}>
         <CCol className="d-grid d-md-flex justify-content-md-start mb-3">
           <CButton color="primary" variant="outline">
-            Register Nasabah to this Product
+            {t('register_nasabah_to_product')}
           </CButton>
         </CCol>
         <CCol className="d-grid d-md-flex justify-content-md-end mb-3" onClick={handleEdit}>
-          <CButton color="primary">Edit</CButton>
+          <CButton color="primary">{t('edit')}</CButton>
         </CCol>
       </CRow>
     </CForm>

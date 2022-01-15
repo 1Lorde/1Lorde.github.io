@@ -22,8 +22,10 @@ import { danger, info } from '../../../helpers/notifications'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const ClientList = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const { userState } = useContext(UserContext)
   const [hasLoaded, setHasLoaded] = useState()
@@ -40,10 +42,10 @@ const ClientList = () => {
         createNotification(userState.user.wa_number, Services.clientReject, '').then((resp) => {
           console.log('Notification created: ' + resp.id)
         })
-        store.addNotification(info('Client ' + name + ' has been approved.'))
+        store.addNotification(info(t('notifications.client_approve', { name: name })))
       } else {
         console.log(data)
-        store.addNotification(danger('Error occurred.'))
+        store.addNotification(danger(t('notifications.error')))
       }
     })
   }
@@ -54,10 +56,10 @@ const ClientList = () => {
         createNotification(userState.user.wa_number, Services.clientApprove, '').then((resp) => {
           console.log('Notification created: ' + resp)
         })
-        store.addNotification(info('Client ' + name + ' has been rejected.'))
+        store.addNotification(info(t('notifications.client_reject', { name: name })))
       } else {
         console.log(data)
-        store.addNotification(danger('Error occurred.'))
+        store.addNotification(danger(t('notifications.error')))
       }
     })
   }
@@ -67,31 +69,31 @@ const ClientList = () => {
       case 'request':
         return (
           <CBadge className="mt-1" color="warning" shape="rounded-pill">
-            {status}
+            {t('request')}
           </CBadge>
         )
       case 'verified':
         return (
           <CBadge className="mt-1" color="info" shape="rounded-pill">
-            {status}
+            {t('verified')}
           </CBadge>
         )
       case 'active':
         return (
           <CBadge className="mt-1" color="success" shape="rounded-pill">
-            {status}
+            {t('active')}
           </CBadge>
         )
       case 'reject':
         return (
           <CBadge className="mt-1" color="danger" shape="rounded-pill">
-            {status}
+            {t('reject')}
           </CBadge>
         )
       default:
         return (
           <CBadge className="mt-1" color="secondary" shape="rounded-pill">
-            unknown
+            {t('unknown')}
           </CBadge>
         )
     }
@@ -111,7 +113,7 @@ const ClientList = () => {
               }}
             >
               <div className="d-inline-flex align-items-center">
-                <span>Approve</span>
+                <span>{t('approve')}</span>
                 <CIcon icon={cilCheck} className="ms-1" />
               </div>
             </CButton>
@@ -122,7 +124,7 @@ const ClientList = () => {
               onClick={() => handleReject(id, name)}
             >
               <div className="d-inline-flex align-items-center">
-                <span>Reject</span>
+                <span>{t('reject')}</span>
                 <CIcon icon={cilXCircle} className="ms-1" />
               </div>
             </CButton>
@@ -137,13 +139,13 @@ const ClientList = () => {
             onClick={() => handleApprove(id, name)}
           >
             <div className="d-inline-flex align-items-center">
-              <span>Approve</span>
+              <span>{t('approve')}</span>
               <CIcon icon={cilCheck} className="ms-1" />
             </div>
           </CButton>
         )
       default:
-        return <p className="text-medium-emphasis">No actions</p>
+        return <p className="text-medium-emphasis">{t('no_actions')}</p>
     }
   }
 
@@ -174,7 +176,7 @@ const ClientList = () => {
                       onClick={() => history.push('/clients/' + item.id)}
                     >
                       <CIcon icon={cilPen} className="me-1" />
-                      <span>Edit</span>
+                      <span>{t('edit')}</span>
                     </CButton>
                   </CCol>
                 ),
@@ -193,23 +195,23 @@ const ClientList = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Company Name',
+        Header: t('company_name'),
         accessor: 'name',
       },
       {
-        Header: 'WhatsApp number',
+        Header: t('whatsapp'),
         accessor: 'contact_wa_number',
       },
       {
-        Header: 'Director Name',
+        Header: t('director_name'),
         accessor: 'contact_name',
       },
       {
-        Header: 'Status',
+        Header: t('status'),
         accessor: 'status',
       },
       {
-        Header: 'Approval',
+        Header: t('approval'),
         accessor: 'approval',
       },
       {
@@ -224,56 +226,64 @@ const ClientList = () => {
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
-          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormLabel htmlFor="searchInput">{t('search')}</CFormLabel>
           <CFormInput
             type="text"
             id="searchInput"
-            placeholder="Enter search query.."
+            placeholder={t('enter_search_query')}
             onChange={(e) => {
               setSearchQuery(e.target.value)
             }}
           />
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+          <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
           <CFormSelect
             id="statusInput"
             onChange={(e) => {
               setStatus(e.target.value)
             }}
           >
-            <option value="">All</option>
-            <option value="REQUEST">Request</option>
-            <option value="VERIFIED">Verified</option>
-            <option value="ACTIVE">Active</option>
-            <option value="REJECT">Reject</option>
-            <option value="NON_ACTIVE">Non active</option>
-            <option value="FAILED">Failed</option>
+            <option value="">{t('all')}</option>
+            <option value="REQUEST">{t('request')}</option>
+            <option value="VERIFIED">{t('verified')}</option>
+            <option value="ACTIVE">{t('active')}</option>
+            <option value="REJECT">{t('reject')}</option>
+            <option value="NON_ACTIVE">{t('inactive')}</option>
+            <option value="FAILED">{t('failed')}</option>
           </CFormSelect>
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="sortInput">Sort By</CFormLabel>
+          <CFormLabel htmlFor="sortInput">{t('sort_by')}</CFormLabel>
           <CFormSelect
             id="sortInput"
             onChange={(e) => {
               setSort(e.target.value)
             }}
           >
-            <option value="created_at:desc">Creation date (new first)</option>
-            <option value="created_at:asc">Creation date (old first)</option>
-            <option value="company:asc">Company name (ascending)</option>
-            <option value="company:desc">Company name (descending)</option>
-            <option value="NPWP:asc">NPWP (ascending)</option>
-            <option value="NPWP:desc">NPWP (descending)</option>
-            <option value="contact_dir_name:asc">Contact name (ascending)</option>
-            <option value="contact_dir_name:desc">Contact name (descending)</option>
-            <option value="contact_ktp_id:asc">Contact KTP ID (ascending)</option>
-            <option value="contact_ktp_id:desc">Contact KTP ID (descending)</option>
+            <option value="created_at:desc">{t('created_new')}</option>
+            <option value="created_at:asc">{t('created_old')}</option>
+            <option value="company:asc">{t('company_name') + ' (' + t('ascending') + ')'}</option>
+            <option value="company:desc">{t('company_name') + ' (' + t('descending') + ')'}</option>
+            <option value="NPWP:asc">{t('npwp') + ' (' + t('ascending') + ')'}</option>
+            <option value="NPWP:desc">{t('npwp') + ' (' + t('descending') + ')'}</option>
+            <option value="contact_dir_name:asc">
+              {t('contact') + ' ' + t('name') + ' (' + t('ascending') + ')'}
+            </option>
+            <option value="contact_dir_name:desc">
+              {t('contact') + ' ' + t('name') + ' (' + t('descending') + ')'}
+            </option>
+            <option value="contact_ktp_id:asc">
+              {t('contact') + ' ' + t('ktp') + ' (' + t('ascending') + ')'}
+            </option>
+            <option value="contact_ktp_id:desc">
+              {t('contact') + ' ' + t('ktp') + ' (' + t('descending') + ')'}
+            </option>
           </CFormSelect>
         </CCol>
         <CCol className={'d-flex justify-content-end'}>
           <CButton color="primary" onClick={() => history.push('/register')}>
-            Register New
+            {t('register')}
           </CButton>
         </CCol>
       </CRow>

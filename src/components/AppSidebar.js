@@ -15,8 +15,10 @@ import 'simplebar/dist/simplebar.min.css'
 import { account_officer_nav, admin_nav, koperasi_nav } from '../navigation/_nav'
 import { UserContext } from '../helpers/user'
 import { Roles } from '../helpers/role'
+import { useTranslation } from 'react-i18next'
 
 const AppSidebar = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
@@ -58,7 +60,7 @@ const AppSidebar = () => {
       </CSidebarNav>
       <CSidebarFooter>
         <div className="text-center">
-          <h6>Powered by:</h6>
+          <h6>{t('powered_by') + ':'}</h6>
           <CImage className="mt-1" src={logo} height={25} />
         </div>
       </CSidebarFooter>

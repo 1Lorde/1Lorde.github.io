@@ -14,8 +14,10 @@ import { useHistory } from 'react-router-dom'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { createTicket } from '../../../api/api_ticket'
+import { useTranslation } from 'react-i18next'
 
 const TicketCreate = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [ticket, setTicket] = useState({})
   const [validated, setValidated] = useState(false)
@@ -33,7 +35,7 @@ const TicketCreate = () => {
       console.log(ticket)
       createTicket(ticket).then((data) => {
         if (data.ok) {
-          store.addNotification(success('Ticket created successfully.'))
+          store.addNotification(success(t('notifications.ticket_create')))
           history.push('/support/tickets')
         } else {
           if (data.message) {
@@ -54,7 +56,7 @@ const TicketCreate = () => {
         <CCardBody>
           <CForm noValidate validated={validated} onSubmit={handleCreate}>
             <div className="mb-3">
-              <CFormLabel htmlFor="title">Title</CFormLabel>
+              <CFormLabel htmlFor="title">{t('title')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="name"
@@ -63,10 +65,10 @@ const TicketCreate = () => {
                   setTicket((ticket) => ({ ...ticket, title: e.target.value }))
                 }}
               />
-              <CFormFeedback invalid>Please provide a title.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_title')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="description">Description</CFormLabel>
+              <CFormLabel htmlFor="description">{t('description')}</CFormLabel>
               <CFormTextarea
                 type="text"
                 id="description"
@@ -78,11 +80,11 @@ const TicketCreate = () => {
                   }))
                 }}
               />
-              <CFormFeedback invalid>Please provide an description.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_description')}</CFormFeedback>
             </div>
             <div className="d-flex justify-content-end">
               <CButton color="primary" type="submit">
-                Create
+                {t('create')}
               </CButton>
             </div>
           </CForm>

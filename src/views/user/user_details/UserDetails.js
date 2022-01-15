@@ -21,10 +21,11 @@ import { getUser, updateUser } from '../../../api/api_user'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const UserDetails = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
-
   const history = useHistory()
   let { id } = useParams()
   const [user, setUser] = useState()
@@ -34,17 +35,17 @@ const UserDetails = () => {
     if (userRole in AdminRoles) {
       return (
         <>
-          <option value="app-owner">App Owner</option>
-          <option value="product-technical">Product & Technical</option>
-          <option value="marketing-finance">Marketing & Finance</option>
+          <option value="app-owner">{t('app_owner')}</option>
+          <option value="product-technical">{t('product_technical')}</option>
+          <option value="marketing-finance">{t('marketing_finance')}</option>
         </>
       )
     } else if (userRole in KoperasiRoles) {
       return (
         <>
-          <option value="koperasi-owner">Koperasi Owner</option>
-          <option value="credit-analyst">Credit & Analyst</option>
-          <option value="account-officer">Account Officer</option>
+          <option value="koperasi-owner">{t('koperasi_owner')}</option>
+          <option value="credit-analyst">{t('credit_analyst')}</option>
+          <option value="account-officer">{t('account_officer')}</option>
         </>
       )
     } else {
@@ -85,7 +86,7 @@ const UserDetails = () => {
         <CCardBody>
           <CForm>
             <div className="mb-3">
-              <CFormLabel htmlFor="fullnameInput">Full Name</CFormLabel>
+              <CFormLabel htmlFor="fullnameInput">{t('fullname')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="fullnameInput"
@@ -96,7 +97,7 @@ const UserDetails = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="ktpnumberInput">KTP Number</CFormLabel>
+              <CFormLabel htmlFor="ktpnumberInput">{t('ktp')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="ktpnumberInput"
@@ -107,7 +108,7 @@ const UserDetails = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="wanumberInput">WhatsApp Number</CFormLabel>
+              <CFormLabel htmlFor="wanumberInput">{t('whatsapp')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="wanumberInput"
@@ -118,7 +119,7 @@ const UserDetails = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="addressInput">Address</CFormLabel>
+              <CFormLabel htmlFor="addressInput">{t('address')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="addressInput"
@@ -129,7 +130,7 @@ const UserDetails = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="positionInput">Position</CFormLabel>
+              <CFormLabel htmlFor="positionInput">{t('position')}</CFormLabel>
               <CFormSelect
                 aria-label="Position"
                 value={user.role}
@@ -141,7 +142,7 @@ const UserDetails = () => {
               </CFormSelect>
             </div>
             <div className="mb-4">
-              <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+              <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
               <CFormSelect
                 aria-label="Status"
                 value={user.status}
@@ -149,14 +150,14 @@ const UserDetails = () => {
                   setUser((user) => ({ ...user, status: e.target.value }))
                 }}
               >
-                <option disabled>Please select</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option disabled>{t('please_select')}</option>
+                <option value="active">{t('active')}</option>
+                <option value="inactive">{t('inactive')}</option>
               </CFormSelect>
             </div>
             <div className="d-flex justify-content-center">
               <CButton color="primary" variant="outline" onClick={handleEdit}>
-                Save changes
+                {t('save_changes')}
               </CButton>
             </div>
           </CForm>

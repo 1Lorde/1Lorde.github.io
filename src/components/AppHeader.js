@@ -1,8 +1,14 @@
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  CAvatar,
   CBadge,
   CContainer,
+  CDropdown,
+  CDropdownHeader,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
   CHeader,
   CHeaderBrand,
   CHeaderDivider,
@@ -12,16 +18,19 @@ import {
   CNavLink,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilAccountLogout, cilBell, cilCog, cilMenu } from '@coreui/icons'
+import { cifGb, cifId, cilAccountLogout, cilBell, cilGlobeAlt, cilMenu } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { clearLocalToken, UserContext } from '../helpers/user'
 import { Roles } from '../helpers/role'
 import { store } from 'react-notifications-component'
-import { success } from '../helpers/notifications'
+import { info, success } from '../helpers/notifications'
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 const AppHeader = () => {
+  const { t } = useTranslation()
   const sidebarDispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
   const { userState, userDispatch } = useContext(UserContext)
@@ -38,7 +47,7 @@ const AppHeader = () => {
     }
 
     if (Roles[userState.user.role] === Roles['app-owner']) {
-      return 'EKOOP.ID - KOPERASI DIGITAL INDONESIA'
+      return t('header')
     }
   }
 
@@ -67,11 +76,38 @@ const AppHeader = () => {
             <CIcon icon={cilBell} size="lg" />
           </CNavLink>
         </CNavItem>
-        <CNavItem>
-          <CNavLink href="#">
-            <CIcon icon={cilCog} size="lg" />
-          </CNavLink>
-        </CNavItem>
+        <CDropdown variant="nav-item">
+          <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
+            <CIcon icon={cilGlobeAlt} size="lg" />
+          </CDropdownToggle>
+          <CDropdownMenu className="pt-0" placement="bottom-end">
+            <CDropdownHeader className="bg-light fw-semibold py-2">
+              {t('change_language')}
+            </CDropdownHeader>
+            <CDropdownItem
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                i18next.changeLanguage('en').then((t) => {
+                  window.location.reload()
+                })
+              }}
+            >
+              <CIcon icon={cifGb} className="me-2" />
+              English
+            </CDropdownItem>
+            <CDropdownItem
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                i18next.changeLanguage('id').then((t) => {
+                  window.location.reload()
+                })
+              }}
+            >
+              <CIcon icon={cifId} className="me-2" />
+              Indonesian
+            </CDropdownItem>
+          </CDropdownMenu>
+        </CDropdown>
         <CNavItem>
           <CNavLink href="#" onClick={handleLogOut}>
             <CIcon icon={cilAccountLogout} size="lg" />

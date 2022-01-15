@@ -14,8 +14,10 @@ import { store } from 'react-notifications-component'
 import { success } from '../../helpers/notifications'
 import { updateProfileCompany } from '../../api/api_client'
 import Page404 from '../pages/page404/Page404'
+import { useTranslation } from 'react-i18next'
 
 const MyCompany = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const [company, setCompany] = useState({})
   const [hasCompany, setHasCompany] = useState({})
@@ -28,7 +30,7 @@ const MyCompany = () => {
   const handleEdit = () => {
     updateProfileCompany(userState.company.id, company).then((data) => {
       if (data.ok) {
-        store.addNotification(success('Company details updated'))
+        store.addNotification(success(t('notifications.company_update')))
       } else {
         console.log(data)
       }
@@ -40,11 +42,11 @@ const MyCompany = () => {
       <CRow>
         <CCol>
           <div className="mb-3">
-            <CFormLabel htmlFor="company_name">Company name</CFormLabel>
+            <CFormLabel htmlFor="company_name">{t('company_name')}</CFormLabel>
             <CFormInput
               type="text"
               id="company_name"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.company}
               onChange={(e) => {
                 setCompany((company) => ({ ...company, company: e.target.value }))
@@ -52,11 +54,11 @@ const MyCompany = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="address">Address</CFormLabel>
+            <CFormLabel htmlFor="address">{t('address')}</CFormLabel>
             <CFormInput
               type="text"
               id="address"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.address}
               onChange={(e) => {
                 setCompany((company) => ({ ...company, address: e.target.value }))
@@ -64,11 +66,11 @@ const MyCompany = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="npwp">NPWP Number</CFormLabel>
+            <CFormLabel htmlFor="npwp">{t('npwp')}</CFormLabel>
             <CFormInput
               type="text"
               id="npwp"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.documents?.NPWP?.no}
               onChange={(e) => {
                 setCompany((company) => ({
@@ -85,11 +87,11 @@ const MyCompany = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="siup">SIUP Number</CFormLabel>
+            <CFormLabel htmlFor="siup">{t('siup')}</CFormLabel>
             <CFormInput
               type="text"
               id="siup"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.documents?.SIUP?.no}
               onChange={(e) => {
                 setCompany((company) => ({
@@ -106,11 +108,11 @@ const MyCompany = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="tdp">TDP Number</CFormLabel>
+            <CFormLabel htmlFor="tdp">{t('tdp')}</CFormLabel>
             <CFormInput
               type="text"
               id="tdp"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.documents?.TDP?.no}
               onChange={(e) => {
                 setCompany((company) => ({
@@ -142,25 +144,25 @@ const MyCompany = () => {
       <CRow className="mb-4 mt-3">
         <CCol>
           <div className="mb-3">
-            <CFormLabel htmlFor="website">Website</CFormLabel>
-            <CFormInput type="text" id="website" placeholder="No data provided" />
+            <CFormLabel htmlFor="website">{t('website')}</CFormLabel>
+            <CFormInput type="text" id="website" placeholder={t('no_data')} />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="subscription">Subscription Package</CFormLabel>
+            <CFormLabel htmlFor="subscription">{t('subscription_package')}</CFormLabel>
             <CFormInput
               type="text"
               id="subscription"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.package?.name}
               disabled
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="status">Status</CFormLabel>
+            <CFormLabel htmlFor="status">{t('status')}</CFormLabel>
             <CFormInput
               type="text"
               id="status"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.status}
               disabled
             />
@@ -168,31 +170,31 @@ const MyCompany = () => {
         </CCol>
         <CCol>
           <div className="mb-3">
-            <CFormLabel htmlFor="director">Director Name</CFormLabel>
+            <CFormLabel htmlFor="director">{t('director_name')}</CFormLabel>
             <CFormInput
               type="text"
               id="director"
               defaultValue={userState.company?.contact?.dir_name}
               disabled
-              placeholder="No data provided"
+              placeholder={t('no_data')}
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="ktp">KTP Number</CFormLabel>
+            <CFormLabel htmlFor="ktp">{t('ktp')}</CFormLabel>
             <CFormInput
               type="text"
               id="ktp"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.contact?.ktp_id}
               disabled
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="wa">WhatsApp Number</CFormLabel>
+            <CFormLabel htmlFor="wa">{t('whatsapp')}</CFormLabel>
             <CFormInput
               type="text"
               id="wa"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={userState.company?.contact?.wa_number}
               disabled
             />
@@ -202,7 +204,7 @@ const MyCompany = () => {
       <CRow className="mb-3">
         <div className="d-flex justify-content-end">
           <CButton color="primary" onClick={handleEdit}>
-            Edit
+            {t('edit')}
           </CButton>
         </div>
       </CRow>

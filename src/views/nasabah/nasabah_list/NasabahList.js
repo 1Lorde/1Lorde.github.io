@@ -16,8 +16,10 @@ import { Table } from '../../../components/Table'
 import { getNasabahList } from '../../../api/api_nasabah'
 import { cilPen } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { useTranslation } from 'react-i18next'
 
 const NasabahList = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [hasLoaded, setHasLoaded] = useState()
   const [nasabahList, setNasabah] = useState([])
@@ -46,11 +48,11 @@ const NasabahList = () => {
                 location: item.address,
                 status: item.active ? (
                   <CBadge className="mt-1" color="success" shape="rounded-pill">
-                    ACTIVE
+                    {t('active').toUpperCase()}
                   </CBadge>
                 ) : (
                   <CBadge className="mt-1" color="secondary" shape="rounded-pill">
-                    INACTIVE
+                    {t('inactive').toUpperCase()}
                   </CBadge>
                 ),
                 action: (
@@ -60,7 +62,7 @@ const NasabahList = () => {
                     onClick={() => history.push('/nasabah/' + item.id)}
                   >
                     <CIcon icon={cilPen} className="me-1" />
-                    Edit
+                    {t('edit')}
                   </CButton>
                 ),
               }
@@ -77,23 +79,23 @@ const NasabahList = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: t('name'),
         accessor: 'name',
       },
       {
-        Header: 'WhatsApp Number',
+        Header: t('whatsapp'),
         accessor: 'number',
       },
       {
-        Header: 'Location',
+        Header: t('location'),
         accessor: 'location',
       },
       {
-        Header: 'Status',
+        Header: t('status'),
         accessor: 'status',
       },
       {
-        Header: 'Action',
+        Header: t('action'),
         accessor: 'action',
       },
     ],
@@ -104,32 +106,32 @@ const NasabahList = () => {
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
-          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormLabel htmlFor="searchInput">{t('search')}</CFormLabel>
           <CFormInput
             type="text"
             id="searchInput"
-            placeholder="Enter search query.."
+            placeholder={t('enter_search_query')}
             onChange={(e) => {
               setSearchQuery(e.target.value)
             }}
           />
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+          <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
           <CFormSelect
             id="statusInput"
             onChange={(e) => {
               setStatus(e.target.value)
             }}
           >
-            <option value="">All</option>
-            <option value="false">Inactive</option>
-            <option value="true">Active</option>
+            <option value="">{t('all')}</option>
+            <option value="false">{t('inactive')}</option>
+            <option value="true">{t('true')}</option>
           </CFormSelect>
         </CCol>
         <CCol className={'d-flex justify-content-end'}>
           <CButton color="primary" onClick={() => history.push('/nasabah/create')}>
-            Add New
+            {t('add_new')}
           </CButton>
         </CCol>
       </CRow>

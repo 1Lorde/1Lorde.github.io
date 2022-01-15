@@ -5,8 +5,10 @@ import { useHistory } from 'react-router-dom'
 import { UserContext } from '../helpers/user'
 import { danger, info } from '../helpers/notifications'
 import { resetPassword } from '../api/api_auth'
+import { useTranslation } from 'react-i18next'
 
 const NewPassword = (params) => {
+  const { t } = useTranslation()
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
 
@@ -22,7 +24,7 @@ const NewPassword = (params) => {
     }
 
     if (newPassword !== confirmNewPassword) {
-      store.addNotification(danger('Check confirmation field'))
+      store.addNotification(danger(t('notifications.check_confirm_field')))
       return
     }
 
@@ -43,31 +45,31 @@ const NewPassword = (params) => {
 
   return (
     <CForm noValidate validated={validated}>
-      <h2>Reset password</h2>
+      <h2>{t('reset_password')}</h2>
       <br />
       <div className="mb-3">
-        <CFormLabel htmlFor="new_pass">New Password</CFormLabel>
+        <CFormLabel htmlFor="new_pass">{t('new_password')}</CFormLabel>
         <CFormInput
           type="password"
           id="new_pass"
           required
           onChange={(e) => setNewPassword(e.target.value)}
         />
-        <CFormFeedback invalid>Please provide new password.</CFormFeedback>
+        <CFormFeedback invalid>{t('invalid_new_password')}</CFormFeedback>
       </div>
       <div className="mb-3">
-        <CFormLabel htmlFor="confirm_new_pass">Confirm New Password</CFormLabel>
+        <CFormLabel htmlFor="confirm_new_pass">{t('confirm_new_password')}</CFormLabel>
         <CFormInput
           type="password"
           id="confirm_new_pass"
           required
           onChange={(e) => setConfirmNewPassword(e.target.value)}
         />
-        <CFormFeedback invalid>Please confirm new password.</CFormFeedback>
+        <CFormFeedback invalid>{t('invalid_confirm_new_password')}</CFormFeedback>
       </div>
       <div className="d-flex justify-content-end">
         <CButton color="primary" onClick={handleSubmit}>
-          Save
+          {t('save')}
         </CButton>
       </div>
     </CForm>

@@ -7,8 +7,10 @@ import { useHistory } from 'react-router-dom'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { changePasswordOtp, loginOtp, resetPasswordOtp } from '../../../api/api_auth'
+import { useTranslation } from 'react-i18next'
 
 const InputOtp = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   const [otp, setOtp] = useState('')
@@ -41,7 +43,7 @@ const InputOtp = () => {
     } else if (userState.status === UserStatus.TRY_TO_LOGIN) {
       loginOtp(userState.temp_token, otp).then((data) => {
         console.log(data)
-        store.addNotification(success('Welcome back!'))
+        store.addNotification(success(t('notifications.welcome_back')))
         setIsLoading(false)
         history.push('/profile')
       })
@@ -68,7 +70,7 @@ const InputOtp = () => {
             <CCard className="p-4">
               <CCardBody>
                 <CForm>
-                  <h2>Input OTP</h2>
+                  <h2>{t('input_otp')}</h2>
                   <br />
                   <CRow>
                     <CCol className="d-flex justify-content-center">
@@ -84,7 +86,7 @@ const InputOtp = () => {
                   <CRow>
                     <CCol className="d-flex justify-content-end">
                       <CButton color="primary" className="px-4" onClick={(e) => handleOtp(otp)}>
-                        Submit
+                        {t('submit')}
                       </CButton>
                     </CCol>
                   </CRow>

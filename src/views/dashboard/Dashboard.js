@@ -10,8 +10,10 @@ import { getAccountOfficerCount, getClientCount, getNasabahCount } from '../../a
 import { UserContext } from '../../helpers/user'
 import { adminRoles, Roles } from '../../helpers/role'
 import RestrictedComponent from '../../routes/RestrictedComponent'
+import { useTranslation } from 'react-i18next'
 
 const Dashboard = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const [hasLoaded, setHasLoaded] = useState()
   const [nasabahCount, setNasabahCount] = useState(0)
@@ -37,17 +39,17 @@ const Dashboard = () => {
   return hasLoaded ? (
     <CContainer>
       <CRow className="align-items-center">
-        <CCol xl={2}>Virtual Accounts</CCol>
+        <CCol xl={2}>{t('virtual_accounts')}</CCol>
         <CCol xl={6}>
           <CFormInput type="text" />
         </CCol>
         <CCol>
           <CButtonGroup role="group" className="p-3">
             <CButton color="primary" variant="outline">
-              View Transactions
+              {t('view_transactions')}
             </CButton>
             <CButton color="primary" variant="outline">
-              Download Transactions
+              {t('download_transactions')}
             </CButton>
           </CButtonGroup>
         </CCol>
@@ -57,14 +59,17 @@ const Dashboard = () => {
       <br />
       <CRow>
         <CCol lg={4}>
-          <Widget1 title="Total Number of Account Officer" value={accountOfficerCount} />
+          <Widget1
+            title={t('total_number') + ' ' + t('account_officer')}
+            value={accountOfficerCount}
+          />
         </CCol>
         <CCol lg={4}>
-          <Widget2 title="Total Number of Nasabah" value={nasabahCount} />
+          <Widget2 title={t('total_number') + ' ' + t('nasabah')} value={nasabahCount} />
         </CCol>
         <CCol lg={4}>
           <RestrictedComponent allowedRoles={['app-owner', 'marketing-finance', 'credit-analyst']}>
-            <Widget3 title="Total Number of Clients" value={clientsCount} />
+            <Widget3 title={t('total_number') + ' ' + t('clients')} value={clientsCount} />
           </RestrictedComponent>
         </CCol>
       </CRow>

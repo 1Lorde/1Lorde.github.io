@@ -20,8 +20,10 @@ import { UserContext } from '../../helpers/user'
 import { updateProfile } from '../../api/api_profile'
 import { Services } from '../../helpers/notification_types'
 import { createNotification } from '../../api/api_notification'
+import { useTranslation } from 'react-i18next'
 
 const MyProfile = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const { userState, userDispatch } = useContext(UserContext)
   const [fullName, setFullname] = useState('')
@@ -66,7 +68,7 @@ const MyProfile = () => {
         <CCardBody>
           <CForm>
             <div className="mb-3">
-              <CFormLabel htmlFor="fullnameInput">Full Name</CFormLabel>
+              <CFormLabel htmlFor="fullnameInput">{t('fullname')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="fullnameInput"
@@ -75,7 +77,7 @@ const MyProfile = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="ktpnumberInput">KTP Number</CFormLabel>
+              <CFormLabel htmlFor="ktpnumberInput">{t('ktp')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="ktpnumberInput"
@@ -84,7 +86,7 @@ const MyProfile = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="wanumberInput">WhatsApp Number</CFormLabel>
+              <CFormLabel htmlFor="wanumberInput">{t('whatsapp')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="wanumberInput"
@@ -93,7 +95,7 @@ const MyProfile = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="addressInput">Address</CFormLabel>
+              <CFormLabel htmlFor="addressInput">{t('address')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="addressInput"
@@ -102,7 +104,7 @@ const MyProfile = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="positionInput">Position</CFormLabel>
+              <CFormLabel htmlFor="positionInput">{t('position')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="positionInput"
@@ -111,23 +113,23 @@ const MyProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+              <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
               <CFormSelect
                 type="text"
                 id="statusInput"
                 defaultValue={userState.user.status}
                 disabled
               >
-                <option value="inactive">Inactive</option>
-                <option value="active">Active</option>
+                <option value="inactive">{t('inactive')}</option>
+                <option value="active">{t('active')}</option>
               </CFormSelect>
             </div>
             <div className="d-flex justify-content-between">
               <CButton color="primary" onClick={handleClick}>
-                Change password
+                {t('change_password')}
               </CButton>
               <CButton color="primary" variant="outline" onClick={handleEdit}>
-                Edit
+                {t('edit')}
               </CButton>
             </div>
           </CForm>

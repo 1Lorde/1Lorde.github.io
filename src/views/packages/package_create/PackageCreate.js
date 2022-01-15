@@ -20,8 +20,10 @@ import { tryParseInt } from '../../../helpers/utils'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const PackageCreate = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   const [pack, setPack] = useState({})
@@ -45,7 +47,7 @@ const PackageCreate = () => {
               console.log('Notification created: ' + resp.id)
             },
           )
-          store.addNotification(success('Package ' + pack.name + ' created successfully.'))
+          store.addNotification(success(t('notifications.package_create', { name: pack.name })))
           history.push('/packages')
         } else {
           if (data.message) {
@@ -67,7 +69,7 @@ const PackageCreate = () => {
           orientation="top"
           src={
             'https://via.placeholder.com/550x390.png?text=' +
-            (pack.name ? pack.name : 'New package')
+            (pack.name ? pack.name : t('new_package'))
           }
         />
         <CCardBody>
@@ -75,7 +77,7 @@ const PackageCreate = () => {
             <CRow>
               <CCol>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="name">Name</CFormLabel>
+                  <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="name"
@@ -86,7 +88,7 @@ const PackageCreate = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="description">Description</CFormLabel>
+                  <CFormLabel htmlFor="description">{t('description')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="description"
@@ -96,7 +98,7 @@ const PackageCreate = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="slug">Slug</CFormLabel>
+                  <CFormLabel htmlFor="slug">{t('slug')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="slug"
@@ -108,11 +110,11 @@ const PackageCreate = () => {
                 </div>
                 <div className="pt-1">
                   <hr />
-                  <h3>Price</h3>
+                  <h3>{t('price')}</h3>
                   <CRow className="pt-2">
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="monthly">Monthly</CFormLabel>
+                        <CFormLabel htmlFor="monthly">{t('monthly')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="monthly"
@@ -131,7 +133,7 @@ const PackageCreate = () => {
                     </CCol>
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="yearly">Yearly</CFormLabel>
+                        <CFormLabel htmlFor="yearly">{t('yearly')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="yearly"
@@ -153,11 +155,11 @@ const PackageCreate = () => {
 
                 <div>
                   <hr />
-                  <h3>Quota</h3>
+                  <h3>{t('quota')}</h3>
                   <CRow className="pt-2">
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="account_officer">Account Officer</CFormLabel>
+                        <CFormLabel htmlFor="account_officer">{t('account_officer')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="account_officer"
@@ -176,7 +178,7 @@ const PackageCreate = () => {
                     </CCol>
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="nasabah">Nasabah</CFormLabel>
+                        <CFormLabel htmlFor="nasabah">{t('nasabah')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="nasabah"
@@ -200,7 +202,7 @@ const PackageCreate = () => {
             <CRow className="mb-3">
               <div className="d-flex justify-content-end">
                 <CButton color="primary" type="submit">
-                  Create
+                  {t('create')}
                 </CButton>
               </div>
             </CRow>

@@ -19,8 +19,10 @@ import { UserContext } from '../../../helpers/user'
 import { createUser } from '../../../api/api_user'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
+import { useTranslation } from 'react-i18next'
 
 const UserCreate = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const { userState } = useContext(UserContext)
   const [user, setUser] = useState({ role: 'koperasi-owner' })
@@ -30,17 +32,17 @@ const UserCreate = () => {
     if (Roles[userRole] === Roles['app-owner']) {
       return (
         <>
-          <option value="app-owner">App Owner</option>
-          <option value="product-technical">Product & Technical</option>
-          <option value="marketing-finance">Marketing & Finance</option>
+          <option value="app-owner">{t('app_owner')}</option>
+          <option value="product-technical">{t('product_technical')}</option>
+          <option value="marketing-finance">{t('marketing_finance')}</option>
         </>
       )
     } else if (Roles[userRole] === Roles['koperasi-owner']) {
       return (
         <>
-          <option value="koperasi-owner">Koperasi Owner</option>
-          <option value="credit-analyst">Credit & Analyst</option>
-          <option value="account-officer">Account Officer</option>
+          <option value="koperasi-owner">{t('koperasi_owner')}</option>
+          <option value="credit-analyst">{t('credit_analyst')}</option>
+          <option value="account-officer">{t('account_officer')}</option>
         </>
       )
     } else {
@@ -67,7 +69,9 @@ const UserCreate = () => {
               console.log('Notification created: ' + resp.id)
             },
           )
-          store.addNotification(success('User (' + data.wa_number + ') created'))
+          store.addNotification(
+            success(t('notifications.user_create', { wa_number: user.wa_number })),
+          )
           history.push('/users')
         } else {
           store.addNotification(danger(data.message))
@@ -82,7 +86,7 @@ const UserCreate = () => {
         <CCardBody>
           <CForm noValidate validated={validated} onSubmit={handleCreate}>
             <div className="mb-3">
-              <CFormLabel htmlFor="fullnameInput">Full Name</CFormLabel>
+              <CFormLabel htmlFor="fullnameInput">{t('fullname')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="fullnameInput"
@@ -94,7 +98,7 @@ const UserCreate = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="ktpnumberInput">KTP Number</CFormLabel>
+              <CFormLabel htmlFor="ktpnumberInput">{t('ktp')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="ktpnumberInput"
@@ -106,12 +110,10 @@ const UserCreate = () => {
                   setUser((user) => ({ ...user, ktp_id: e.target.value }))
                 }}
               />
-              <CFormFeedback invalid>
-                Please provide a valid KTP number (min length 16).
-              </CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_ktp')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="wanumberInput">WhatsApp Number</CFormLabel>
+              <CFormLabel htmlFor="wanumberInput">{t('whatsapp')}</CFormLabel>
               <CFormInput
                 id="wanumberInput"
                 type="tel"
@@ -122,10 +124,10 @@ const UserCreate = () => {
                   setUser((user) => ({ ...user, wa_number: e.target.value }))
                 }}
               />
-              <CFormFeedback invalid>Please provide a valid phone number.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_wa')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="addressInput">Address</CFormLabel>
+              <CFormLabel htmlFor="addressInput">{t('address')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="addressInput"
@@ -136,10 +138,10 @@ const UserCreate = () => {
                   setUser((user) => ({ ...user, address: e.target.value }))
                 }}
               />
-              <CFormFeedback invalid>Please provide a valid address (min length 5).</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_address')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="positionInput">Position</CFormLabel>
+              <CFormLabel htmlFor="positionInput">{t('position')}</CFormLabel>
               <CFormSelect
                 aria-label="Position"
                 defaultValue={user.role}
@@ -147,13 +149,13 @@ const UserCreate = () => {
                   setUser((user) => ({ ...user, role: e.target.value }))
                 }}
               >
-                <option disabled>Please select</option>
+                <option disabled>{t('please_select')}</option>
                 {getPositions(userState.user.role)}
               </CFormSelect>
             </div>
             <div className="d-flex justify-content-center">
               <CButton color="primary" variant="outline" type="submit">
-                Create
+                {t('create')}
               </CButton>
             </div>
           </CForm>

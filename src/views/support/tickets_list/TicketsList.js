@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useRef, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -13,18 +13,16 @@ import {
 import { useHistory } from 'react-router-dom'
 import { createUser, getTickets } from '../../../api/api_ticket'
 import { Table } from '../../../components/Table'
-import {
-  getKoperasiOwnerIdFromToken,
-  getKoperasiOwnerWAFromToken,
-  UserContext,
-} from '../../../helpers/user'
+import { getKoperasiOwnerIdFromToken, UserContext } from '../../../helpers/user'
 import { Roles } from '../../../helpers/role'
 import { store } from 'react-notifications-component'
-import { info, success, warning } from '../../../helpers/notifications'
+import { info } from '../../../helpers/notifications'
+import { useTranslation } from 'react-i18next'
 
 const TicketsList = () => {
+  const { t } = useTranslation()
   const history = useHistory()
-  const { userState, userDispatch } = useContext(UserContext)
+  const { userState } = useContext(UserContext)
   const [hasLoaded, setHasLoaded] = useState(false)
   const [tickets, setTickets] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -36,31 +34,31 @@ const TicketsList = () => {
       case 0:
         return (
           <CBadge className="mt-1" color="success" shape="rounded-pill">
-            New
+            {t('new')}
           </CBadge>
         )
       case 1:
         return (
           <CBadge className="mt-1" color="danger" shape="rounded-pill">
-            Open
+            {t('open')}
           </CBadge>
         )
       case 2:
         return (
           <CBadge className="mt-1" color="info" shape="rounded-pill">
-            Pending
+            {t('pending')}
           </CBadge>
         )
       case 3:
         return (
           <CBadge className="mt-1" color="secondary" shape="rounded-pill">
-            Closed
+            {t('closed')}
           </CBadge>
         )
       default:
         return (
           <CBadge className="mt-1" color="dark" shape="rounded-pill">
-            unknown
+            {t('unknown')}
           </CBadge>
         )
     }
@@ -91,7 +89,7 @@ const TicketsList = () => {
                       size={'sm'}
                       onClick={() => history.push('/support/tickets/' + item.uid)}
                     >
-                      View
+                      {t('view')}
                     </CButton>
                   ),
                 }
@@ -106,9 +104,7 @@ const TicketsList = () => {
               createUser(userState.user.id, userState.user.wa_number, userState.user.name).then(
                 (data) => {
                   console.log(data)
-                  store.addNotification(
-                    info('Your support account not approved yet. Please try again later'),
-                  )
+                  store.addNotification(info(t('notifications.support_account_not_approved')))
                 },
               )
             } else {
@@ -118,9 +114,7 @@ const TicketsList = () => {
                 userState.company.contact.dir_name,
               ).then((data) => {
                 console.log(data)
-                store.addNotification(
-                  info('Your support account not approved yet. Please try again later'),
-                )
+                store.addNotification(info(t('notifications.support_account_not_approved')))
               })
             }
           }
@@ -135,38 +129,34 @@ const TicketsList = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Ticket ID',
+        Header: t('ticket_id'),
         accessor: 'id',
       },
       {
-        Header: 'Title',
+        Header: t('title'),
         accessor: 'title',
       },
       {
-        Header: 'Status',
+        Header: t('status'),
         accessor: 'status',
       },
       {
-        Header: 'Action',
+        Header: t('action'),
         accessor: 'action',
       },
     ],
     [],
   )
 
-  const handleDetailsClick = () => {
-    history.push('/support/tickets/details')
-  }
-
   return (
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
-          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormLabel htmlFor="searchInput">{t('search')}</CFormLabel>
           <CFormInput
             type="text"
             id="searchInput"
-            placeholder="Enter search query.."
+            placeholder={t('enter_search_query')}
             onChange={(e) => {
               setSearchQuery(e.target.value)
             }}
@@ -174,7 +164,7 @@ const TicketsList = () => {
         </CCol>
         <CCol className={'d-flex justify-content-end'}>
           <CButton color="primary" onClick={() => history.push('/support/tickets/new')}>
-            Create New
+            {t('create')}
           </CButton>
         </CCol>
       </CRow>

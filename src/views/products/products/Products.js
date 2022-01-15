@@ -17,9 +17,11 @@ import {
 import { useHistory } from 'react-router-dom'
 import Loader from '../../../components/Loader'
 import { getProducts } from '../../../api/api_product'
+import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line react/prop-types
 const Products = ({ typeFilter }) => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [products, setProducts] = useState([])
   const [hasLoaded, setHasLoaded] = useState()
@@ -39,11 +41,11 @@ const Products = ({ typeFilter }) => {
     <CContainer>
       <CRow className="align-items-end">
         <CCol xs={6}>
-          <CFormLabel htmlFor="search">Search</CFormLabel>
+          <CFormLabel htmlFor="search">{t('search')}</CFormLabel>
           <CFormInput
             type="text"
             id="searchInput"
-            placeholder="Enter search query.."
+            placeholder={t('enter_search_query')}
             onChange={(e) => {
               setSearchQuery(e.target.value)
             }}
@@ -51,7 +53,7 @@ const Products = ({ typeFilter }) => {
         </CCol>
         <CCol>
           <CButton color="primary" onClick={() => history.push('/products/create')}>
-            Add New
+            {t('add_new')}
           </CButton>
         </CCol>
       </CRow>
@@ -76,11 +78,11 @@ const Products = ({ typeFilter }) => {
                   <CCardText>{product.description}</CCardText>
                   {product.active ? (
                     <CBadge color="success" shape="rounded-pill">
-                      Active
+                      {t('active')}
                     </CBadge>
                   ) : (
                     <CBadge color="dark" shape="rounded-pill">
-                      Inactive
+                      {t('inactive')}
                     </CBadge>
                   )}
                 </CCardBody>

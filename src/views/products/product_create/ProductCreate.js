@@ -18,10 +18,11 @@ import { tryParseInt } from '../../../helpers/utils'
 import { UserContext } from '../../../helpers/user'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
+import { useTranslation } from 'react-i18next'
 
 const ProductSavingsCreate = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
-
   const history = useHistory()
   const [product, setProduct] = useState({
     tipe: 'savings',
@@ -45,7 +46,7 @@ const ProductSavingsCreate = () => {
         ).then((resp) => {
           console.log('Notification created: ' + resp.id)
         })
-        store.addNotification(success('Product created'))
+        store.addNotification(success(t('notifications.product_create')))
         history.push('/products/savings')
       } else {
         store.addNotification(danger(data.message))
@@ -59,7 +60,7 @@ const ProductSavingsCreate = () => {
         <CRow>
           <CCol>
             <div className="mb-2">
-              <CFormLabel htmlFor="type">Type of Product</CFormLabel>
+              <CFormLabel htmlFor="type">{t('product_type')}</CFormLabel>
               <CFormSelect
                 id="type"
                 value={product.tipe}
@@ -67,13 +68,13 @@ const ProductSavingsCreate = () => {
                   setProduct((product) => ({ ...product, tipe: e.target.value }))
                 }}
               >
-                <option value="savings">Savings</option>
-                <option value="credits">Credits</option>
+                <option value="savings">{t('savings')}</option>
+                <option value="credits">{t('credits')}</option>
               </CFormSelect>
             </div>
 
             <div className="mb-2">
-              <CFormLabel htmlFor="name">Products Name</CFormLabel>
+              <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="name"
@@ -84,7 +85,7 @@ const ProductSavingsCreate = () => {
               />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="description">Description</CFormLabel>
+              <CFormLabel htmlFor="description">{t('description')}</CFormLabel>
               <CFormTextarea
                 type="text"
                 id="description"
@@ -96,9 +97,9 @@ const ProductSavingsCreate = () => {
               />
             </div>
 
-            <h5>Balance</h5>
+            <h5>{t('balance')}</h5>
             <div className="ms-4 mb-2">
-              <CFormLabel htmlFor="start">Start</CFormLabel>
+              <CFormLabel htmlFor="start">{t('start')}</CFormLabel>
               <CFormInput
                 type="number"
                 id="start"
@@ -112,10 +113,10 @@ const ProductSavingsCreate = () => {
               />
             </div>
 
-            <h5>Rate</h5>
+            <h5>{t('rate')}</h5>
             <CRow className="ms-3 mb-3">
               <CCol xs={4}>
-                <CFormLabel htmlFor="percent_rate">Percentage</CFormLabel>
+                <CFormLabel htmlFor="percent_rate">{t('percentage')}</CFormLabel>
                 <CFormInput
                   type="number"
                   id="percent_rate"
@@ -129,7 +130,7 @@ const ProductSavingsCreate = () => {
                 />
               </CCol>
               <CCol>
-                <CFormLabel htmlFor="rate_type">Type</CFormLabel>
+                <CFormLabel htmlFor="rate_type">{t('type')}</CFormLabel>
                 <CFormSelect
                   id="rate_type"
                   value={product.rate_type}
@@ -137,17 +138,17 @@ const ProductSavingsCreate = () => {
                     setProduct((product) => ({ ...product, rate_type: e.target.value }))
                   }}
                 >
-                  <option value="fix">Fix</option>
-                  <option value="efektif">Efektif</option>
-                  <option value="syaria">Syaria</option>
+                  <option value="fix">{t('fix')}</option>
+                  <option value="efektif">{t('effective')}</option>
+                  <option value="syaria">{t('syaria')}</option>
                 </CFormSelect>
               </CCol>
             </CRow>
 
-            <h5>Requirements</h5>
+            <h5>{t('requirements')}</h5>
             <CRow className="mb-3 ms-3">
               <CCol>
-                <CFormLabel htmlFor="limit_min">Limit Min</CFormLabel>
+                <CFormLabel htmlFor="limit_min">{t('limit_min')}</CFormLabel>
                 <CFormInput
                   type="number"
                   id="limit_min"
@@ -161,7 +162,7 @@ const ProductSavingsCreate = () => {
                 />
               </CCol>
               <CCol>
-                <CFormLabel htmlFor="limit_max">Limit Max</CFormLabel>
+                <CFormLabel htmlFor="limit_max">{t('limit_max')}</CFormLabel>
                 <CFormInput
                   type="number"
                   id="limit_max"
@@ -180,7 +181,7 @@ const ProductSavingsCreate = () => {
         <CRow>
           <CCol className="d-flex justify-content-center mt-3">
             <CButton color="primary" onClick={handleSave}>
-              Save
+              {t('create')}
             </CButton>
           </CCol>
         </CRow>

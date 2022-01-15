@@ -14,8 +14,10 @@ import { store } from 'react-notifications-component'
 import { danger, info } from '../../helpers/notifications'
 import { useHistory } from 'react-router-dom'
 import { changePassword } from '../../api/api_auth'
+import { useTranslation } from 'react-i18next'
 
 const ChangePassword = () => {
+  const { t } = useTranslation()
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
@@ -33,7 +35,7 @@ const ChangePassword = () => {
     }
 
     if (newPassword !== confirmNewPassword) {
-      store.addNotification(danger('Check confirmation field'))
+      store.addNotification(danger(t('notifications.check_confirm_field')))
       return
     }
 
@@ -60,17 +62,17 @@ const ChangePassword = () => {
         <CCardBody>
           <CForm noValidate validated={validated} onSubmit={handleSubmit}>
             <div className="mb-3">
-              <CFormLabel htmlFor="old_pass">Old Password</CFormLabel>
+              <CFormLabel htmlFor="old_pass">{t('old_password')}</CFormLabel>
               <CFormInput
                 type="password"
                 id="old_pass"
                 required
                 onChange={(e) => setOldPassword(e.target.value)}
               />
-              <CFormFeedback invalid>Please provide old password.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_old_password')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="new_pass">New Password</CFormLabel>
+              <CFormLabel htmlFor="new_pass">{t('new_password')}</CFormLabel>
               <CFormInput
                 type="password"
                 pattern="^.{6,}$"
@@ -78,10 +80,10 @@ const ChangePassword = () => {
                 required
                 onChange={(e) => setNewPassword(e.target.value)}
               />
-              <CFormFeedback invalid>Please provide new password (min 6 chars).</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_new_password')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="confirm_new_pass">Confirm New Password</CFormLabel>
+              <CFormLabel htmlFor="confirm_new_pass">{t('confirm_new_password')}</CFormLabel>
               <CFormInput
                 type="password"
                 pattern="^.{6,}$"
@@ -89,11 +91,11 @@ const ChangePassword = () => {
                 required
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
               />
-              <CFormFeedback invalid>Please confirm new password.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_confirm_new_password')}</CFormFeedback>
             </div>
             <div className="d-flex justify-content-end">
               <CButton color="primary" type="submit">
-                Save
+                {t('save')}
               </CButton>
             </div>
           </CForm>

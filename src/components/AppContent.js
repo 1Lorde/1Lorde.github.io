@@ -4,6 +4,7 @@ import { CContainer } from '@coreui/react'
 import PrivateRoute from '../routes/PrivateRoute'
 import { allRoles, Roles } from '../helpers/role'
 import Loader from './Loader'
+import { useTranslation } from 'react-i18next'
 
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
 const MyCompany = React.lazy(() => import('../views/my_company/MyCompany'))
@@ -55,6 +56,7 @@ const TicketCreate = React.lazy(() => import('../views/support/ticket_create/Tic
 const TicketDetails = React.lazy(() => import('../views/support/ticket_details/TicketDetails'))
 
 const AppContent = () => {
+  const { t } = useTranslation()
   return (
     <CContainer lg>
       <Suspense fallback={Loader()}>
@@ -63,105 +65,105 @@ const AppContent = () => {
             exact
             allowedRoles={[Roles['account-officer'], Roles['koperasi-owner']]}
             path="/company_info"
-            name="Company Info"
+            name={t('company_info')}
             component={MyCompany}
           />
           <PrivateRoute
             exact
             allowedRoles={allRoles()}
             path="/profile"
-            name="My Profile"
+            name={t('my_profile')}
             component={MyProfile}
           />
           <PrivateRoute
             exact
             allowedRoles={allRoles()}
             path="/profile/change_password"
-            name="Change password"
+            name={t('change_password')}
             component={ChangePassword}
           />
           <PrivateRoute
             exact
             allowedRoles={allRoles()}
             path="/notifications"
-            name="Notifications"
+            name={t('notifications_entry')}
             component={Notifications}
           />
           <PrivateRoute
             exact
             allowedRoles={allRoles()}
             path="/notifications/:id"
-            name="Notification Details"
+            name={t('notification_detail')}
             component={NotificationDetail}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['account-officer']]}
             path="/notifications/task"
-            name="Task"
+            name={t('task')}
             component={Task}
           />
           <PrivateRoute
             exact
             allowedRoles={allRoles()}
             path="/dashboard"
-            name="Dashboard"
+            name={t('dashboard')}
             component={Dashboard}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner'], Roles['koperasi-owner']]}
             path="/users"
-            name="User List"
+            name={t('user_list')}
             component={UserList}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner'], Roles['koperasi-owner']]}
             path="/users/create"
-            name="Create User"
+            name={t('user_create')}
             component={UserCreate}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner'], Roles['koperasi-owner']]}
             path="/users/:id"
-            name="Detail User"
+            name={t('user_detail')}
             component={UserDetails}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner'], Roles['marketing-finance']]}
             path="/clients"
-            name="Client List"
+            name={t('client_list')}
             component={ClientList}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner']]}
             path="/clients/:id"
-            name="Detail Client"
+            name={t('client_detail')}
             component={ClientDetail}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['koperasi-owner'], Roles['account-officer']]}
             path="/nasabah"
-            name="Nasabah List"
+            name={t('nasabah_list')}
             component={NasabahList}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['koperasi-owner'], Roles['account-officer']]}
             path="/nasabah/create"
-            name="Create Nasabah"
+            name={t('nasabah_create')}
             component={NasabahCreate}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['koperasi-owner'], Roles['account-officer']]}
             path="/nasabah/:id"
-            name="Nasabah Detail"
+            name={t('nasabah_detail')}
             component={NasabahDetail}
           />
           <PrivateRoute
@@ -172,42 +174,42 @@ const AppContent = () => {
               Roles['credit-analyst'],
             ]}
             path="/nasabah/details/transfer"
-            name="Transfer"
+            name={t('transfer')}
             component={NasabahTransfer}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['account-officer']]}
             path="/nasabah/details/cashIn"
-            name="Cash-In"
+            name={t('cash_in')}
             component={NasabahCashIn}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['account-officer']]}
             path="/nasabah/details/cashOut"
-            name="Cash-Out"
+            name={t('cash_out')}
             component={NasabahCashOut}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner']]}
             path="/packages"
-            name="Package List"
+            name={t('packages')}
             component={PackageList}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner']]}
             path="/packages/create"
-            name="Create Package"
+            name={t('package_create')}
             component={PackageCreate}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner']]}
             path="/packages/:id"
-            name="Package Detail"
+            name={t('package_detail')}
             component={PackageDetail}
           />
           <PrivateRoute
@@ -218,7 +220,7 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/savings"
-            name="Savings"
+            name={t('savings')}
             component={Products}
             typeFilter="savings"
           />
@@ -230,7 +232,7 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/credits"
-            name="Loan"
+            name={t('loan')}
             component={Products}
             typeFilter="credits"
           />
@@ -242,7 +244,7 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/create"
-            name="Create Product"
+            name={t('product_create')}
             component={ProductCreate}
           />
           <PrivateRoute
@@ -254,7 +256,7 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/ppob"
-            name="PPOB List"
+            name={t('ppob_list')}
             component={ProductsPpob}
           />
           <PrivateRoute
@@ -266,21 +268,21 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/ppob/:id"
-            name="PPOB Details"
+            name={t('ppob_detail')}
             component={ProductPpobDetails}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner']]}
             path="/ppob/vendors"
-            name="PPOB Vendors"
+            name={t('ppob_vendors')}
             component={VendorList}
           />
           <PrivateRoute
             exact
             allowedRoles={[Roles['app-owner']]}
             path="/ppob/vendors/:id"
-            name="PPOB Vendor Details"
+            name={t('ppob_vendor_detail')}
             component={VendorDetails}
           />
           <PrivateRoute
@@ -291,7 +293,7 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/ppob/:id/buy"
-            name="Buy"
+            name={t('buy')}
             component={ProductPpobDetailsBuy}
           />
           <PrivateRoute
@@ -301,15 +303,20 @@ const AppContent = () => {
               Roles['account-officer'],
             ]}
             path="/products/:id"
-            name="Product Details"
+            name={t('product_detail')}
             component={ProductDetails}
           />
-          <Route exact path="/support/tickets" name="Tickets List" component={TicketsList} />
-          <Route exact path="/support/tickets/new" name="New Ticket" component={TicketCreate} />
+          <Route exact path="/support/tickets" name={t('ticket_list')} component={TicketsList} />
+          <Route
+            exact
+            path="/support/tickets/new"
+            name={t('ticket_create')}
+            component={TicketCreate}
+          />
           <Route
             exact
             path="/support/tickets/:uid"
-            name="Ticket Details"
+            name={t('ticket_detail')}
             component={TicketDetails}
           />
           <Redirect from="/" to="/dashboard" />

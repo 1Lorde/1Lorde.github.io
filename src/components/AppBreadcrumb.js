@@ -4,8 +4,10 @@ import { useLocation } from 'react-router-dom'
 import routes from '../routes'
 
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
+import { useTranslation } from 'react-i18next'
 
 const AppBreadcrumb = () => {
+  const { t } = useTranslation()
   const currentLocation = useLocation().pathname
 
   const getRouteName = (pathname, routes) => {
@@ -30,7 +32,6 @@ const AppBreadcrumb = () => {
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
     location.split('/').reduce((prev, curr, index, array) => {
-      console.log(array[index] + ' ' + array[index].hasOwnProperty('disabled'))
       const currentPathname = `${prev}/${curr}`
       breadcrumbs.push({
         pathname: currentPathname,
@@ -46,7 +47,7 @@ const AppBreadcrumb = () => {
 
   return (
     <CBreadcrumb className="m-0 ms-2">
-      <CBreadcrumbItem href="/">Home</CBreadcrumbItem>
+      <CBreadcrumbItem href="/">{t('home')}</CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
         return (
           <CBreadcrumbItem

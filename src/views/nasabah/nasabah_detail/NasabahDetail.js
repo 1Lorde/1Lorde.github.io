@@ -25,8 +25,10 @@ import Loader from '../../../components/Loader'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const NasabahDetail = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   let { id } = useParams()
@@ -52,7 +54,7 @@ const NasabahDetail = () => {
               console.log('Notification created: ' + resp.id)
             },
           )
-          store.addNotification(success('Nasabah ' + nasabah.name + ' updated successfully.'))
+          store.addNotification(success(t('notifications.nasabah_update', { name: nasabah.name })))
           history.push('/nasabah')
         } else {
           if (data.message) {
@@ -97,12 +99,12 @@ const NasabahDetail = () => {
             <CCardBody>
               <CForm noValidate validated={validated} onSubmit={handleUpdate}>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="name">Name</CFormLabel>
+                  <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="name"
                     required
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     value={nasabah.name}
                     onChange={(e) => {
                       setNasabah((nasabah) => ({ ...nasabah, name: e.target.value }))
@@ -110,11 +112,11 @@ const NasabahDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="ktp">KTP Number</CFormLabel>
+                  <CFormLabel htmlFor="ktp">{t('ktp')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="ktp"
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     value={nasabah.ktp_id}
                     onChange={(e) => {
                       setNasabah((nasabah) => ({
@@ -125,11 +127,11 @@ const NasabahDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="wa">WhatsApp Number</CFormLabel>
+                  <CFormLabel htmlFor="wa">{t('whatsapp')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="wa"
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     defaultValue={nasabah.wa_number}
                     onChange={(e) => {
                       setNasabah((nasabah) => ({
@@ -140,11 +142,11 @@ const NasabahDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="address">Address</CFormLabel>
+                  <CFormLabel htmlFor="address">{t('address')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="address"
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     defaultValue={nasabah.address}
                     onChange={(e) => {
                       setNasabah((nasabah) => ({
@@ -155,11 +157,11 @@ const NasabahDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="group">Group</CFormLabel>
+                  <CFormLabel htmlFor="group">{t('group')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="group"
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     defaultValue={nasabah.group}
                     onChange={(e) => {
                       setNasabah((nasabah) => ({
@@ -170,7 +172,7 @@ const NasabahDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="status">Status</CFormLabel>
+                  <CFormLabel htmlFor="status">{t('status')}</CFormLabel>
                   <CFormSelect
                     id="status"
                     value={nasabah.active}
@@ -178,13 +180,13 @@ const NasabahDetail = () => {
                       setNasabah((nasabah) => ({ ...nasabah, active: e.target.value }))
                     }}
                   >
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
+                    <option value="true">{t('active')}</option>
+                    <option value="false">{t('inactive')}</option>
                   </CFormSelect>
                 </div>
                 <hr />
                 <div className="mb-3">
-                  <CFormLabel htmlFor="reason">Reason</CFormLabel>
+                  <CFormLabel htmlFor="reason">{t('reason')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="reason"
@@ -196,11 +198,11 @@ const NasabahDetail = () => {
                       }))
                     }}
                   />
-                  <CFormFeedback invalid>Please provide a reason.</CFormFeedback>
+                  <CFormFeedback invalid>{t('invalid_reason')}</CFormFeedback>
                 </div>
                 <div className="d-flex justify-content-end">
                   <CButton color="primary" type="submit">
-                    Edit
+                    {t('edit')}
                   </CButton>
                 </div>
               </CForm>
@@ -210,16 +212,16 @@ const NasabahDetail = () => {
         <CCol>
           <CCard>
             <CCardHeader component="h4" className="p-3">
-              Account Information
+              {t('account_info')}
             </CCardHeader>
             <CCardBody>
               <CForm>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="accountNumber">Account Number</CFormLabel>
+                  <CFormLabel htmlFor="accountNumber">{t('account_number')}</CFormLabel>
                   <CFormInput type="text" id="accountNumber" />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="type">Type of Account</CFormLabel>
+                  <CFormLabel htmlFor="type">{t('account_type')}</CFormLabel>
                   <CFormSelect id="type">
                     <option value="1">One</option>
                     <option value="2">Two</option>
@@ -227,7 +229,7 @@ const NasabahDetail = () => {
                   </CFormSelect>
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="status">Status</CFormLabel>
+                  <CFormLabel htmlFor="status">{t('status')}</CFormLabel>
                   <CFormSelect id="status">
                     <option value="1">One</option>
                     <option value="2">Two</option>
@@ -235,13 +237,13 @@ const NasabahDetail = () => {
                   </CFormSelect>
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="note">Note</CFormLabel>
+                  <CFormLabel htmlFor="note">{t('note')}</CFormLabel>
                   <CFormTextarea type="text" id="note" rows={3} />
                 </div>
                 <div className="d-flex justify-content-between">
-                  <CButton color="primary">View Records</CButton>
+                  <CButton color="primary">{t('view_records')}</CButton>
                   <CButton color="primary" variant="outline">
-                    Edit
+                    {t('edit')}
                   </CButton>
                 </div>
                 <br />
@@ -251,7 +253,7 @@ const NasabahDetail = () => {
                   <CCol>
                     <div className="d-grid gap-2">
                       <CButton color="primary" variant="outline">
-                        Register to Products
+                        {t('register_to_products')}
                       </CButton>
                       <CButton
                         color="primary"
@@ -260,7 +262,7 @@ const NasabahDetail = () => {
                           history.push('/nasabah/details/cashIn')
                         }}
                       >
-                        Cash In
+                        {t('cash_in')}
                       </CButton>
                     </div>
                   </CCol>
@@ -273,7 +275,7 @@ const NasabahDetail = () => {
                           history.push('/nasabah/details/transfer')
                         }}
                       >
-                        Transfer
+                        {t('transfer')}
                       </CButton>
                       <CButton
                         color="primary"
@@ -282,7 +284,7 @@ const NasabahDetail = () => {
                           history.push('/nasabah/details/cashOut')
                         }}
                       >
-                        Cash Out
+                        {t('cash_out')}
                       </CButton>
                     </div>
                   </CCol>

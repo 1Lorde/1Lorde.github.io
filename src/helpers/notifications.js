@@ -1,6 +1,8 @@
+import i18next from 'i18next'
+
 export function success(message) {
   return {
-    title: 'Success',
+    title: i18next.t('success'),
     message: message,
     type: 'success',
     insert: 'bottom',
@@ -15,7 +17,7 @@ export function success(message) {
 
 export function danger(message) {
   return {
-    title: 'Error',
+    title: i18next.t('error'),
     message: message,
     type: 'danger',
     insert: 'bottom',
@@ -30,7 +32,7 @@ export function danger(message) {
 
 export function info(message) {
   return {
-    title: 'Info',
+    title: i18next.t('info'),
     message: message,
     type: 'info',
     insert: 'bottom',
@@ -45,7 +47,7 @@ export function info(message) {
 
 export function warning(message) {
   return {
-    title: 'Warning',
+    title: i18next.t('warning'),
     message: message,
     type: 'warning',
     insert: 'bottom',

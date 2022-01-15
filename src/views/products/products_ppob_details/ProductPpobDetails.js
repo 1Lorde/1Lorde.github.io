@@ -23,8 +23,10 @@ import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
 import RestrictedComponent from '../../../routes/RestrictedComponent'
 import { Roles } from '../../../helpers/role'
+import { useTranslation } from 'react-i18next'
 
 const ProductPpobDetails = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   const { id } = useParams()
@@ -56,7 +58,7 @@ const ProductPpobDetails = () => {
               console.log('Notification created: ' + resp.id)
             },
           )
-          store.addNotification(success('PPOB updated successfully.'))
+          store.addNotification(success(t('notifications.ppob_update')))
           history.push('/products/ppob')
         } else {
           console.log(data)
@@ -104,7 +106,7 @@ const ProductPpobDetails = () => {
     <CForm noValidate validated={validated} onSubmit={handleEdit}>
       <CRow xs={{ cols: 1 }} md={{ cols: 2 }} className="mb-4">
         <CCol>
-          <CFormLabel htmlFor="category">Category</CFormLabel>
+          <CFormLabel htmlFor="category">{t('category')}</CFormLabel>
           <CFormSelect
             id="category"
             defaultValue={service.category}
@@ -112,8 +114,8 @@ const ProductPpobDetails = () => {
               setService((service) => ({ ...service, category: e.target.value }))
             }}
           >
-            <option value="postpaid">Postpaid</option>
-            <option value="prepaid">Prepaid</option>
+            <option value="postpaid">{t('postpaid')}</option>
+            <option value="prepaid">{t('prepaid')}</option>
           </CFormSelect>
           <CContainer fluid className="d-flex justify-content-center mt-4 mb-3">
             <CImage
@@ -127,7 +129,7 @@ const ProductPpobDetails = () => {
         </CCol>
         <CCol>
           <div className="mb-2">
-            <CFormLabel htmlFor="name">PPOB Name</CFormLabel>
+            <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
             <CFormInput
               type="text"
               id="name"
@@ -139,7 +141,7 @@ const ProductPpobDetails = () => {
             />
           </div>
           <div className="mb-2">
-            <CFormLabel htmlFor="slug">Slug</CFormLabel>
+            <CFormLabel htmlFor="slug">{t('slug')}</CFormLabel>
             <CFormInput
               type="text"
               id="slug"
@@ -151,7 +153,7 @@ const ProductPpobDetails = () => {
             />
           </div>
           <div className="mb-2">
-            <CFormLabel htmlFor="description">Description</CFormLabel>
+            <CFormLabel htmlFor="description">{t('description')}</CFormLabel>
             <CFormTextarea
               type="text"
               id="description"
@@ -164,7 +166,7 @@ const ProductPpobDetails = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="vendor">Vendor</CFormLabel>
+            <CFormLabel htmlFor="vendor">{t('vendor')}</CFormLabel>
             <CFormSelect
               id="vendor"
               defaultValue={service.vendor_slug}
@@ -181,7 +183,7 @@ const ProductPpobDetails = () => {
               })}
             </CFormSelect>
           </div>
-          <h5>Margin by</h5>
+          <h5>{t('margin_by')}</h5>
           <CRow xs={{ cols: 1 }} md={{ cols: 2 }} className="mb-3 mt-3 align-items-center">
             <CCol>
               <CFormCheck
@@ -190,7 +192,7 @@ const ProductPpobDetails = () => {
                 name="inlineRadioOptions"
                 id="inlineCheckbox1"
                 value="all"
-                label="All (Default)"
+                label={t('all')}
                 defaultChecked={service.margin_by === 'all'}
                 onChange={() => {
                   setService((service) => ({ ...service, margin_by: 'all' }))
@@ -202,7 +204,7 @@ const ProductPpobDetails = () => {
                 name="inlineRadioOptions"
                 id="inlineCheckbox2"
                 value="percent"
-                label="Percent"
+                label={t('percent')}
                 defaultChecked={service.margin_by === 'percent'}
                 onChange={() => {
                   setService((service) => ({ ...service, margin_by: 'percent' }))
@@ -214,7 +216,7 @@ const ProductPpobDetails = () => {
                 name="inlineRadioOptions"
                 id="inlineCheckbox3"
                 value="fix"
-                label="Fix"
+                label={t('fix')}
                 defaultChecked={service.margin_by === 'fix_cost'}
                 onChange={() => {
                   setService((service) => ({ ...service, margin_by: 'fix_cost' }))
@@ -236,12 +238,12 @@ const ProductPpobDetails = () => {
             </CCol>
           </CRow>
           <CRow className="mb-3 align-items-center">
-            <CCol xs={5}>Retail Price (after margin added)</CCol>
+            <CCol xs={5}>{t('retail_price')}</CCol>
             <CCol>
               <CFormInput type="text" id="retail_price" />
             </CCol>
           </CRow>
-          <CFormLabel htmlFor="status">Status</CFormLabel>
+          <CFormLabel htmlFor="status">{t('status')}</CFormLabel>
           <CFormSelect
             id="status"
             defaultValue={service.active}
@@ -252,8 +254,8 @@ const ProductPpobDetails = () => {
               }))
             }}
           >
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
+            <option value="true">{t('active')}</option>
+            <option value="false">{t('inactive')}</option>
           </CFormSelect>
         </CCol>
       </CRow>
@@ -273,7 +275,7 @@ const ProductPpobDetails = () => {
                 history.push('/products/ppob/' + id + '/buy')
               }}
             >
-              Buy
+              {t('buy')}
             </CButton>
           </RestrictedComponent>
         </CCol>
@@ -286,7 +288,7 @@ const ProductPpobDetails = () => {
             ]}
           >
             <CButton color="primary" type="submit">
-              Edit
+              {t('edit')}
             </CButton>
           </RestrictedComponent>
         </CCol>

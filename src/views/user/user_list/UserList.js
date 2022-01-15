@@ -17,8 +17,10 @@ import { Table } from '../../../components/Table'
 import { getUsers } from '../../../api/api_user'
 import { cilPen } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { useTranslation } from 'react-i18next'
 
 const UserList = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [hasLoaded, setHasLoaded] = useState(false)
   const [users, setUsers] = useState([])
@@ -34,19 +36,19 @@ const UserList = () => {
       case 'active':
         return (
           <CBadge className="mt-1" color="success" shape="rounded-pill">
-            {status}
+            {t('active')}
           </CBadge>
         )
       case 'inactive':
         return (
           <CBadge className="mt-1" color="secondary" shape="rounded-pill">
-            {status}
+            {t('inactive')}
           </CBadge>
         )
       default:
         return (
           <CBadge className="mt-1" color="dark" shape="rounded-pill">
-            unknown
+            {t('unknown')}
           </CBadge>
         )
     }
@@ -78,7 +80,7 @@ const UserList = () => {
                     onClick={() => history.push('/users/' + item.id)}
                   >
                     <CIcon icon={cilPen} className="me-1" />
-                    Edit
+                    {t('edit')}
                   </CButton>
                 ),
               }
@@ -95,23 +97,23 @@ const UserList = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: t('name'),
         accessor: 'name',
       },
       {
-        Header: 'WhatsApp Number',
+        Header: t('whatsapp'),
         accessor: 'number',
       },
       {
-        Header: 'Role',
+        Header: t('role'),
         accessor: 'role',
       },
       {
-        Header: 'Status',
+        Header: t('status'),
         accessor: 'status',
       },
       {
-        Header: 'Action',
+        Header: t('action'),
         accessor: 'action',
       },
     ],
@@ -122,63 +124,63 @@ const UserList = () => {
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
-          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormLabel htmlFor="searchInput">{t('search')}</CFormLabel>
           <CFormInput
             type="text"
             id="searchInput"
-            placeholder="Enter search query.."
+            placeholder={t('enter_search_query')}
             onChange={(e) => {
               setSearchQuery(e.target.value)
             }}
           />
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+          <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
           <CFormSelect
             id="statusInput"
             onChange={(e) => {
               setStatus(e.target.value)
             }}
           >
-            <option value="">All</option>
-            <option value="inactive">Inactive</option>
-            <option value="active">Active</option>
+            <option value="">{t('all')}</option>
+            <option value="inactive">{t('inactive')}</option>
+            <option value="active">{t('active')}</option>
           </CFormSelect>
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="roleInput">Role</CFormLabel>
+          <CFormLabel htmlFor="roleInput">{t('role')}</CFormLabel>
           <CFormSelect
             id="roleInput"
             onChange={(e) => {
               setRole(e.target.value)
             }}
           >
-            <option value="">All</option>
-            <option value="app-owner">App Owner</option>
-            <option value="product-technical">Product & Technical</option>
-            <option value="marketing-finance">Marketing & Finance</option>
-            <option value="koperasi-owner">Koperasi Owner</option>
-            <option value="credit-analyst">Credit Analyst</option>
-            <option value="account-officer">Account Officer</option>
+            <option value="">{t('all')}</option>
+            <option value="app-owner">{t('app_owner')}</option>
+            <option value="product-technical">{t('product_technical')}</option>
+            <option value="marketing-finance">{t('marketing_finance')}</option>
+            <option value="koperasi-owner">{t('koperasi_owner')}</option>
+            <option value="credit-analyst">{t('credit_analyst')}</option>
+            <option value="account-officer">{t('account_officer')}</option>
           </CFormSelect>
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="sortInput">Sort By</CFormLabel>
+          <CFormLabel htmlFor="sortInput">{t('sort_by')}</CFormLabel>
           <CFormSelect
             id="sortInput"
             onChange={(e) => {
               setSort(e.target.value)
             }}
           >
-            <option value="name:asc">Name (ascending)</option>
-            <option value="name:desc">Name (descending)</option>
-            <option value="created_at:desc">Creation date (new first)</option>
-            <option value="created_at:asc">Creation date (old first)</option>
+            <option value="name:asc">{t('name') + ' (' + t('ascending') + ')'}</option>
+            <option value="name:desc">{t('name') + ' (' + t('descending') + ')'}</option>
+            <option value="created_at:desc">{t('created_new')}</option>
+            <option value="created_at:asc">{t('created_old')}</option>
           </CFormSelect>
         </CCol>
         <CCol className={'d-flex justify-content-end'}>
           <CButton color="primary" onClick={() => history.push('/users/create')}>
-            Add New
+            {t('add_new')}
           </CButton>
         </CCol>
       </CRow>

@@ -19,8 +19,10 @@ import { createNasabah } from '../../../api/api_nasabah'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const NasabahCreate = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   const [nasabah, setNasabah] = useState({})
@@ -44,7 +46,7 @@ const NasabahCreate = () => {
               console.log('Notification created' + resp.id)
             },
           )
-          store.addNotification(success('Nasabah ' + nasabah.name + ' created successfully.'))
+          store.addNotification(success(t('notifications.nasabah_create', { name: nasabah.name })))
           history.push('/nasabah')
         } else {
           if (data.message) {
@@ -66,7 +68,7 @@ const NasabahCreate = () => {
         <CCardBody>
           <CForm noValidate validated={validated} onSubmit={handleCreate}>
             <div className="mb-3">
-              <CFormLabel htmlFor="name">Name</CFormLabel>
+              <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="name"
@@ -75,10 +77,10 @@ const NasabahCreate = () => {
                   setNasabah((nasabah) => ({ ...nasabah, name: e.target.value }))
                 }}
               />
-              <CFormFeedback invalid>Please provide a name.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_name')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="ktp">KTP Number</CFormLabel>
+              <CFormLabel htmlFor="ktp">{t('ktp')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="ktp"
@@ -92,10 +94,10 @@ const NasabahCreate = () => {
                   }))
                 }}
               />
-              <CFormFeedback invalid>Please provide a KTP ID (min length 16).</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_ktp')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="wa">WhatsApp Number</CFormLabel>
+              <CFormLabel htmlFor="wa">{t('whatsapp')}</CFormLabel>
               <CFormInput
                 type="tel"
                 id="wa"
@@ -108,10 +110,10 @@ const NasabahCreate = () => {
                   }))
                 }}
               />
-              <CFormFeedback invalid>Please provide a valid phone number.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_wa')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="address">Address</CFormLabel>
+              <CFormLabel htmlFor="address">{t('address')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="address"
@@ -124,10 +126,10 @@ const NasabahCreate = () => {
                   }))
                 }}
               />
-              <CFormFeedback invalid>Please provide an address.</CFormFeedback>
+              <CFormFeedback invalid>{t('invalid_address')}</CFormFeedback>
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="group">Group</CFormLabel>
+              <CFormLabel htmlFor="group">{t('group')}</CFormLabel>
               <CFormInput
                 type="text"
                 id="group"
@@ -141,7 +143,7 @@ const NasabahCreate = () => {
             </div>
             <div className="d-flex justify-content-end">
               <CButton color="primary" type="submit">
-                Create
+                {t('create')}
               </CButton>
             </div>
           </CForm>

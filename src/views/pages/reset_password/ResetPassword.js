@@ -18,8 +18,11 @@ import { store } from 'react-notifications-component'
 import { danger, info } from '../../../helpers/notifications'
 import NewPassword from '../../../components/NewPassword'
 import { forgotPassword } from '../../../api/api_auth'
+import { useTranslation } from 'react-i18next'
 
 const ResetPassword = () => {
+  const { t } = useTranslation()
+
   const [wa_number, setNumber] = useState('')
   const [ktp_id, setKtp] = useState('')
   const [isValid, setIsValid] = useState(false)
@@ -62,39 +65,39 @@ const ResetPassword = () => {
                   <NewPassword userId={userId} token={token} />
                 ) : (
                   <CForm noValidate validated={validated} onSubmit={handleReset}>
-                    <h2>Reset password</h2>
+                    <h2>{t('reset_password')}</h2>
                     <br />
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilPhone} />
                       </CInputGroupText>
                       <CFormInput
-                        placeholder="WhatsApp number"
+                        placeholder={t('whatsapp')}
                         type="tel"
                         pattern="^\+62[0-9]{9,15}$"
                         required
                         value={wa_number}
                         onChange={(e) => setNumber(e.target.value)}
                       />
-                      <CFormFeedback invalid>Please provide a valid phone number.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_wa')}</CFormFeedback>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilAsterisk} />
                       </CInputGroupText>
                       <CFormInput
-                        placeholder="KTP number"
+                        placeholder={t('ktp')}
                         required
                         pattern="^[0-9]{16}$"
                         value={ktp_id}
                         onChange={(e) => setKtp(e.target.value)}
                       />
-                      <CFormFeedback invalid>Please provide a valid KTP number.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_ktp')}</CFormFeedback>
                     </CInputGroup>
                     <CRow>
                       <CCol className="d-flex justify-content-end">
                         <CButton color="primary" className="px-4" type="submit">
-                          Submit
+                          {t('submit')}
                         </CButton>
                       </CCol>
                     </CRow>

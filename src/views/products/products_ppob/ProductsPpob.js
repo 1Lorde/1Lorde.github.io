@@ -27,8 +27,10 @@ import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
 import RestrictedComponent from '../../../routes/RestrictedComponent'
+import { useTranslation } from 'react-i18next'
 
 const ProductsPpob = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   const [services, setServices] = useState([])
@@ -60,7 +62,7 @@ const ProductsPpob = () => {
               console.log('Notification created: ' + resp.id)
             },
           )
-          store.addNotification(success('Service margin updated successfully.'))
+          store.addNotification(success(t('notifications.service_margin_update')))
         } else {
           console.log(data)
           store.addNotification(danger(data.error))
@@ -96,54 +98,54 @@ const ProductsPpob = () => {
     <CContainer>
       <CRow className="align-items-center mb-4">
         <CCol xl={4}>
-          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormLabel htmlFor="searchInput">{t('search')}</CFormLabel>
           <CFormInput
             type="text"
             id="searchInput"
-            placeholder="Enter search query.."
+            placeholder={t('enter_search_query')}
             onChange={(e) => {
               setSearchQuery(e.target.value)
             }}
           />
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="categoryInput">Category</CFormLabel>
+          <CFormLabel htmlFor="categoryInput">{t('category')}</CFormLabel>
           <CFormSelect
             id="categoryInput"
             onChange={(e) => {
               setCategory(e.target.value)
             }}
           >
-            <option value="">All</option>
-            <option value="postpaid">Postpaid</option>
-            <option value="prepaid">Prepaid</option>
+            <option value="">{t('all')}</option>
+            <option value="postpaid">{t('postpaid')}</option>
+            <option value="prepaid">{t('prepaid')}</option>
           </CFormSelect>
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+          <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
           <CFormSelect
             id="statusInput"
             onChange={(e) => {
               setActive(e.target.value)
             }}
           >
-            <option value="">All</option>
-            <option value={1}>Active</option>
-            <option value={0}>Inactive</option>
+            <option value="">{t('all')}</option>
+            <option value={1}>{t('active')}</option>
+            <option value={0}>{t('inactive')}</option>
           </CFormSelect>
         </CCol>
         <RestrictedComponent allowedRoles={('koperasi-owner', 'credit-analyst')}>
           <CCol>
-            <CFormLabel htmlFor="marginByInput">Margin By</CFormLabel>
+            <CFormLabel htmlFor="marginByInput">{t('margin_by')}</CFormLabel>
             <CFormSelect
               id="marginByInput"
               onChange={(e) => {
                 setMarginBy(e.target.value)
               }}
             >
-              <option value="">All</option>
-              <option value="fix_cost">Fix Cost</option>
-              <option value="percent">Percent</option>
+              <option value="">{t('all')}</option>
+              <option value="fix_cost">{t('fix_cost')}</option>
+              <option value="percent">{t('percent')}</option>
             </CFormSelect>
           </CCol>
         </RestrictedComponent>
@@ -152,7 +154,7 @@ const ProductsPpob = () => {
         <CForm noValidate validated={validated} onSubmit={handleServicesMarginUpdate}>
           <CRow className="align-items-center mb-5">
             <CCol xl={3}>
-              <CFormLabel htmlFor="margin_by">Margin By (for all)</CFormLabel>
+              <CFormLabel htmlFor="margin_by">{t('margin_by_all')}</CFormLabel>
               <CFormSelect
                 id="margin_by"
                 defaultValue={servicesMargin.margin_by}
@@ -163,13 +165,13 @@ const ProductsPpob = () => {
                   }))
                 }}
               >
-                <option value="fix_cost">Fix Cost</option>
-                <option value="percent">Percent</option>
+                <option value="fix_cost">{t('fix_cost')}</option>
+                <option value="percent">{t('percent')}</option>
               </CFormSelect>
             </CCol>
 
             <CCol xl={3}>
-              <CFormLabel htmlFor="nominal">Nominal</CFormLabel>
+              <CFormLabel htmlFor="nominal">{t('nominal')}</CFormLabel>
               <CFormInput
                 id="nominal"
                 type="number"
@@ -185,7 +187,7 @@ const ProductsPpob = () => {
             </CCol>
             <CCol xl={3}>
               <CButton className="mt-4" size="sm" type="submit">
-                Update margin
+                {t('update_margin')}
               </CButton>
             </CCol>
           </CRow>
@@ -211,11 +213,11 @@ const ProductsPpob = () => {
                     <CCardText>{service.desc}</CCardText>
                     {service.active ? (
                       <CBadge color="success" shape="rounded-pill">
-                        Active
+                        {t('active')}
                       </CBadge>
                     ) : (
                       <CBadge color="dark" shape="rounded-pill">
-                        Inactive
+                        {t('inactive')}
                       </CBadge>
                     )}
                   </CCardBody>
@@ -226,7 +228,7 @@ const ProductsPpob = () => {
         ) : (
           <>
             <div className="d-flex justify-content-center">
-              <CHeaderText>No PPOB found</CHeaderText>
+              <CHeaderText>{t('not_found')}</CHeaderText>
             </div>
           </>
         )}

@@ -25,8 +25,10 @@ import { getPackages } from '../../../api/api_package'
 import Loader from '../../../components/Loader'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
+import { useTranslation } from 'react-i18next'
 
 const ClientRegister = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [client, setClient] = useState({
     NPWP_image: '',
@@ -76,7 +78,7 @@ const ClientRegister = () => {
           createNotification(client.contact_wa_number, Services.clientRegister, '').then((resp) => {
             console.log('Notification created: ' + resp.id)
           })
-          store.addNotification(success('Client registration request created successfully.'))
+          store.addNotification(success(t('notifications.client_create')))
         } else {
           console.log(data)
           store.addNotification(danger(data.error))
@@ -92,12 +94,12 @@ const ClientRegister = () => {
           <CCard className="p-4">
             <CCardBody>
               <CForm noValidate validated={validated} onSubmit={handleCreate}>
-                <h1>Client registration form</h1>
+                <h1>{t('client_registration_form')}</h1>
                 <hr />
                 <CRow className="pt-3">
                   <CCol>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="companyInput">Company Name</CFormLabel>
+                      <CFormLabel htmlFor="companyInput">{t('company_name')}</CFormLabel>
                       <CFormInput
                         type="text"
                         id="companyInput"
@@ -106,10 +108,10 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, company: e.target.value }))
                         }}
                       />
-                      <CFormFeedback invalid>Please provide a company name.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_name')}</CFormFeedback>
                     </div>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="emailInput">Email</CFormLabel>
+                      <CFormLabel htmlFor="emailInput">{t('email')}</CFormLabel>
                       <CFormInput
                         type="email"
                         id="emailInput"
@@ -119,10 +121,10 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, email: e.target.value }))
                         }}
                       />
-                      <CFormFeedback invalid>Please provide a valid email.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_email')}</CFormFeedback>
                     </div>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="npwpInput">NPWP</CFormLabel>
+                      <CFormLabel htmlFor="npwpInput">{t('npwp')}</CFormLabel>
                       <CFormInput
                         type="text"
                         id="npwpInput"
@@ -132,10 +134,10 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, NPWP: e.target.value }))
                         }}
                       />
-                      <CFormFeedback invalid>Please provide a valid NPWP.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_npwp')}</CFormFeedback>
                     </div>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="addressInput">Address</CFormLabel>
+                      <CFormLabel htmlFor="addressInput">{t('address')}</CFormLabel>
                       <CFormInput
                         type="text"
                         id="addressInput"
@@ -145,12 +147,12 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, address: e.target.value }))
                         }}
                       />
-                      <CFormFeedback invalid>Please provide a valid address.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_address')}</CFormFeedback>
                     </div>
                   </CCol>
                   <CCol>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="packageInput">Package</CFormLabel>
+                      <CFormLabel htmlFor="packageInput">{t('package')}</CFormLabel>
                       <CFormSelect
                         id="packageInput"
                         aria-label="package"
@@ -158,7 +160,7 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, package_slug: e.target.value }))
                         }}
                       >
-                        <option disabled>Please select</option>
+                        <option disabled>{t('please_select')}</option>
                         {packages.map((pack, index) => {
                           return (
                             <option key={index} value={pack.slug}>
@@ -169,7 +171,9 @@ const ClientRegister = () => {
                       </CFormSelect>
                     </div>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="contactNameInput">Contact Name</CFormLabel>
+                      <CFormLabel htmlFor="contactNameInput">
+                        {t('contact') + ' ' + t('name')}
+                      </CFormLabel>
                       <CFormInput
                         type="text"
                         id="contactNameInput"
@@ -178,10 +182,12 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, contact_dir_name: e.target.value }))
                         }}
                       />
-                      <CFormFeedback invalid>Please provide a contact name.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_name')}</CFormFeedback>
                     </div>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="wanumberInput">Contact WhatsApp Number</CFormLabel>
+                      <CFormLabel htmlFor="wanumberInput">
+                        {t('contact') + ' ' + t('whatsapp')}
+                      </CFormLabel>
                       <CFormInput
                         id="wanumberInput"
                         type="tel"
@@ -191,10 +197,12 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, contact_wa_number: e.target.value }))
                         }}
                       />
-                      <CFormFeedback invalid>Please provide a valid phone number.</CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_wa')}</CFormFeedback>
                     </div>
                     <div className="mb-3">
-                      <CFormLabel htmlFor="ktpnumberInput">Contact KTP Number</CFormLabel>
+                      <CFormLabel htmlFor="ktpnumberInput">
+                        {t('contact') + ' ' + t('ktp')}
+                      </CFormLabel>
                       <CFormInput
                         type="text"
                         id="ktpnumberInput"
@@ -204,19 +212,17 @@ const ClientRegister = () => {
                           setClient((client) => ({ ...client, contact_ktp_id: e.target.value }))
                         }}
                       />
-                      <CFormFeedback invalid>
-                        Please provide a valid KTP number (min length 16).
-                      </CFormFeedback>
+                      <CFormFeedback invalid>{t('invalid_ktp')}</CFormFeedback>
                     </div>
                   </CCol>
                 </CRow>
                 <div className="d-flex justify-content-center mt-4">
                   <CButton color="primary" type="submit">
-                    Register
+                    {t('register')}
                   </CButton>
                 </div>
                 <div className="d-flex justify-content-end pt-2">
-                  <Link to="/login">Back to login</Link>
+                  <Link to="/login">{t('back_to_login')}</Link>
                 </div>
               </CForm>
             </CCardBody>
@@ -226,14 +232,14 @@ const ClientRegister = () => {
 
       <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
         <CModalHeader>
-          <CModalTitle>Verification Code</CModalTitle>
+          <CModalTitle>{t('verify_code')}</CModalTitle>
         </CModalHeader>
         <CModalBody className="text-center">
-          <p>Your verification code is:</p>
+          <p>{t('your_verify_code_is')}:</p>
           <h1>{code}</h1>
           <br />
           <span>
-            Send this code with the next format via WhatsApp to +6281222888757:{' '}
+            {t('send_verify_code_to') + ' +6281222888757: '}
             <code>!VERIFY {code}</code>
           </span>
         </CModalBody>
@@ -245,7 +251,7 @@ const ClientRegister = () => {
               history.push('/login')
             }}
           >
-            Close
+            {t('close')}
           </CButton>
         </CModalFooter>
       </CModal>

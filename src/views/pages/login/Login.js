@@ -19,8 +19,10 @@ import { UserContext } from '../../../helpers/user'
 import { danger, info } from '../../../helpers/notifications'
 import { store } from 'react-notifications-component'
 import { login } from '../../../api/api_auth'
+import { useTranslation } from 'react-i18next'
 
 const Login = () => {
+  const { t } = useTranslation()
   const [wa_number, setNumber] = useState('')
   const [password, setPassword] = useState('')
   const { userDispatch } = useContext(UserContext)
@@ -58,8 +60,8 @@ const Login = () => {
             <CCard className="p-4">
               <CCardBody>
                 <CForm noValidate validated={validated} onSubmit={handleLogin}>
-                  <h1>Login</h1>
-                  <p className="text-medium-emphasis">Sign In to your account</p>
+                  <h1>{t('login')}</h1>
+                  <p className="text-medium-emphasis">{t('sign_in')}</p>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilPhone} />
@@ -67,12 +69,12 @@ const Login = () => {
                     <CFormInput
                       type="tel"
                       pattern="^\+62[0-9]{9,15}$"
-                      placeholder="WhatsApp number"
+                      placeholder={t('whatsapp')}
                       required
                       value={wa_number}
                       onChange={(e) => setNumber(e.target.value)}
                     />
-                    <CFormFeedback invalid>Please provide a valid phone number.</CFormFeedback>
+                    <CFormFeedback invalid>{t('invalid_wa')}</CFormFeedback>
                   </CInputGroup>
                   <CInputGroup className="mb-4">
                     <CInputGroupText>
@@ -80,22 +82,22 @@ const Login = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Password"
+                      placeholder={t('password')}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <CFormFeedback invalid>Please provide a password.</CFormFeedback>
+                    <CFormFeedback invalid>{t('invalid_password')}</CFormFeedback>
                   </CInputGroup>
                   <div className="d-flex justify-content-start">
                     <CButton color="primary" className="px-4" type="submit">
-                      Login
+                      {t('login')}
                     </CButton>
                   </div>
                   <div className="d-flex justify-content-end">
-                    <Link to="/register">Client registration</Link>
+                    <Link to="/register">{t('client_registration')}</Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Link to="/reset_password">Forgot password</Link>
+                    <Link to="/reset_password">{t('forgot_password')}</Link>
                   </div>
                 </CForm>
               </CCardBody>

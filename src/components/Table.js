@@ -17,9 +17,11 @@ import {
 import React, { useEffect } from 'react'
 import CIcon from '@coreui/icons-react'
 import { cilSad } from '@coreui/icons'
+import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line react/prop-types
 export function Table({ columns, data, controlledPageCount, fetchData, hasLoaded }) {
+  const { t } = useTranslation()
   const {
     getTableProps,
     getTableBodyProps,
@@ -85,7 +87,7 @@ export function Table({ columns, data, controlledPageCount, fetchData, hasLoaded
         </CTable>
 
         <CContainer className={'d-flex justify-content-end align-items-center'}>
-          <CHeaderText className={'pe-2'}>Go to page:</CHeaderText>
+          <CHeaderText className={'pe-2'}>{t('go_to_page') + ':'}</CHeaderText>
           <CFormInput
             min={1}
             max={controlledPageCount}
@@ -115,7 +117,7 @@ export function Table({ columns, data, controlledPageCount, fetchData, hasLoaded
             {'<'}
           </CPaginationItem>
           <CPaginationItem aria-label="Current" style={{ pointerEvents: 'none' }}>
-            Page <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
+            {t('page')} <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
           </CPaginationItem>
           <CPaginationItem aria-label="Next" onClick={() => nextPage()} disabled={!canNextPage}>
             {'>'}
@@ -132,7 +134,7 @@ export function Table({ columns, data, controlledPageCount, fetchData, hasLoaded
     ) : (
       <CCol className="d-flex justify-content-center">
         <CHeaderText>
-          Nothing there <CIcon icon={cilSad} />{' '}
+          {t('nothing_there')} <CIcon icon={cilSad} />{' '}
         </CHeaderText>
       </CCol>
     )

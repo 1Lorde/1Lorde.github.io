@@ -15,8 +15,10 @@ import {
 import { useHistory } from 'react-router-dom'
 import Loader from '../../../components/Loader'
 import { getAdminPackages } from '../../../api/api_package'
+import { useTranslation } from 'react-i18next'
 
 const PackageList = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [packages, setPackages] = useState([])
   const [hasLoaded, setHasLoaded] = useState()
@@ -36,7 +38,7 @@ const PackageList = () => {
       <CRow className="align-items-center">
         <CCol className={'d-flex justify-content-end'}>
           <CButton color="primary" onClick={() => history.push('/packages/create')}>
-            Add New
+            {t('add_new')}
           </CButton>
         </CCol>
       </CRow>
@@ -60,11 +62,11 @@ const PackageList = () => {
                   <CCardText>{pack.description}</CCardText>
                   {pack.active ? (
                     <CBadge color="success" shape="rounded-pill">
-                      Active
+                      {t('active')}
                     </CBadge>
                   ) : (
                     <CBadge color="dark" shape="rounded-pill">
-                      Inactive
+                      {t('inactive')}
                     </CBadge>
                   )}
                 </CCardBody>

@@ -19,8 +19,10 @@ import Loader from '../../../components/Loader'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const TicketDetails = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   let { uid } = useParams()
@@ -49,31 +51,31 @@ const TicketDetails = () => {
       case 0:
         return (
           <CBadge className="mt-1" color="success" shape="rounded-pill">
-            New
+            {t('new')}
           </CBadge>
         )
       case 1:
         return (
           <CBadge className="mt-1" color="danger" shape="rounded-pill">
-            Open
+            {t('open')}
           </CBadge>
         )
       case 2:
         return (
           <CBadge className="mt-1" color="info" shape="rounded-pill">
-            Pending
+            {t('pending')}
           </CBadge>
         )
       case 3:
         return (
           <CBadge className="mt-1" color="secondary" shape="rounded-pill">
-            Closed
+            {t('closed')}
           </CBadge>
         )
       default:
         return (
           <CBadge className="mt-1" color="dark" shape="rounded-pill">
-            unknown
+            {t('unknown')}
           </CBadge>
         )
     }
@@ -91,7 +93,7 @@ const TicketDetails = () => {
       createComment(ticket._id, comment).then((data) => {
         if (data.ok) {
           setHasNewComment(true)
-          store.addNotification(success('Comment sent successfully.'))
+          store.addNotification(success(t('notifications.comment_create')))
         } else {
           if (data.message) {
             console.log(data)
@@ -108,10 +110,10 @@ const TicketDetails = () => {
   function handleClose() {
     closeTicket(ticket._id).then((data) => {
       if (data.ok) {
-        store.addNotification(success('Ticket closed'))
+        store.addNotification(success(t('notifications.ticket_close')))
         history.push('/support/tickets')
       } else {
-        store.addNotification(danger('Error'))
+        store.addNotification(danger('notifications.error'))
       }
     })
   }
@@ -121,7 +123,7 @@ const TicketDetails = () => {
       <CCallout className="mb-5" color="info" style={{ backgroundColor: 'white' }}>
         <div className="d-flex justify-content-between">
           <span>
-            Created:{' '}
+            {t('created') + ': '}
             {new Date(ticket.history[0].date).toLocaleString('en-US', {
               weekday: 'short', // long, short, narrow
               day: 'numeric', // numeric, 2-digit
@@ -133,12 +135,12 @@ const TicketDetails = () => {
             })}
           </span>
           <span>
-            Ticket ID #{ticket.uid} {getStatusBadge(ticket.status)}
+            {t('ticket_id') + ' #' + ticket.uid} {getStatusBadge(ticket.status)}
           </span>
         </div>
         <hr />
         <div className="d-flex justify-content-start">
-          <h5>Title:</h5>
+          <h5>{t('ticket_id') + ':'}</h5>
           <span className="ms-3">{ticket.subject}</span>
         </div>
       </CCallout>
@@ -165,7 +167,7 @@ const TicketDetails = () => {
       </div>
       <CForm noValidate validated={validated} onSubmit={handleCreateComment}>
         <div className="m-4">
-          <CFormLabel htmlFor="title">Comment</CFormLabel>
+          <CFormLabel htmlFor="comment">{t('comment')}</CFormLabel>
           <CFormInput
             type="text"
             id="comment"
@@ -175,7 +177,7 @@ const TicketDetails = () => {
               setComment(e.target.value)
             }}
           />
-          <CFormFeedback invalid>Please provide a comment.</CFormFeedback>
+          <CFormFeedback invalid>{t('invalid_comment')}</CFormFeedback>
         </div>
         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
           <CButton
@@ -185,7 +187,7 @@ const TicketDetails = () => {
             onClick={handleClose}
             disabled={ticket.status === 3}
           >
-            Close Ticket
+            {t('close_ticket')}
           </CButton>
           <CButton
             type={'submit'}
@@ -194,7 +196,7 @@ const TicketDetails = () => {
             variant="outline"
             disabled={ticket.status === 3}
           >
-            New Comment
+            {t('new_comment')}
           </CButton>
         </div>
       </CForm>

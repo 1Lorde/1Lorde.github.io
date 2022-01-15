@@ -15,8 +15,10 @@ import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { useParams } from 'react-router-dom'
 import { getVendor } from '../../../api/api_vendors'
+import { useTranslation } from 'react-i18next'
 
 const VendorDetails = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
   const [vendor, setVendor] = useState()
   const [hasLoaded, setHasLoaded] = useState()
@@ -66,11 +68,11 @@ const VendorDetails = () => {
         <CCardBody>
           <CForm>
             <div className="mb-3">
-              <CFormLabel htmlFor="fullnameInput">Company Name</CFormLabel>
+              <CFormLabel htmlFor="fullnameInput">{t('company_name')}</CFormLabel>
               <CFormInput type="text" id="nameInput" defaultValue={vendor.name} />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="descInput">Description</CFormLabel>
+              <CFormLabel htmlFor="descInput">{t('description')}</CFormLabel>
               <CFormTextarea type="text" id="descInput" defaultValue={vendor.desc} />
             </div>
             <div className="mb-3">
@@ -78,7 +80,7 @@ const VendorDetails = () => {
               <CFormInput type="text" id="apiInput" defaultValue={vendor.api_base_url} />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+              <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
               <CFormSelect type="text" id="statusInput" defaultValue={vendor.status}>
                 <option value="NOT-ACTIVE">Inactive</option>
                 <option value="ACTIVE">Active</option>
@@ -86,7 +88,7 @@ const VendorDetails = () => {
             </div>
             <div className="d-flex justify-content-between">
               <CButton color="primary" variant="outline">
-                Edit
+                {t('edit')}
               </CButton>
             </div>
           </CForm>

@@ -20,8 +20,10 @@ import { getPackage, updatePackage } from '../../../api/api_package'
 import { createNotification } from '../../../api/api_notification'
 import { Services } from '../../../helpers/notification_types'
 import { UserContext } from '../../../helpers/user'
+import { useTranslation } from 'react-i18next'
 
 const PackageDetail = () => {
+  const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const history = useHistory()
   let { id } = useParams()
@@ -63,7 +65,7 @@ const PackageDetail = () => {
             console.log('Notification created: ' + resp.id)
           },
         )
-        store.addNotification(success('Package ' + pack.name + ' updated successfully.'))
+        store.addNotification(success(t('notifications.package_update', { name: pack.name })))
         history.push('/packages')
       } else {
         if (data.message) {
@@ -83,7 +85,7 @@ const PackageDetail = () => {
         <CCardImage
           orientation="top"
           src={
-            'https://via.placeholder.com/550x390.png?text=' + (pack.name ? pack.name : 'No name')
+            'https://via.placeholder.com/550x390.png?text=' + (pack.name ? pack.name : t('no_name'))
           }
         />
         <CCardBody>
@@ -91,12 +93,12 @@ const PackageDetail = () => {
             <CRow>
               <CCol>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="name">Name</CFormLabel>
+                  <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="name"
                     required
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     value={pack.name}
                     onChange={(e) => {
                       setPack((pack) => ({ ...pack, name: e.target.value }))
@@ -104,11 +106,11 @@ const PackageDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="description">Description</CFormLabel>
+                  <CFormLabel htmlFor="description">{t('description')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="description"
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     value={pack.description}
                     onChange={(e) => {
                       setPack((pack) => ({ ...pack, description: e.target.value }))
@@ -116,12 +118,12 @@ const PackageDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="slug">Slug</CFormLabel>
+                  <CFormLabel htmlFor="slug">{t('slug')}</CFormLabel>
                   <CFormInput
                     type="text"
                     id="slug"
                     required
-                    placeholder="No data provided"
+                    placeholder={t('no_data')}
                     value={pack.slug}
                     onChange={(e) => {
                       setPack((pack) => ({ ...pack, slug: e.target.value }))
@@ -129,7 +131,7 @@ const PackageDetail = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <CFormLabel htmlFor="status">Status</CFormLabel>
+                  <CFormLabel htmlFor="status">{t('status')}</CFormLabel>
                   <CFormSelect
                     id="status"
                     value={pack.active}
@@ -137,22 +139,22 @@ const PackageDetail = () => {
                       setPack((pack) => ({ ...pack, active: e.target.value }))
                     }}
                   >
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
+                    <option value="true">{t('active')}</option>
+                    <option value="false">{t('inactive')}</option>
                   </CFormSelect>
                 </div>
                 <div className="pt-1">
                   <hr />
-                  <h3>Price</h3>
+                  <h3>{t('price')}</h3>
                   <CRow className="pt-2">
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="monthly">Monthly</CFormLabel>
+                        <CFormLabel htmlFor="monthly">{t('monthly')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="monthly"
                           required
-                          placeholder="No data provided"
+                          placeholder={t('no_data')}
                           value={pack.price.monthly}
                           onChange={(e) => {
                             setPack((pack) => ({
@@ -168,12 +170,12 @@ const PackageDetail = () => {
                     </CCol>
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="yearly">Yearly</CFormLabel>
+                        <CFormLabel htmlFor="yearly">{t('yearly')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="yearly"
                           required
-                          placeholder="No data provided"
+                          placeholder={t('no_data')}
                           value={pack.price.yearly}
                           onChange={(e) => {
                             setPack((pack) => ({
@@ -192,16 +194,16 @@ const PackageDetail = () => {
 
                 <div>
                   <hr />
-                  <h3>Quota</h3>
+                  <h3>{t('quota')}</h3>
                   <CRow className="pt-2">
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="account_officer">Account Officer</CFormLabel>
+                        <CFormLabel htmlFor="account_officer">{t('account_officer')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="account_officer"
                           required
-                          placeholder="No data provided"
+                          placeholder={t('no_data')}
                           value={pack.quota.account_officer}
                           onChange={(e) => {
                             setPack((pack) => ({
@@ -217,12 +219,12 @@ const PackageDetail = () => {
                     </CCol>
                     <CCol>
                       <div className="mb-3">
-                        <CFormLabel htmlFor="nasabah">Nasabah</CFormLabel>
+                        <CFormLabel htmlFor="nasabah">{t('nasabah')}</CFormLabel>
                         <CFormInput
                           type="number"
                           id="nasabah"
                           required
-                          placeholder="No data provided"
+                          placeholder={t('no_data')}
                           value={pack.quota.nasabah}
                           onChange={(e) => {
                             setPack((pack) => ({
@@ -243,7 +245,7 @@ const PackageDetail = () => {
             <CRow className="mt-3 mb-1">
               <div className="d-flex justify-content-end">
                 <CButton color="primary" onClick={handleEdit}>
-                  Edit
+                  {t('edit')}
                 </CButton>
               </div>
             </CRow>

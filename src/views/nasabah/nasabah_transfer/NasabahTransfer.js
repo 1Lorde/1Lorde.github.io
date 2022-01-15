@@ -13,12 +13,14 @@ import {
   CFormSelect,
   CRow,
 } from '@coreui/react'
+import { useTranslation } from 'react-i18next'
 
 const NasabahTransfer = () => {
+  const { t } = useTranslation()
   return (
     <CContainer fluid>
       <CCardHeader component="h4" className="p-3">
-        Transfer
+        {t('transfer')}
       </CCardHeader>
       <CCard>
         <CCardBody>
@@ -26,18 +28,18 @@ const NasabahTransfer = () => {
             <CRow>
               <CCol className="ps-5">
                 <CCallout color="primary">
-                  <h5>Sender</h5>
+                  <h5>{t('sender')}</h5>
                   <br />
                   <div className="mb-3">
-                    <CFormLabel htmlFor="name">Name</CFormLabel>
+                    <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
                     <CFormInput type="text" id="name" />
                   </div>
                   <div className="mb-3">
-                    <CFormLabel htmlFor="accountNumber">Account Number</CFormLabel>
+                    <CFormLabel htmlFor="accountNumber">{t('account_number')}</CFormLabel>
                     <CFormInput type="text" id="accountNumber" />
                   </div>
                   <div className="mb-3">
-                    <CFormLabel htmlFor="type">Type of Account</CFormLabel>
+                    <CFormLabel htmlFor="type">{t('account_type')}</CFormLabel>
                     <CFormSelect id="type">
                       <option value="1">One</option>
                       <option value="2">Two</option>
@@ -49,18 +51,18 @@ const NasabahTransfer = () => {
 
               <CCol className="pe-5">
                 <CCallout color="info">
-                  <h5>Receiver</h5>
+                  <h5>{t('receiver')}</h5>
                   <br />
                   <div className="mb-3">
-                    <CFormLabel htmlFor="name">Name</CFormLabel>
+                    <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
                     <CFormInput type="text" id="name" />
                   </div>
                   <div className="mb-3">
-                    <CFormLabel htmlFor="accountNumber">Account Number</CFormLabel>
+                    <CFormLabel htmlFor="accountNumber">{t('account_number')}</CFormLabel>
                     <CFormInput type="text" id="accountNumber" />
                   </div>
                   <div className="mb-3">
-                    <CFormLabel htmlFor="type">Type of Account</CFormLabel>
+                    <CFormLabel htmlFor="type">{t('account_type')}</CFormLabel>
                     <CFormSelect id="type">
                       <option value="1">One</option>
                       <option value="2">Two</option>
@@ -75,11 +77,11 @@ const NasabahTransfer = () => {
               <CCol className="ps-5" xs={6}>
                 <CCallout color="dark">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="nominal">Nominal</CFormLabel>
+                    <CFormLabel htmlFor="nominal">{t('nominal')}</CFormLabel>
                     <CFormInput type="text" id="nominal" />
                   </div>
                   <div className="mb-3">
-                    <CFormLabel htmlFor="berita">Berita</CFormLabel>
+                    <CFormLabel htmlFor="berita">{t('berita')}</CFormLabel>
                     <CFormInput type="text" id="berita" />
                   </div>
                 </CCallout>
@@ -87,7 +89,7 @@ const NasabahTransfer = () => {
             </CRow>
             <CRow>
               <div className="d-flex justify-content-end">
-                <CButton color="primary">Submit</CButton>
+                <CButton color="primary">{t('submit')}</CButton>
               </div>
             </CRow>
           </CForm>

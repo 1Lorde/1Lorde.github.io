@@ -16,8 +16,10 @@ import { cilPen } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { SimpleTable } from '../../../components/SimpleTable'
 import { getVendors } from '../../../api/api_vendors'
+import { useTranslation } from 'react-i18next'
 
 const VendorList = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [hasLoaded, setHasLoaded] = useState()
   const [vendorList, setVendorList] = useState([])
@@ -41,11 +43,11 @@ const VendorList = () => {
                 status:
                   item.status === 'ACTIVE' ? (
                     <CBadge className="mt-1" color="success" shape="rounded-pill">
-                      ACTIVE
+                      {t('active')}
                     </CBadge>
                   ) : (
                     <CBadge className="mt-1" color="secondary" shape="rounded-pill">
-                      INACTIVE
+                      {t('inactive')}
                     </CBadge>
                   ),
                 action: (
@@ -55,7 +57,7 @@ const VendorList = () => {
                     onClick={() => history.push('/ppob/vendors/' + item.id)}
                   >
                     <CIcon icon={cilPen} className="me-1" />
-                    Edit
+                    {t('edit')}
                   </CButton>
                 ),
               }
@@ -72,7 +74,7 @@ const VendorList = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Company name',
+        Header: t('company_name'),
         accessor: 'name',
       },
       {
@@ -80,11 +82,11 @@ const VendorList = () => {
         accessor: 'url',
       },
       {
-        Header: 'Status',
+        Header: t('status'),
         accessor: 'status',
       },
       {
-        Header: 'Action',
+        Header: t('action'),
         accessor: 'action',
       },
     ],
@@ -95,32 +97,32 @@ const VendorList = () => {
     <CContainer>
       <CRow className="align-items-center">
         <CCol>
-          <CFormLabel htmlFor="searchInput">Search</CFormLabel>
+          <CFormLabel htmlFor="searchInput">{t('search')}</CFormLabel>
           <CFormInput
             type="text"
             id="searchInput"
-            placeholder="Enter search query.."
+            placeholder={t('enter_search_query')}
             onChange={(e) => {
               setSearchQuery(e.target.value)
             }}
           />
         </CCol>
         <CCol>
-          <CFormLabel htmlFor="statusInput">Status</CFormLabel>
+          <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
           <CFormSelect
             id="statusInput"
             onChange={(e) => {
               setStatus(e.target.value)
             }}
           >
-            <option value="">All</option>
-            <option value="ACTIVE">Active</option>
-            <option value="NOT-ACTIVE">Inactive</option>
+            <option value="">{t('all')}</option>
+            <option value="ACTIVE">{t('active')}</option>
+            <option value="NOT-ACTIVE">{t('inactive')}</option>
           </CFormSelect>
         </CCol>
         <CCol className={'d-flex justify-content-end'}>
           <CButton color="primary" onClick={() => history.push('/nasabah/create')}>
-            Add New
+            {t('add_new')}
           </CButton>
         </CCol>
       </CRow>

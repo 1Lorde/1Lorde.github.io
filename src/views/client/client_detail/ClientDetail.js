@@ -15,8 +15,10 @@ import Loader from '../../../components/Loader'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
 import { getClient, updateClient } from '../../../api/api_client'
+import { useTranslation } from 'react-i18next'
 
 const ClientDetail = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   let { id } = useParams()
   const [client, setClient] = useState()
@@ -42,7 +44,7 @@ const ClientDetail = () => {
     console.log(client)
     updateClient(client.id, client).then((data) => {
       if (data.ok) {
-        store.addNotification(success('Client ' + client.company + ' updated successfully.'))
+        store.addNotification(success(t('notifications.client_update', { client: client.company })))
         history.push('/clients')
       } else {
         if (data.message) {
@@ -61,11 +63,11 @@ const ClientDetail = () => {
       <CRow>
         <CCol>
           <div className="mb-3">
-            <CFormLabel htmlFor="company_name">Company name</CFormLabel>
+            <CFormLabel htmlFor="company_name">{t('company_name')}</CFormLabel>
             <CFormInput
               type="text"
               id="company_name"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.company}
               onChange={(e) => {
                 setClient((client) => ({ ...client, company: e.target.value }))
@@ -73,11 +75,11 @@ const ClientDetail = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="address">Address</CFormLabel>
+            <CFormLabel htmlFor="address">{t('address')}</CFormLabel>
             <CFormInput
               type="text"
               id="address"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.address}
               onChange={(e) => {
                 setClient((client) => ({ ...client, address: e.target.value }))
@@ -85,12 +87,12 @@ const ClientDetail = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="npwp">NPWP Number</CFormLabel>
+            <CFormLabel htmlFor="npwp">{t('npwp')}</CFormLabel>
             <CFormInput
               disabled
               type="text"
               id="npwp"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.documents.NPWP?.no}
               onChange={(e) => {
                 setClient((client) => ({
@@ -107,12 +109,12 @@ const ClientDetail = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="siup">SIUP Number</CFormLabel>
+            <CFormLabel htmlFor="siup">{t('siup')}</CFormLabel>
             <CFormInput
               type="text"
               id="siup"
               disabled
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.documents?.SIUP?.no}
               onChange={(e) => {
                 setClient((client) => ({
@@ -129,12 +131,12 @@ const ClientDetail = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="tdp">TDP Number</CFormLabel>
+            <CFormLabel htmlFor="tdp">{t('tdp')}</CFormLabel>
             <CFormInput
               disabled
               type="text"
               id="tdp"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={client.documents.TDP?.no}
               onChange={(e) => {
                 setClient((client) => ({
@@ -166,11 +168,11 @@ const ClientDetail = () => {
       <CRow className="mb-4 mt-3">
         <CCol>
           <div className="mb-3">
-            <CFormLabel htmlFor="director">Director Name</CFormLabel>
+            <CFormLabel htmlFor="director">{t('director_name')}</CFormLabel>
             <CFormInput
               type="text"
               id="director"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.contact?.dir_name}
               onChange={(e) => {
                 setClient((client) => ({
@@ -181,12 +183,12 @@ const ClientDetail = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="ktp">KTP Number</CFormLabel>
+            <CFormLabel htmlFor="ktp">{t('ktp')}</CFormLabel>
             <CFormInput
               disabled
               type="text"
               id="ktp"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.contact?.ktp_id}
               onChange={(e) => {
                 setClient((client) => ({
@@ -197,12 +199,12 @@ const ClientDetail = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="wa">WhatsApp Number</CFormLabel>
+            <CFormLabel htmlFor="wa">{t('whatsapp')}</CFormLabel>
             <CFormInput
               disabled
               type="text"
               id="wa"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               defaultValue={client.contact?.wa_number}
               onChange={(e) => {
                 setClient((client) => ({
@@ -215,12 +217,12 @@ const ClientDetail = () => {
         </CCol>
         <CCol>
           <div className="mb-3">
-            <CFormLabel htmlFor="subscription">Subscription Package</CFormLabel>
+            <CFormLabel htmlFor="subscription">{t('subscription_package')}</CFormLabel>
             <CFormInput
               disabled
               type="text"
               id="subscription"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.package?.name}
               onChange={(e) => {
                 setClient((client) => ({
@@ -231,23 +233,23 @@ const ClientDetail = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="status">Status</CFormLabel>
+            <CFormLabel htmlFor="status">{t('status')}</CFormLabel>
             <CFormSelect
               disabled
               id="status"
-              placeholder="No data provided"
+              placeholder={t('no_data')}
               value={client.status}
               onChange={(e) => {
                 setClient((client) => ({ ...client, status: e.target.value }))
               }}
             >
-              <option value="">All</option>
-              <option value="REQUEST">Request</option>
-              <option value="VERIFIED">Verified</option>
-              <option value="ACTIVE">Active</option>
-              <option value="REJECT">Reject</option>
-              <option value="NON_ACTIVE">Non active</option>
-              <option value="FAILED">Failed</option>
+              <option value="">{t('all')}</option>
+              <option value="REQUEST">{t('request')}</option>
+              <option value="VERIFIED">{t('verified')}</option>
+              <option value="ACTIVE">{t('active')}</option>
+              <option value="REJECT">{t('reject')}</option>
+              <option value="NON_ACTIVE">{t('inactive')}</option>
+              <option value="FAILED">{t('failed')}</option>
             </CFormSelect>
           </div>
         </CCol>
@@ -255,7 +257,7 @@ const ClientDetail = () => {
       <CRow className="mb-3">
         <div className="d-flex justify-content-end">
           <CButton color="primary" onClick={handleEdit}>
-            Edit
+            {t('edit')}
           </CButton>
         </div>
       </CRow>

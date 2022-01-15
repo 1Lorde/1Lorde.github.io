@@ -11,26 +11,29 @@ import {
   CFormSelect,
   CRow,
 } from '@coreui/react'
+import { useTranslation } from 'react-i18next'
 
 const NasabahCashIn = () => {
+  const { t } = useTranslation()
+
   return (
     <CContainer className="d-flex justify-content-center">
       <CCard style={{ width: '35rem' }}>
         <CCardHeader component="h4" className="p-3">
-          Cash-In
+          {t('cash_in')}
         </CCardHeader>
         <CCardBody>
           <CForm>
             <div className="mb-3">
-              <CFormLabel htmlFor="name">Name</CFormLabel>
+              <CFormLabel htmlFor="name">{t('name')}</CFormLabel>
               <CFormInput type="text" id="name" />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="accountNumber">Account Number</CFormLabel>
+              <CFormLabel htmlFor="accountNumber">{t('account_number')}</CFormLabel>
               <CFormInput type="text" id="accountNumber" />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="type">Type of Account</CFormLabel>
+              <CFormLabel htmlFor="type">{t('account_type')}</CFormLabel>
               <CFormSelect id="type">
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -40,13 +43,13 @@ const NasabahCashIn = () => {
             <br />
             <hr />
             <div className="mb-3">
-              <CFormLabel htmlFor="nominal">Nominal</CFormLabel>
+              <CFormLabel htmlFor="nominal">{t('nominal')}</CFormLabel>
               <CFormInput type="text" id="nominal" />
             </div>
 
             <CRow>
               <div className="d-flex justify-content-end">
-                <CButton color="primary">Submit</CButton>
+                <CButton color="primary">{t('submit')}</CButton>
               </div>
             </CRow>
           </CForm>

@@ -13,8 +13,10 @@ import {
 import { useHistory, useParams } from 'react-router-dom'
 import Loader from '../../../components/Loader'
 import { getNotification } from '../../../api/api_notification'
+import { useTranslation } from 'react-i18next'
 
 const NotificationDetail = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   let { id } = useParams()
   const [notification, setNotification] = useState()
@@ -37,19 +39,19 @@ const NotificationDetail = () => {
         <CCardBody>
           <CForm>
             <div className="mb-3">
-              <CFormLabel htmlFor="date">Date</CFormLabel>
+              <CFormLabel htmlFor="date">{t('date')}</CFormLabel>
               <CFormInput type="text" id="date" readOnly defaultValue={notification.created} />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="sender">Sender</CFormLabel>
+              <CFormLabel htmlFor="sender">{t('sender')}</CFormLabel>
               <CFormInput type="text" id="sender" readOnly defaultValue={notification.sender} />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="title">Title</CFormLabel>
+              <CFormLabel htmlFor="title">{t('title')}</CFormLabel>
               <CFormInput type="text" id="title" readOnly defaultValue={notification.title} />
             </div>
             <div className="mb-3">
-              <CFormLabel htmlFor="content">Content</CFormLabel>
+              <CFormLabel htmlFor="content">{t('content')}</CFormLabel>
               <CFormTextarea
                 type="text"
                 id="content"
@@ -63,7 +65,7 @@ const NotificationDetail = () => {
                   history.push('/notifications')
                 }}
               >
-                Return back
+                {t('return_back')}
               </CButton>
             </div>
           </CForm>

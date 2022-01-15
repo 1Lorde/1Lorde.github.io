@@ -12,8 +12,10 @@ import {
 import { getNotifications } from '../../../api/api_notification'
 import { Table } from '../../../components/Table'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Notifications = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const [notifications, setNotifications] = useState([])
   const [pageCount, setPageCount] = useState(0)
@@ -45,7 +47,7 @@ const Notifications = () => {
                     size={'sm'}
                     onClick={() => history.push('/notifications/' + item.id)}
                   >
-                    View
+                    {t('view')}
                   </CButton>
                 ),
               }
@@ -61,23 +63,23 @@ const Notifications = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Date',
+        Header: t('date'),
         accessor: 'created',
       },
       {
-        Header: 'Sender',
+        Header: t('sender'),
         accessor: 'sender',
       },
       {
-        Header: 'Title',
+        Header: t('title'),
         accessor: 'title',
       },
       {
-        Header: 'Content',
+        Header: t('content'),
         accessor: 'content',
       },
       {
-        Header: 'Action',
+        Header: t('action'),
         accessor: 'action',
       },
     ],
@@ -86,20 +88,6 @@ const Notifications = () => {
 
   return (
     <CContainer fluid>
-      <CRow className="align-items-center">
-        <CCol xl={1}>Search</CCol>
-        <CCol>
-          <CFormInput></CFormInput>
-        </CCol>
-        <CCol>
-          <CFormSelect>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </CFormSelect>
-        </CCol>
-      </CRow>
-      <br />
       <CRow>
         <CCard>
           <CCardBody>
