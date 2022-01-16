@@ -126,7 +126,7 @@ const NasabahList = () => {
           >
             <option value="">{t('all')}</option>
             <option value="false">{t('inactive')}</option>
-            <option value="true">{t('true')}</option>
+            <option value="true">{t('active')}</option>
           </CFormSelect>
         </CCol>
         <CCol className={'d-flex justify-content-end'}>

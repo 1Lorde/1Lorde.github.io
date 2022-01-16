@@ -59,13 +59,13 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -b page -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
     "lint": "eslint \"src/**/*.js\"",
-    "test": "react-scripts test",
+    "test": "react-scripts --openssl-legacy-provider test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
-    "eject": "react-scripts eject",
+    "eject": "react-scripts --openssl-legacy-provider eject",
     "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
   },
   "jest": {
