@@ -46,6 +46,7 @@ const ProductPpobDetails = React.lazy(() =>
 )
 const VendorList = React.lazy(() => import('../views/vendor/vendor_list/VendorList'))
 const VendorDetails = React.lazy(() => import('../views/vendor/vendor_details/VendorDetails'))
+const VendorCreate = React.lazy(() => import('../views/vendor/vendor_create/VendorCreate'))
 
 const ProductPpobDetailsBuy = React.lazy(() =>
   import('../views/products/products_ppob_details_buy/ProductsPpobDetailsBuy'),
@@ -277,6 +278,13 @@ const AppContent = () => {
             path="/ppob/vendors"
             name={t('ppob_vendors')}
             component={VendorList}
+          />
+          <PrivateRoute
+            exact
+            allowedRoles={[Roles['app-owner']]}
+            path="/ppob/vendors/create"
+            name={t('ppob_vendor_create')}
+            component={VendorCreate}
           />
           <PrivateRoute
             exact

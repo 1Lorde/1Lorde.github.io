@@ -206,6 +206,7 @@ const ClientRegister = () => {
                       <CFormInput
                         type="text"
                         id="ktpnumberInput"
+                        maxLength={16}
                         minLength={16}
                         required
                         onChange={(e) => {

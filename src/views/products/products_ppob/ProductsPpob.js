@@ -134,7 +134,7 @@ const ProductsPpob = () => {
             <option value={0}>{t('inactive')}</option>
           </CFormSelect>
         </CCol>
-        <RestrictedComponent allowedRoles={('koperasi-owner', 'credit-analyst')}>
+        <RestrictedComponent allowedRoles={['app-owner', 'koperasi-owner', 'credit-analyst']}>
           <CCol>
             <CFormLabel htmlFor="marginByInput">{t('margin_by')}</CFormLabel>
             <CFormSelect
@@ -150,7 +150,7 @@ const ProductsPpob = () => {
           </CCol>
         </RestrictedComponent>
       </CRow>
-      <RestrictedComponent allowedRoles={('koperasi-owner', 'credit-analyst')}>
+      <RestrictedComponent allowedRoles={['app-owner', 'koperasi-owner', 'credit-analyst']}>
         <CForm noValidate validated={validated} onSubmit={handleServicesMarginUpdate}>
           <CRow className="align-items-center mb-5">
             <CCol xl={3}>

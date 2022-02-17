@@ -31,6 +31,7 @@ const ProductDetails = React.lazy(() => import('./views/products/product_details
 
 const ProductsPpob = React.lazy(() => import('./views/products/products_ppob/ProductsPpob'))
 const VendorList = React.lazy(() => import('./views/vendor/vendor_list/VendorList'))
+const VendorCreate = React.lazy(() => import('./views/vendor/vendor_create/VendorCreate'))
 
 const TicketsList = React.lazy(() => import('./views/support/tickets_list/TicketsList'))
 const TicketCreate = React.lazy(() => import('./views/support/ticket_create/TicketCreate'))
@@ -74,6 +75,7 @@ const routes = [
   { path: '/products/ppob', name: i18next.t('ppob'), component: ProductsPpob },
   { path: '/ppob', name: i18next.t('ppob'), component: {} },
   { path: '/ppob/vendors', name: i18next.t('ppob_vendors'), component: VendorList },
+  { path: '/ppob/vendors/create', name: i18next.t('ppob_vendor_create'), component: VendorCreate },
   { path: '/support', name: i18next.t('support'), disabled: true },
   { path: '/support/tickets', name: i18next.t('ticket_list'), component: TicketsList },
   { path: '/support/tickets/new', name: i18next.t('ticket_create'), component: TicketCreate },

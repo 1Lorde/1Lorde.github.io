@@ -13,11 +13,12 @@ import {
 import Loader from '../../../components/Loader'
 import { store } from 'react-notifications-component'
 import { danger, success } from '../../../helpers/notifications'
-import { useParams } from 'react-router-dom'
-import { getVendor } from '../../../api/api_vendors'
+import { useHistory, useParams } from 'react-router-dom'
+import { getVendor, updateVendor } from '../../../api/api_vendors'
 import { useTranslation } from 'react-i18next'
 
 const VendorDetails = () => {
+  const history = useHistory()
   const { t } = useTranslation()
   const { id } = useParams()
   const [vendor, setVendor] = useState()
@@ -31,7 +32,6 @@ const VendorDetails = () => {
           setHasLoaded(true)
         } else {
           if (data.message) {
-            console.log(data)
             store.addNotification(success(data.message))
           } else {
             console.log(data)
@@ -43,24 +43,18 @@ const VendorDetails = () => {
     [],
   )
 
-  // function handleEdit() {
-  //   console.log(vendor)
-  //   updateProduct(product).then((data) => {
-  //     console.log(data)
-  //     if (data.ok) {
-  //       createNotification(
-  //         userState.user.wa_number,
-  //         Services.productCreate,
-  //         product.name + ' (' + product.tipe + ')',
-  //       ).then((resp) => {
-  //         console.log('Notification created: ' + resp.id)
-  //       })
-  //       store.addNotification(success('Product updated'))
-  //     } else {
-  //       store.addNotification(danger(data.message))
-  //     }
-  //   })
-  // }
+  function handleEdit() {
+    console.log(vendor)
+    updateVendor(vendor).then((data) => {
+      console.log(data)
+      if (data.ok) {
+        store.addNotification(success('Vendor updated'))
+        history.push('/ppob/vendors')
+      } else {
+        store.addNotification(danger(data.message))
+      }
+    })
+  }
 
   return hasLoaded ? (
     <CContainer className="d-flex justify-content-center">
@@ -69,25 +63,53 @@ const VendorDetails = () => {
           <CForm>
             <div className="mb-3">
               <CFormLabel htmlFor="fullnameInput">{t('company_name')}</CFormLabel>
-              <CFormInput type="text" id="nameInput" defaultValue={vendor.name} />
+              <CFormInput
+                type="text"
+                id="nameInput"
+                defaultValue={vendor.name}
+                onChange={(e) => {
+                  setVendor((vendor) => ({ ...vendor, name: e.target.value }))
+                }}
+              />
             </div>
             <div className="mb-3">
               <CFormLabel htmlFor="descInput">{t('description')}</CFormLabel>
-              <CFormTextarea type="text" id="descInput" defaultValue={vendor.desc} />
+              <CFormTextarea
+                type="text"
+                id="descInput"
+                defaultValue={vendor.desc}
+                onChange={(e) => {
+                  setVendor((vendor) => ({ ...vendor, desc: e.target.value }))
+                }}
+              />
             </div>
             <div className="mb-3">
               <CFormLabel htmlFor="apiInput">API URL</CFormLabel>
-              <CFormInput type="text" id="apiInput" defaultValue={vendor.api_base_url} />
+              <CFormInput
+                type="text"
+                id="apiInput"
+                defaultValue={vendor.api_base_url}
+                onChange={(e) => {
+                  setVendor((vendor) => ({ ...vendor, api_base_url: e.target.value }))
+                }}
+              />
             </div>
             <div className="mb-3">
               <CFormLabel htmlFor="statusInput">{t('status')}</CFormLabel>
-              <CFormSelect type="text" id="statusInput" defaultValue={vendor.status}>
+              <CFormSelect
+                type="text"
+                id="statusInput"
+                defaultValue={vendor.status}
+                onChange={(e) => {
+                  setVendor((vendor) => ({ ...vendor, status: e.target.value }))
+                }}
+              >
                 <option value="NOT-ACTIVE">Inactive</option>
                 <option value="ACTIVE">Active</option>
               </CFormSelect>
             </div>
             <div className="d-flex justify-content-between">
-              <CButton color="primary" variant="outline">
+              <CButton color="primary" variant="outline" onClick={handleEdit}>
                 {t('edit')}
               </CButton>
             </div>

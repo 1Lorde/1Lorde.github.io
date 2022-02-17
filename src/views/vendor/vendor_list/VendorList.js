@@ -121,7 +121,7 @@ const VendorList = () => {
           </CFormSelect>
         </CCol>
         <CCol className={'d-flex justify-content-end'}>
-          <CButton color="primary" onClick={() => history.push('/nasabah/create')}>
+          <CButton color="primary" onClick={() => history.push('/ppob/vendors/create')}>
             {t('add_new')}
           </CButton>
         </CCol>

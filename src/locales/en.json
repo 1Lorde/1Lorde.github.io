@@ -173,6 +173,7 @@
   "product_create": "Product Create",
   "ppob": "PPOB",
   "ppob_vendors": "PPOB Vendors",
+  "ppob_vendor_create": "Create PPOB Vendor",
   "ppob_vendor_detail": "PPOB Vendor Details",
   "support": "Support",
   "ticket_list": "Tickets List",

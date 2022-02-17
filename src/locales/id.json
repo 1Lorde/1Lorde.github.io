@@ -173,6 +173,7 @@
   "product_create": "Membuat Produk",
   "ppob": "PPOB",
   "ppob_vendors": "Vendor PPOB",
+  "ppob_vendor_create": "Membuat PPOB Vendor",
   "ppob_vendor_detail": "Detail Vendor PPOB",
   "support": "Support",
   "ticket_list": "Daftar Tiket",
