@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   CButton,
   CCol,
@@ -20,13 +20,6 @@ const MyCompany = () => {
   const { t } = useTranslation()
   const { userState } = useContext(UserContext)
   const [company, setCompany] = useState({})
-  const [hasCompany, setHasCompany] = useState({})
-
-  useEffect(() => {
-    setHasCompany(userState.company)
-    console.log(hasCompany)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const handleEdit = () => {
     updateProfileCompany(userState.company.id, company).then((data) => {
@@ -38,7 +31,7 @@ const MyCompany = () => {
     })
   }
 
-  return hasCompany ? (
+  return !!userState.company ? (
     <CForm>
       <CRow>
         <CCol>

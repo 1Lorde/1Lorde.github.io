@@ -34,31 +34,46 @@ const InputOtp = () => {
   function handleOtp(otp) {
     setIsLoading(true)
     if (userState.status === UserStatus.WAITING_FOR_OTP) {
-      changePasswordOtp(otp).then((data) => {
-        console.log(data)
-        store.addNotification(success(data.message))
-        setIsLoading(false)
-        history.push('/profile')
-      })
-    } else if (userState.status === UserStatus.TRY_TO_LOGIN) {
-      loginOtp(userState.temp_token, otp).then((data) => {
-        console.log(data)
-        store.addNotification(success(t('notifications.welcome_back')))
-        setIsLoading(false)
-        history.push('/profile')
-      })
-    } else if (userState.status === UserStatus.RESET_PASS) {
-      resetPasswordOtp(userState.temp_token, otp).then((data) => {
-        if (data.ok === true) {
+      changePasswordOtp(otp)
+        .then((data) => {
           console.log(data)
           store.addNotification(success(data.message))
           setIsLoading(false)
           history.push('/profile')
-        } else {
-          store.addNotification(danger(data.message))
+        })
+        .catch(() => {
+          store.addNotification(danger('Invalid OTP code'))
           setIsLoading(false)
-        }
-      })
+        })
+    } else if (userState.status === UserStatus.TRY_TO_LOGIN) {
+      loginOtp(userState.temp_token, otp)
+        .then((data) => {
+          console.log(data)
+          store.addNotification(success(t('notifications.welcome_back')))
+          setIsLoading(false)
+          history.push('/profile')
+        })
+        .catch(() => {
+          store.addNotification(danger('Invalid OTP code'))
+          setIsLoading(false)
+        })
+    } else if (userState.status === UserStatus.RESET_PASS) {
+      resetPasswordOtp(userState.temp_token, otp)
+        .then((data) => {
+          if (data.ok === true) {
+            console.log(data)
+            store.addNotification(success(data.message))
+            setIsLoading(false)
+            history.push('/profile')
+          } else {
+            store.addNotification(danger(data.message))
+            setIsLoading(false)
+          }
+        })
+        .catch(() => {
+          store.addNotification(danger('Invalid OTP code'))
+          setIsLoading(false)
+        })
     }
   }
 
@@ -78,6 +93,7 @@ const InputOtp = () => {
                         loading={isLoading}
                         autoFocus={true}
                         fieldWidth={40}
+                        value={otp}
                         onChange={(e) => setOtp(e)}
                       />
                     </CCol>

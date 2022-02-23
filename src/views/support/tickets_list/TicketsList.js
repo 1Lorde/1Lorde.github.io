@@ -104,7 +104,10 @@ const TicketsList = () => {
               createUser(userState.user.id, userState.user.wa_number, userState.user.name).then(
                 (data) => {
                   console.log(data)
-                  store.addNotification(info(t('notifications.support_account_not_approved')))
+                  store.addNotification(info(t('notifications.truedesk_account_created')))
+                  setTimeout(function () {
+                    window.location.reload()
+                  }, 3000)
                 },
               )
             } else {
@@ -114,7 +117,10 @@ const TicketsList = () => {
                 userState.company.contact.dir_name,
               ).then((data) => {
                 console.log(data)
-                store.addNotification(info(t('notifications.support_account_not_approved')))
+                store.addNotification(info(t('notifications.truedesk_account_created')))
+                setTimeout(function () {
+                  window.location.reload()
+                }, 3000)
               })
             }
           }

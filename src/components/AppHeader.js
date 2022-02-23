@@ -41,12 +41,12 @@ const AppHeader = () => {
   }
 
   function getHeaderBrand() {
-    if (userState.company) {
-      return userState.company.company.toUpperCase()
-    }
-
     if (Roles[userState.user.role] === Roles['app-owner']) {
       return t('header')
+    }
+
+    if (userState.company) {
+      return userState.company.company.toUpperCase()
     }
   }
 

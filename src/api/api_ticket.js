@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { authHeader } from './requestHeaders'
 
-const API_URL = 'https://api.ekoop.id/v01'
+const API_URL = process.env.REACT_APP_API_URL
 
 export function getTickets(skip, searchQuery) {
   return axios
@@ -12,7 +12,11 @@ export function getTickets(skip, searchQuery) {
       return response.data
     })
     .catch((reason) => {
-      console.log(reason)
+      if (reason.response.status === 404) {
+        console.log('Tickets not found')
+      } else {
+        console.log(reason)
+      }
     })
 }
 

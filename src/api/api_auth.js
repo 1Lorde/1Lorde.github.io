@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { apiHeader, authHeader } from './requestHeaders'
 
-const API_URL = 'https://api.ekoop.id/v01'
+const API_URL = process.env.REACT_APP_API_URL
 
 export function login(waNumber, password) {
   return axios

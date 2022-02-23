@@ -25,12 +25,14 @@ const AppSidebar = () => {
   const { userState } = useContext(UserContext)
 
   function getSidebarBrand() {
-    if (userState.company) {
-      return <strong>{userState.company.company}</strong>
-    }
-
     if (Roles[userState.user.role] === Roles['app-owner']) {
       return <CImage className="m-3" src={logo_small} height={60} />
+    }
+
+    if (userState.company) {
+      return <strong>{userState.company.company}</strong>
+    } else {
+      return 'Koperasi without company'
     }
   }
 

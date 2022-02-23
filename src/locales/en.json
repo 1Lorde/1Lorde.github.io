@@ -9,7 +9,7 @@
     "product_update": "Product updated",
     "service_margin_update": "Service margin updated successfully",
     "ppob_update": "PPOB updated successfully",
-    "support_account_not_approved": "Your support account not approved yet. Please try again later",
+    "truedesk_account_created": "Your support account has been created",
     "ticket_create": "Ticket created successfully",
     "comment_create": "Comment sent successfully",
     "ticket_close": "Ticket closed",
