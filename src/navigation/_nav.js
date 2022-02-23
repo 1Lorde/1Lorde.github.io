@@ -142,12 +142,12 @@ export const account_officer_nav = [
     to: '/notifications',
     icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: i18next.t('task'),
-    to: '/notifications/task',
-    icon: <CIcon icon={cilCaretRight} customClassName="nav-icon ms-2" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: i18next.t('task'),
+  //   to: '/notifications/task',
+  //   icon: <CIcon icon={cilCaretRight} customClassName="nav-icon ms-2" />,
+  // },
   {
     component: CNavItem,
     name: i18next.t('dashboard'),
