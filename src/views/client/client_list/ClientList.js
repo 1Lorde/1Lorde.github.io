@@ -43,6 +43,7 @@ const ClientList = () => {
           console.log('Notification created: ' + resp.id)
         })
         store.addNotification(info(t('notifications.client_approve', { name: name })))
+        window.location.reload()
       } else {
         console.log(data)
         store.addNotification(danger(t('notifications.error')))
@@ -57,6 +58,7 @@ const ClientList = () => {
           console.log('Notification created: ' + resp)
         })
         store.addNotification(info(t('notifications.client_reject', { name: name })))
+        window.location.reload()
       } else {
         console.log(data)
         store.addNotification(danger(t('notifications.error')))
